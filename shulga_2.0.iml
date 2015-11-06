@@ -51,6 +51,13 @@
     <orderEntry type="library" exported="" name="Gradle: org.apache.httpcomponents:httpcore:4.4.3" level="project" />
     <orderEntry type="library" exported="" name="Gradle: commons-codec:commons-codec:1.9" level="project" />
     <orderEntry type="library" exported="" name="Gradle: com.fasterxml.jackson.core:jackson-annotations:2.6.0" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.springframework.boot:spring-boot-starter-thymeleaf:1.2.6.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.thymeleaf:thymeleaf-spring4:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:1.2.9" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.thymeleaf:thymeleaf:2.1.4.RELEASE" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: ognl:ognl:3.0.8" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.javassist:javassist:3.16.1-GA" level="project" />
+    <orderEntry type="library" exported="" name="Gradle: org.unbescape:unbescape:1.1.0.RELEASE" level="project" />
   </component>
   <component name="org.twodividedbyzero.idea.findbugs">
     <option name="_basePreferences">

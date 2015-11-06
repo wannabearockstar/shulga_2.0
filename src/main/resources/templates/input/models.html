@@ -15,12 +15,6 @@
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
           crossorigin="anonymous">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css"
-          integrity="sha384-aUGj/X2zp5rLCbBxumKTCw2Z50WgIr1vs/PFN4praOTvYXWlVyh2UtNUU0KAUhAX"
-          crossorigin="anonymous">
-
     <link rel="stylesheet" type="text/css" href="../../public/css/index.css">
 </head>
 <body>
@@ -45,76 +39,45 @@
             <!--/.nav-collapse -->
         </div>
     </nav>
-    <div class="container bs-wrapper">
-        <div class="row">
-            <div class="col-md-2">
-                <input type="text" class="form-control professor" placeholder="Группа">
+
+    <!-- Template for group curriculum -->
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-2">
+                        <input type="text" class="form-control professor" placeholder="Группа">
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-2 bs-wrapper">
-                    <div class="form-group">
-                        <input type="text" class="form-control professor" placeholder="Преподаватель">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <input type="text" class="form-control professor" placeholder="Преподаватель">
+                                </div>
+                                <div class="form-group">
+                                    <input type="text" class="form-control discipline" placeholder="Предмет">
+                                </div>
+                                <select class="form-control lesson-type">
+                                    <option value="1">Лекция</option>
+                                    <option value="1">Практика</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control discipline" placeholder="Предмет">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control lesson-type" placeholder="Тип предмета">
-                    </div>
-                </div>
-                <div class="col-md-2 bs-wrapper">
-                    <div class="new-model">
-                        <i class="icon-plus"></i>
-                    </div>
-                </div>
-                <div class="col-md-2 bs-wrapper">
-                    <div class="form-group">
-                        <input type="text" class="form-control professor" placeholder="Преподаватель">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control discipline" placeholder="Предмет">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control lesson-type" placeholder="Тип предмета">
-                    </div>
-                </div>
-                <div class="col-md-2 bs-wrapper">
-                    <div class="form-group">
-                        <input type="text" class="form-control professor" placeholder="Преподаватель">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control discipline" placeholder="Предмет">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control lesson-type" placeholder="Тип предмета">
-                    </div>
-                </div>
-                <div class="col-md-2 bs-wrapper">
-                    <div class="form-group">
-                        <input type="text" class="form-control professor" placeholder="Преподаватель">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control discipline" placeholder="Предмет">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control lesson-type" placeholder="Тип предмета">
-                    </div>
-                </div>
-                <div class="col-md-2 bs-wrapper">
-                    <div class="form-group">
-                        <input type="text" class="form-control professor" placeholder="Преподаватель">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control discipline" placeholder="Предмет">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-control lesson-type" placeholder="Тип предмета">
+                    <div class="col-md-2">
+                        <button type="button" class="btn btn-primary">Новая пара</button>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="container">
+        <button type="button" class="btn btn-primary">Новая группа</button>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

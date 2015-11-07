@@ -66,6 +66,7 @@ public class AlgorithmImpl implements Algorithm {
             if (cataclysmCounter >= CATACLYSM_LIMIT) {
                 cataclysmCounter = 0;
                 population.cataclysm(CATACLYSM_PART, scheduleConfig, fitnessHandler);
+                System.out.println("Cataclysm...");
             }
             System.out.println(population.getFittest().getFitness());
             algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber()));

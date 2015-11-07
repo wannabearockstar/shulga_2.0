@@ -30,7 +30,7 @@ public class AlgorithmService {
     public Status getStatus(int id) {
         try {
             Schedule schedule = ScheduleConfigLoader.fromLocalSchedule(String.format("schedule_result_%d.json", id));
-            return new Status(100, schedule.getFitness(), true);
+            return new Status(1, schedule.getFitness(), true);
         } catch (IOException e) {
             return AlgorithmImpl.algorithmStatuses.get(id);
         }

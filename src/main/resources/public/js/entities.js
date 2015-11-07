@@ -113,3 +113,9 @@ function bind(entity_name, param_name, id) {
         return item[param_name] = id;
     });
 }
+
+function Status(finished, progress, fitness) {
+    this.finished = finished || false;
+    this.progress = progress || 0.0;
+    this.fitness = fitness || 0.0;
+}

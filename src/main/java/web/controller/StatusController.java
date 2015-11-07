@@ -19,7 +19,7 @@ public class StatusController {
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public String statusPage(@PathVariable(value = "id") long id, Model model) {
-        model.addAttribute("id", id);
+        model.addAttribute("scheduleId", id);
         return "status/index";
     }
 

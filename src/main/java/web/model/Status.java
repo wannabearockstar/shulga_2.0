@@ -8,6 +8,8 @@ public class Status {
     private double progress;
     private boolean finished = false;
     private Double maxFitness = null;
+    private Double remaningTime = null;
+
 
     public Status() {
     }
@@ -34,6 +36,20 @@ public class Status {
         this.currentFitness = currentFitness;
         this.progress = progress;
         this.maxFitness = maxFitness;
+    }
+
+    public Status(Double fitness, double currentFitness, Double maxFitness, double remaningTime) {
+        this.currentFitness = currentFitness;
+        this.maxFitness = maxFitness;
+        this.remaningTime = remaningTime;
+        this.currentFitness = fitness;
+    }
+
+    public Status(Double fitness, Double maxFitness, double progress, double remaningTime) {
+        this.currentFitness = fitness;
+        this.progress = progress;
+        this.maxFitness = maxFitness;
+        this.remaningTime = remaningTime;
     }
 
     public double getCurrentFitness() {
@@ -69,6 +85,15 @@ public class Status {
 
     public Status setMaxFitness(Double maxFitness) {
         this.maxFitness = maxFitness;
+        return this;
+    }
+
+    public Double getRemaningTime() {
+        return remaningTime;
+    }
+
+    public Status setRemaningTime(Double remaningTime) {
+        this.remaningTime = remaningTime;
         return this;
     }
 }

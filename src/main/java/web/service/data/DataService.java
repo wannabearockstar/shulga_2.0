@@ -4,6 +4,7 @@ import ga.model.bound.BoundCollection;
 import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
+import ga.model.schedule.Group;
 import ga.model.schedule.LessonType;
 import ga.model.schedule.Schedule;
 import ga.model.schedule.time.DayTime;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -47,6 +49,8 @@ public class DataService {
 
         config.setGroups(Arrays.asList(curriculums).stream()
                 .map(curriculumUnit -> ScheduleConfig.allGroups.get(curriculumUnit.getGroupId()))
+                .distinct()
+                .sorted(Comparator.comparingInt(Group::getId))
                 .collect(Collectors.toList()));
 
         List<DayTime> dayTimes = new ArrayList<>();

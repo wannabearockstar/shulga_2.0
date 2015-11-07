@@ -22,7 +22,7 @@ var app = null;
 
                 app = new App(options);
                 setInterval(function () {
-                    app.status($("#progress"));
+                    app.status($("#progress"), $("#time"));
                 }, 700);
             });
     });
@@ -48,7 +48,13 @@ var app = null;
             $progressBar.text((status.progress * 100 + "").substring(0, 2) + "%");
         };
 
-        this.status = function ($progressBar) {
+        this.time = function (status, $time) {
+            var minutes = parseInt(status.remaningTime / 60, 10);
+            var seconds = status.remaningTime - minutes*60;
+            $time.text(minutes + " минут, " + seconds + " секунд.")
+        };
+
+        this.status = function ($progressBar, $time) {
             var self = this;
             $.ajax({
                 type: 'GET',
@@ -56,7 +62,8 @@ var app = null;
                 async: false
             }).done(function (e) {
                 if (e.data != null) {
-                    self.progress(new Status(e.data.finished, e.data.progress, e.data.currentFitness, e.data.maxFitness), $progressBar);
+                    self.progress(new Status(e.data.finished, e.data.progress, e.data.currentFitness, e.data.maxFitness, e.data.remaningTime), $progressBar);
+                    self.time(new Status(e.data.finished, e.data.progress, e.data.currentFitness, e.data.maxFitness, e.data.remaningTime), $time);
                     if (e.data.finished) {
                         window.location.replace("/output/" + options.schedule_id);
                     }

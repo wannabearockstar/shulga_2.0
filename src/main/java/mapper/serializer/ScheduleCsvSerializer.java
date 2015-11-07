@@ -37,7 +37,6 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
         makeHeader(sb, schedule, groups);
         makeBody(sb, schedule, groups);
-        makeBottom(sb, schedule, groups);
 
         return sb.toString();
     }
@@ -58,7 +57,6 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
         makeHeader(writer, schedule, groups);
         makeBody(writer, schedule, groups);
-        makeBottom(writer, schedule, groups);
     }
 
     public Schedule deserialize(String data) throws IOException {
@@ -71,7 +69,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
     private void makeHeader(Appendable writer, Schedule schedule, List<Group> groups) throws IOException {
         writer.append("").append(CSV_SEPARATOR);
-        writer.append("Time").append(CSV_SEPARATOR);
+        writer.append("Пара").append(CSV_SEPARATOR);
 
         String names = groups.stream()
                 .map(ScheduleCsvSerializer::escape)
@@ -88,7 +86,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
             for (DayTime time : config.getTimes()) {
 
                 if (time.getId() == 1) {
-                    writer.append(escape(day));
+                    writer.append(escape(WeekDay.locale.get(day)));
                 }
 
                 writer.append(CSV_SEPARATOR);
@@ -109,7 +107,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
                 }
             }
 
-            makeEmptyLine(writer, groups.size());
+            makeEmptyLine(writer, groups.size() + 2);
         }
     }
 

@@ -5,3 +5,11 @@
 .group-model .panel-heading {
     padding: 6px 15px;
 }
+
+.bold {
+    font-weight: bold;
+}
+
+.boundary {
+    height: 60px;
+}

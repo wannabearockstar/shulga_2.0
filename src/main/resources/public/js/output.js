@@ -8,8 +8,7 @@ var app = null;
     'use strict';
 
     $(function () {
-        var options = {
-        };
+        var options = {};
 
         $.when(
             utils.entity.init("group"),
@@ -24,14 +23,23 @@ var app = null;
     });
 
     function App() {
-        this.getTable = function(data) {
+        this.getTable = function (data) {
             var lines = data.split("\n"),
                 output = [],
                 i;
-            for (i = 0; i < lines.length; i++)
-                output.push("<tr><td>"
-                + lines[i].slice(0,-1).split(",").join("</td><td>")
+            var classz = "";
+            for (i = 0; i < lines.length; i++) {
+                classz = "";
+                if (i == 0) {
+                    classz = "bold";
+                }
+                if (i >= 8 && (i == 8 || i % 8 == 0)) {
+                    classz = "info boundary";
+                }
+                output.push("<tr class='" + classz + "'><td>"
+                + lines[i].slice(0, -1).split(",").join("</td><td>")
                 + "</td></tr>");
+            }
             output = "<table class='table table-bordered'>" + output.join("") + "</table>";
             return output;
         }

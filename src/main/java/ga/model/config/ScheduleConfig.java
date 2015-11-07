@@ -16,6 +16,7 @@ public class ScheduleConfig {
     public static Map<Integer, Professor> allProfessors = new HashMap<>();
     public static Map<Integer, LessonType> allLessonTypes = new HashMap<>();
     public static Map<Integer, DayTime> allDayTimes = new HashMap<>();
+    public static Map<Integer, Discipline> allDisciplines = new HashMap<>();
 
     @JsonProperty("auditories")
     private List<Auditory> auditories;

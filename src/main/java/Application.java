@@ -8,7 +8,6 @@ import java.io.IOException;
 @SpringBootApplication
 @ComponentScan("web")
 public class Application {
-
     public static void main(String[] args) throws IOException {
         ScheduleConfigLoader.initAllEntitiesInMemory();
         SpringApplication.run(Application.class, args);

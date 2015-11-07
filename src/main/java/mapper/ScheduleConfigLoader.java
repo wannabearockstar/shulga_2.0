@@ -3,10 +3,7 @@ package mapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ga.model.config.ScheduleConfig;
-import ga.model.schedule.Auditory;
-import ga.model.schedule.Group;
-import ga.model.schedule.LessonType;
-import ga.model.schedule.Professor;
+import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import mapper.model.GroupInfo;
 
@@ -90,6 +87,13 @@ public class ScheduleConfigLoader {
             DayTime[] dayTimes = mapper.readValue(br, DayTime[].class);
             for (DayTime dayTime : dayTimes) {
                 ScheduleConfig.allDayTimes.put(dayTime.getId(), dayTime);
+            }
+        }
+
+        try (BufferedReader br = Files.newBufferedReader(Paths.get("disciplines.json"))) {
+            Discipline[] disciplines = mapper.readValue(br, Discipline[].class);
+            for (Discipline discipline : disciplines) {
+                ScheduleConfig.allDisciplines.put(discipline.getId(), discipline);
             }
         }
         System.out.println("All entities was init in memory");

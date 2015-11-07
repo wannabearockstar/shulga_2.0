@@ -3,8 +3,10 @@ package web.service.algorithm;
 import ga.GA;
 import ga.core.impl.AlgorithmImpl;
 import ga.model.config.ScheduleConfig;
+import ga.model.schedule.Schedule;
 import mapper.ScheduleConfigLoader;
 import org.springframework.stereotype.Service;
+import web.model.Status;
 
 import java.io.IOException;
 
@@ -22,6 +24,15 @@ public class AlgorithmService {
             return GA.solve(config);
         } catch (IOException e) {
             return 0;
+        }
+    }
+
+    public Status getStatus(int id) {
+        try {
+            Schedule schedule = ScheduleConfigLoader.fromLocalSchedule(String.format("schedule_resukt_%d.json", id));
+            return new Status(100, schedule.getFitness(), true);
+        } catch (IOException e) {
+            return AlgorithmImpl.algorithmStatuses.get(id);
         }
     }
 }

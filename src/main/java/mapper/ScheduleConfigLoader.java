@@ -39,6 +39,17 @@ public class ScheduleConfigLoader {
         }
     }
 
+    public static Schedule fromLocalSchedule(String filename) throws IOException {
+        Path path = Paths.get(filename);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+        try (BufferedReader writer = Files.newBufferedReader(path)) {
+            return mapper.readValue(writer, Schedule.class);
+        }
+    }
+
     /**
      * Save ScheduleConfig to file system
      */

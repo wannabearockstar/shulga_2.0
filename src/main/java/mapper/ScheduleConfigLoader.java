@@ -42,7 +42,7 @@ public class ScheduleConfigLoader {
     /**
      * Save ScheduleConfig to file system
      */
-    public static void saveToLocal(ScheduleConfig config, String filename) throws IOException {
+    public static void saveToLocal(Object config, String filename) throws IOException {
         Path path = Paths.get(filename);
         ObjectMapper mapper = new ObjectMapper();
 

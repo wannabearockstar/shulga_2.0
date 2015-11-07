@@ -12,8 +12,10 @@ import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
 import ga.model.schedule.Schedule;
 import ga.model.schedule.time.TimeMark;
+import mapper.ScheduleConfigLoader;
 import web.model.Status;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
@@ -28,23 +30,24 @@ public class AlgorithmImpl implements Algorithm {
     public static double MUTATION_STEP = 0.08;
 
     public static int TOURNAMENT_SIZE = 10;
-
+    private final int algorithmId;
     private AlgorithmConfig algConfig;
     private ScheduleConfig scheduleConfig;
     private FitnessHandler fitnessHandler;
     private Selection selection;
     private Mutation mutation;
 
-    public AlgorithmImpl (AlgorithmConfig algConfig, ScheduleConfig scheduleConfig, FitnessHandler handler) {
+    public AlgorithmImpl(AlgorithmConfig algConfig, ScheduleConfig scheduleConfig, FitnessHandler handler, int algorithmId) {
         this.algConfig = algConfig;
         this.scheduleConfig = scheduleConfig;
         this.fitnessHandler = handler;
+        this.algorithmId = algorithmId;
         this.mutation = new ReplaceMutation(MUTATION_RATE, MUTATION_STEP, scheduleConfig);
         this.selection = new TournamentSelection(TOURNAMENT_SIZE);
     }
 
     @Override
-    public Schedule run() {
+    public void run() {
         Population population = new Population(algConfig.getPopulationSize(), true, scheduleConfig, fitnessHandler);
 
         int cataclysmCounter = 0;
@@ -61,15 +64,17 @@ public class AlgorithmImpl implements Algorithm {
             }
 
             if (cataclysmCounter >= CATACLYSM_LIMIT) {
-                System.out.println("Cataclysm...");
                 cataclysmCounter = 0;
                 population.cataclysm(CATACLYSM_PART, scheduleConfig, fitnessHandler);
             }
-
-            System.out.println("Generation: " + i + " Fitness: " + population.getFittest().getFitness());
+            algorithmStatuses.put(algorithmId, new Status(i * 1.0 / algConfig.getRoundNumber(), population.getFittest().getFitness()));
         }
-
-        return population.getWithoutCollisions();
+        try {
+            ScheduleConfigLoader.saveToLocal(population.getWithoutCollisions(), String.format("schedule_result_%d", algorithmId));
+            algorithmStatuses.remove(algorithmId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     protected Population evolve(Population population) {

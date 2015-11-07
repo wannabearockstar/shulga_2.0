@@ -24,10 +24,10 @@ public class AlgorithmImpl implements Algorithm {
     public static Map<Integer, Status> algorithmStatuses = new ConcurrentHashMap<>();
 
     public static int CATACLYSM_LIMIT = 20;
-    public static double CATACLYSM_PART = 0.5;
+    public static double CATACLYSM_PART = 0.3;
 
-    public static double MUTATION_RATE = 0.015;
-    public static double MUTATION_STEP = 0.08;
+    public static double MUTATION_RATE = 0.02;
+    public static double MUTATION_STEP = 0.01;
 
     public static int TOURNAMENT_SIZE = 10;
     private final int algorithmId;

@@ -1,12 +1,12 @@
-<div class="col-md-2 bound-model">
+<div class="col-md-3 bound-model">
     <div class="panel panel-default">
         <div class="panel-heading">
             <div class="row">
-                <div class="col-md-2">
-                    <input type="text" class="form-control group" placeholder="Ïðåäìåò"
+                <div class="col-md-6">
+                    <input type="text" class="form-control group" placeholder="ÐŸÑ€ÐµÐ´Ð¼ÐµÑ‚"
                            value="<%= discipline.alias %>"/>
                 </div>
-                <div class="col-md-10">
+                <div class="col-md-6">
                     <a class="pull-right bound-remove" href="#"><span
                             class="glyphicon glyphicon-remove"></span></a>
                 </div>
@@ -15,7 +15,7 @@
         <div class="panel-body">
             <% _.each(auditories, function(auditory) { %>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Àóäèòîðèÿ" value="<%- auditory.alias %>" />
+                    <input type="text" class="form-control" placeholder="ÐÑƒÐ´Ð¸Ñ‚Ð¾Ñ€Ð¸Ñ" value="<%- auditory.alias %>" />
                 </div>
             <% }); %>
         </div>

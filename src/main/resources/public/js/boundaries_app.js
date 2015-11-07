@@ -70,8 +70,8 @@ var app = null;
                 });
 
                 app.newAuditoryTimesBound(auditory_times);
-                //app.newDisciplineTimesBound(discipline_times);
-                //app.newDisciplineAuditoriesBound(discipline_auditories);
+                app.newDisciplineTimesBound(discipline_times);
+                app.newDisciplineAuditoriesBound(discipline_auditories);
             });
     });
 

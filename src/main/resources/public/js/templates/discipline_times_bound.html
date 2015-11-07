@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-md-6">
-                    <input type="text" class="form-control group" placeholder="Ïðåäìåò"
+                    <input type="text" class="form-control group" placeholder="ÐŸÑ€ÐµÐ´Ð¼ÐµÑ‚"
                            value="<%= discipline.alias %>"/>
                 </div>
                 <div class="col-md-6">
@@ -37,11 +37,11 @@
                         <select class="form-control time">
                             <% _.each(utils.entity.list('time'), function(item) { %>
 
-                            <% if (item.id === time.id) { %>
-                            <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
-                            <% } else { %>
-                            <option value="<%= item.id %>"><%= item.alias %></option>
-                            <% } %>
+                                <% if (item.id === time.id) { %>
+                                    <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+                                <% } else { %>
+                                    <option value="<%= item.id %>"><%= item.alias %></option>
+                                <% } %>
 
                             <% }); %>
                         </select>

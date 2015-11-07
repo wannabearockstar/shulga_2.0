@@ -69,6 +69,9 @@ public class AlgorithmImpl implements Algorithm {
             }
             System.out.println(population.getFittest().getFitness());
             algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber()));
+            if (population.getFittest().getFitness() == 0) {
+                break;
+            }
         }
         try {
             ScheduleConfigLoader.saveToLocal(population.getWithoutCollisions(), String.format("schedule_result_%d.json", algorithmId));

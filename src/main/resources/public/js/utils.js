@@ -46,23 +46,21 @@ var utils = {};
 
     utils.entity = (function () {
         var cache = {};
-        var entities_dir = '/js/entities/';
 
-        function init(entity_name) {
+        function init(entity_name, entities_dir, entity_ext) {
             var deferred = $.Deferred();
+
+            entity_ext = entity_ext || '.json';
+            entities_dir = entities_dir || '/js/entities/';
 
             if (cache[entity_name]) {
                 return deferred.resolve().promise();
             }
 
-            $.getJSON(getUrl(entity_name), function(entities){
+            $.getJSON(entities_dir + entity_name + entity_ext, function(entities){
                 cache[entity_name] = entities;
                 deferred.resolve();
             });
-
-            function getUrl(entity_name) {
-                return entities_dir + entity_name + '.json';
-            }
 
             return deferred.promise();
         }
@@ -71,9 +69,17 @@ var utils = {};
             return cache[entity_name];
         }
 
+        function bind(entity_name, param_name, val) {
+            var entities = utils.entity.list(entity_name);
+            return _.find(entities, function (item) {
+                return item[param_name] = val;
+            });
+        }
+
         return {
             init: init,
-            list: list
+            list: list,
+            bind: bind
         };
     })();
 

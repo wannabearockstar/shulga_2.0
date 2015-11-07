@@ -11,13 +11,13 @@
         <div class="panel-body">
             <div class="row">
 
-                <% _.each(info.models, function (model) { %>
+                <% _.each(info.curriculum, function (model) { %>
 
-                <%= utils.template.render("model", model) %>
+                    <%= utils.template.render("model", model) %>
 
                 <% }); %>
 
-                <div class="col-md-2 new-model-col">
+                <div class="col-md-2">
                     <button type="button" class="btn btn-primary new-model">Добавить</button>
                 </div>
             </div>

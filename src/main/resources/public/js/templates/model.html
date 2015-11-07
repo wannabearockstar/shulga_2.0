@@ -8,8 +8,15 @@
                 <input type="text" class="form-control discipline" placeholder="Предмет" value="<%- discipline.alias %>" />
             </div>
             <select class="form-control lesson-type">
-                <option value="1">Лекция</option>
-                <option value="2">Практика</option>
+                <% _.each(utils.entity.list('lesson_type'), function(item) { %>
+
+                    <% if (item.id === lesson_type.id) { %>
+                        <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+                    <% } else { %>
+                        <option value="<%= item.id %>"  ><%= item.alias %></option>
+                    <% } %>
+
+                <% }); %>
             </select>
         </div>
     </div>

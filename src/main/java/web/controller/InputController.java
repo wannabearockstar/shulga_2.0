@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import web.model.Result;
+import web.service.algorithm.AlgorithmService;
 import web.service.data.DataService;
 
 import java.io.IOException;
@@ -21,6 +22,8 @@ import java.io.IOException;
 public class InputController {
     @Autowired
     private DataService dataService;
+    @Autowired
+    private AlgorithmService algorithmService;
 
     @RequestMapping(value = "/steps/models", method = RequestMethod.GET)
     public String inputStepModelsPage(Model model) {
@@ -46,4 +49,10 @@ public class InputController {
     public ResponseEntity<Result> setBoundaries(@PathVariable("id") int id, @RequestBody BoundCollection boundCollection) throws IOException {
         return new ResponseEntity<>(Result.success(dataService.setBoundaries(id, boundCollection)), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/steps/models/{id}/run", method = RequestMethod.POST)
+    public ResponseEntity<Result> runAlgorithm(@PathVariable("id") int id) {
+        return new ResponseEntity<>(Result.success(algorithmService.runAlgorithm(id)), HttpStatus.OK);
+    }
+
 }

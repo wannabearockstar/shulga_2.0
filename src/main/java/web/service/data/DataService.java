@@ -5,6 +5,7 @@ import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
 import ga.model.schedule.LessonType;
+import ga.model.schedule.Schedule;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.WeekDay;
 import mapper.ScheduleConfigLoader;
@@ -75,6 +76,14 @@ public class DataService {
             config.setBounds(boundCollection);
             ScheduleConfigLoader.saveToLocal(config, String.format("schedule_config_%d.json", id));
             return config;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public Schedule getResult(int id) {
+        try {
+            return ScheduleConfigLoader.fromLocalSchedule(String.format("schedule_result_%d.json", id));
         } catch (IOException e) {
             return null;
         }

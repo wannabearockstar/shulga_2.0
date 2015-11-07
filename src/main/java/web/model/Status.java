@@ -6,13 +6,20 @@ package web.model;
 public class Status {
     private double currentFitness;
     private double progress;
+    private boolean finished = false;
 
     public Status() {
     }
 
-    public Status(double progress, double currentFitness) {
+    public Status(double progress, double currentFitness, boolean finished) {
         this.progress = progress;
         this.currentFitness = currentFitness;
+        this.finished = finished;
+    }
+
+    public Status(double currentFitness, double progress) {
+        this.currentFitness = currentFitness;
+        this.progress = progress;
     }
 
     public double getCurrentFitness() {
@@ -30,6 +37,15 @@ public class Status {
 
     public Status setProgress(double progress) {
         this.progress = progress;
+        return this;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public Status setFinished(boolean finished) {
+        this.finished = finished;
         return this;
     }
 }

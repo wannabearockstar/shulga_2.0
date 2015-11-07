@@ -67,10 +67,11 @@ public class AlgorithmImpl implements Algorithm {
                 cataclysmCounter = 0;
                 population.cataclysm(CATACLYSM_PART, scheduleConfig, fitnessHandler);
             }
+            System.out.println(population.getFittest().getFitness());
             algorithmStatuses.put(algorithmId, new Status(i * 1.0 / algConfig.getRoundNumber(), population.getFittest().getFitness()));
         }
         try {
-            ScheduleConfigLoader.saveToLocal(population.getWithoutCollisions(), String.format("schedule_result_%d", algorithmId));
+            ScheduleConfigLoader.saveToLocal(population.getWithoutCollisions(), String.format("schedule_result_%d.json", algorithmId));
             algorithmStatuses.remove(algorithmId);
         } catch (IOException e) {
             e.printStackTrace();

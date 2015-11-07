@@ -8,13 +8,13 @@ import java.util.Map;
 public class BoundCollection {
 
     @JsonProperty("auditoria_times")
-    private Map<Integer, TimeBound> auditoriaTimes;
+    private Map<Integer, TimeBound> auditoriaTimes = new HashMap<>();
 
     @JsonProperty("discipline_times")
-    private Map<Integer, TimeBound> disciplineTimes;
+    private Map<Integer, TimeBound> disciplineTimes = new HashMap<>();
 
     @JsonProperty("discipline_auditories")
-    private Map<Integer, ValueBound> disciplineAuditories;
+    private Map<Integer, ValueBound> disciplineAuditories = new HashMap<>();
 
     public static BoundCollection random() {
         BoundCollection collection = new BoundCollection();

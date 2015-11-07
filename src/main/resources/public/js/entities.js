@@ -18,7 +18,7 @@ Group.fromId = function (id) {
     if (typeof (id) !== 'number')
         return new Group();
 
-    var tmp = bind("group", 'id', id);
+    var tmp = utils.entity.bind("group", 'id', id);
     if (typeof (tmp) !== 'object')
         return new Group();
 
@@ -36,7 +36,7 @@ Professor.fromId = function (id) {
     if (typeof (id) !== 'number')
         return new Professor();
 
-    var tmp = bind("professor", "id", id);
+    var tmp = utils.entity.bind("professor", "id", id);
     if (typeof (tmp) !== 'object')
         return new Professor();
 
@@ -57,7 +57,7 @@ Discipline.fromId = function (id) {
     if (typeof (id) !== 'number')
         return new Discipline();
 
-    var tmp = bind("discipline", "id", id);
+    var tmp = utils.entity.bind("discipline", "id", id);
     if (typeof (tmp) !== 'object')
         return new Discipline();
 
@@ -73,7 +73,7 @@ LessonType.fromId = function (id) {
     if (typeof (id) !== 'number')
         return new LessonType();
 
-    var tmp = bind("lesson_type", "id", id);
+    var tmp = utils.entity.bind("lesson_type", "id", id);
     if (typeof (tmp) !== 'object')
         return new LessonType();
 
@@ -93,7 +93,7 @@ Auditory.fromId = function (id) {
     if (typeof (id) !== 'number')
         return new Auditory();
 
-    var tmp = bind("auditory", "id", id);
+    var tmp = utils.entity.bind("auditory", "id", id);
     if (typeof (tmp) !== 'object')
         return new Auditory();
 
@@ -106,13 +106,6 @@ Auditory.fromId = function (id) {
         tmp.building_id
     );
 };
-
-function bind(entity_name, param_name, id) {
-    var entities = utils.entity.list(entity_name);
-    return _.find(entities, function (item) {
-        return item[param_name] = id;
-    });
-}
 
 function Status(finished, progress, fitness, maxFitness) {
     this.finished = finished || false;

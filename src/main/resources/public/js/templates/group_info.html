@@ -1,0 +1,26 @@
+<div class="panel panel-default group-info">
+    <div class="panel-heading">
+        <div class="row">
+            <div class="col-md-2">
+                <input type="text" class="form-control group" placeholder="Группа" value="<%= group.alias %>" />
+            </div>
+            <div class="col-md-10">
+                <a class="pull-right group-info-remove" href="#"><span class="glyphicon glyphicon-remove"></span></a>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+
+            <% _.each(curriculum, function (model) { %>
+
+                <%= utils.template.render("group_model", model) %>
+
+            <% }); %>
+
+            <div class="col-md-2 new-model-container">
+                <button type="button" class="btn btn-primary new-model">Добавить</button>
+            </div>
+        </div>
+    </div>
+</div>

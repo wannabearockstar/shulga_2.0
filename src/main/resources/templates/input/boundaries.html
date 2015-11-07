@@ -41,9 +41,26 @@
     </nav>
 
     <div class="page container">
-        <div id="content" class="col-md-12"></div>
         <div class="col-md-12">
-            <button id="new-group-info" type="button" class="btn btn-primary">Добавить</button>
+            <div class="panel panel-default bound-info">
+                <div class="panel-heading">Когда свободны аудитории</div>
+                <div id="auditory_times" class="panel-body"></div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default bound-info">
+                <div class="panel-heading">Когда можно проводить пары</div>
+                <div id="discipline_times" class="panel-body"></div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="panel panel-default bound-info">
+                <div class="panel-heading">В каких аудиториях можно проводить пары</div>
+                <div id="discipline_auditories" class="panel-body"></div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <button id="prev-step" type="button" class="btn btn-primary">&lt; Назад</button>
             <button id="next-step" type="button" class="btn btn-primary pull-right">Далее &gt;</button>
         </div>
     </div>
@@ -61,7 +78,7 @@
 
     <script src="/js/utils.js"></script>
     <script src="/js/entities.js"></script>
-    <script src="/js/models_app.js"></script>
+    <script src="/js/boundaries_app.js"></script>
 
 </body>
 </html>

@@ -66,8 +66,8 @@ var utils = {};
                 return deferred.resolve().promise();
             }
 
-            $.getJSON(controller_url, function(entities){
-                cache[entity_name] = entities;
+            $.getJSON(controller_url, function(resp){
+                cache[entity_name] = resp.data;
                 deferred.resolve();
             });
 

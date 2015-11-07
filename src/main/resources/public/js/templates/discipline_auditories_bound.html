@@ -1,0 +1,23 @@
+<div class="col-md-2 bound-model">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" class="form-control group" placeholder="Предмет"
+                           value="<%= discipline.alias %>"/>
+                </div>
+                <div class="col-md-10">
+                    <a class="pull-right bound-remove" href="#"><span
+                            class="glyphicon glyphicon-remove"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <% _.each(auditories, function(auditory) { %>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="Аудитория" value="<%- auditory.alias %>" />
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</div>

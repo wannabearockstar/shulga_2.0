@@ -113,3 +113,44 @@ function Status(finished, progress, fitness, maxFitness) {
     this.fitness = fitness || 0.0;
     this.maxFitness = maxFitness || false;
 }
+
+function WeekDay(id, alias) {
+    this.id = id || 1;
+    this.alias = alias || "";
+}
+
+WeekDay.fromId = function (id) {
+    switch (id) {
+        case 1: return new WeekDay(id, 'Понедельник');
+        case 2: return new WeekDay(id, 'Вторник');
+        case 3: return new WeekDay(id, 'Среда');
+        case 4: return new WeekDay(id, 'Четверг');
+        case 5: return new WeekDay(id, 'Пятница');
+        case 6: return new WeekDay(id, 'Суббота');
+        case 7: return new WeekDay(id, 'Воскресенье');
+
+        default: return new WeekDay(0, 'Неопределено');
+    }
+};
+
+function DayTime(id, alias) {
+    this.id = id || 0;
+    this.alias = alias || "";
+}
+
+function AuditoryTimesBound(auditory, days, times) {
+    this.auditory = auditory || new Auditory();
+    this.days = days || [ new WeekDay() ];
+    this.times = times || [ new DayTime() ];
+}
+
+function DisciplineTimesBound(discipline, days, times) {
+    this.discipline = discipline || new Discipline();
+    this.days = days || [ new WeekDay() ];
+    this.times = times || [ new DayTime() ];
+}
+
+function DisciplineAuditoriesBound(discipline, auditories) {
+    this.discipline = discipline || new Discipline();
+    this.auditories = auditories || [ new Auditory() ];
+}

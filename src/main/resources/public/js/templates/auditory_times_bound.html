@@ -1,0 +1,54 @@
+<div class="col-md-4 bound-model">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="text" class="form-control group" placeholder="Аудитория"
+                           value="<%= auditory.alias %>"/>
+                </div>
+                <div class="col-md-6">
+                    <a class="pull-right bound-remove" href="#"><span
+                            class="glyphicon glyphicon-remove"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <% _.each(days, function(day) { %>
+                        <div class="form-group">
+                            <select class="form-control day">
+                                <% _.each(utils.entity.list('week_day'), function(item) { %>
+
+                                    <% if (item.id === day.id) { %>
+                                        <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+                                    <% } else { %>
+                                        <option value="<%= item.id %>"><%= item.alias %></option>
+                                    <% } %>
+
+                                <% }); %>
+                            </select>
+                        </div>
+                    <% }); %>
+                </div>
+                <div class="col-md-6">
+                    <% _.each(times, function(time) { %>
+                        <div class="form-group">
+                            <select class="form-control time">
+                                <% _.each(utils.entity.list('time'), function(item) { %>
+
+                                    <% if (item.id === time.id) { %>
+                                        <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+                                    <% } else { %>
+                                        <option value="<%= item.id %>"><%= item.alias %></option>
+                                    <% } %>
+
+                                <% }); %>
+                            </select>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

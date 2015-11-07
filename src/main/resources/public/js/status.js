@@ -25,7 +25,7 @@ var app = null;
                 app = new App(options);
                 setInterval(function () {
                     app.status($("#progress"));
-                }, 1000);
+                }, 700);
             });
     });
 
@@ -33,14 +33,21 @@ var app = null;
 
 
         this.progress = function (status, $progressBar) {
-            if (status.fitness > 255) {
-                $progressBar.css({"background-color": "rgba(255, " + (255 - status.fitness) + ", 0, 1)"});
+            var diff;
+            if (!status.maxFitness && !status.finished) {
+                $progressBar.css({"background-color": "rgba(255, 0, 0, 1)"});
             } else {
-                $progressBar.css({"background-color": "rgba("+status.fitness+", 255, 0, 1)"});
+                diff = status.fitness / status.maxFitness;
+                if (diff > 0.5) {
+                    $progressBar.css({"background-color": "rgba(255, " + (parseInt(diff * 510 - 255)) + ", 0, 1)"});
+                } else {
+                    $progressBar.css({"background-color": "rgba("+(parseInt(diff * 510))+", 255, 0, 1)"});
+                }
             }
 
+
             $progressBar.css({width: status.progress * 100 + "%"});
-            $progressBar.text(status.progress * 100 + "%");
+            $progressBar.text((status.progress * 100 + "").substring(0, 2) + "%");
         };
 
         this.status = function ($progressBar) {
@@ -51,9 +58,9 @@ var app = null;
                 async: false
             }).done(function (e) {
                 if (e.data != null) {
-                    self.progress(new Status(e.data.finished, e.data.progress, e.data.currentFitness), $progressBar);
+                    self.progress(new Status(e.data.finished, e.data.progress, e.data.currentFitness, e.data.maxFitness), $progressBar);
                     if (e.data.finished) {
-                        console.log("finished");
+                        window.location.replace("/output/" + options.schedule_id);
                     }
                 }
             });

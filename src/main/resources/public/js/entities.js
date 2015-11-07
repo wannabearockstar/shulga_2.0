@@ -114,8 +114,9 @@ function bind(entity_name, param_name, id) {
     });
 }
 
-function Status(finished, progress, fitness) {
+function Status(finished, progress, fitness, maxFitness) {
     this.finished = finished || false;
     this.progress = progress || 0.0;
     this.fitness = fitness || 0.0;
+    this.maxFitness = maxFitness || false;
 }

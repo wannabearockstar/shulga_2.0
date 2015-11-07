@@ -10,7 +10,7 @@ import ga.model.config.ScheduleConfig;
 public class GA {
 
     public static int solve(ScheduleConfig scheduleConfig, int id) {
-        AlgorithmConfig algConfig = new AlgorithmConfig(50000, 60);
+        AlgorithmConfig algConfig = new AlgorithmConfig(3000, 35);
         FitnessHandler handler = new FitnessHandlerImpl();
         Algorithm algorithm = new AlgorithmImpl(algConfig, scheduleConfig, handler, id);
         new Thread(algorithm).start();

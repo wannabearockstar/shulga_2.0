@@ -52,6 +52,7 @@ public class AlgorithmImpl implements Algorithm {
 
         int cataclysmCounter = 0;
         double lastFitness = population.getFittest().getFitness();
+        Double maxFitness = null;
 
         for (int i = 0; i < algConfig.getRoundNumber(); i++) {
             population = evolve(population);
@@ -69,7 +70,15 @@ public class AlgorithmImpl implements Algorithm {
                 System.out.println("Cataclysm...");
             }
             System.out.println(population.getFittest().getFitness());
-            algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber()));
+            if (lastFitness / population.getFittest().getFitness() > 3.5) {
+                algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber()));
+            } else {
+                if (maxFitness == null) {
+                    maxFitness = lastFitness;
+                }
+                algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber(), maxFitness));
+            }
+
             if (population.getFittest().getFitness() == 0) {
                 break;
             }

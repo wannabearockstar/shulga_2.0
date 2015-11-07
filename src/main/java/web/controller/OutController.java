@@ -17,12 +17,13 @@ public class OutController {
     @Autowired
     DataService dataService;
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String outPage(Model model) {
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public String outPage(@PathVariable("id") int id, Model model) {
+        model.addAttribute("id", id);
         return "output/result";
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
     public ResponseEntity<Result> getResult(@PathVariable("id") int id) {
         return new ResponseEntity<>(Result.success(dataService.getResult(id)), HttpStatus.OK);
     }

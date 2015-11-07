@@ -7,8 +7,16 @@ public class Status {
     private double currentFitness;
     private double progress;
     private boolean finished = false;
+    private Double maxFitness = null;
 
     public Status() {
+    }
+
+    public Status(double progress, double currentFitness, boolean finished, Double maxFitness) {
+        this.progress = progress;
+        this.currentFitness = currentFitness;
+        this.finished = finished;
+        this.maxFitness = maxFitness;
     }
 
     public Status(double progress, double currentFitness, boolean finished) {
@@ -20,6 +28,12 @@ public class Status {
     public Status(double currentFitness, double progress) {
         this.currentFitness = currentFitness;
         this.progress = progress;
+    }
+
+    public Status(double currentFitness, double progress, Double maxFitness) {
+        this.currentFitness = currentFitness;
+        this.progress = progress;
+        this.maxFitness = maxFitness;
     }
 
     public double getCurrentFitness() {
@@ -46,6 +60,15 @@ public class Status {
 
     public Status setFinished(boolean finished) {
         this.finished = finished;
+        return this;
+    }
+
+    public Double getMaxFitness() {
+        return maxFitness;
+    }
+
+    public Status setMaxFitness(Double maxFitness) {
+        this.maxFitness = maxFitness;
         return this;
     }
 }

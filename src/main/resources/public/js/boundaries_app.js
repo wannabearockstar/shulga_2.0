@@ -8,8 +8,17 @@ var app = null;
         var parts = window.location.pathname.split('/');
         var id = parts[2];
 
+        var auditory_times = $('#auditory_times');
+        var discipline_times = $('#discipline_times');
+        var discipline_auditories = $('#discipline_auditories');
+
         var options = {
-            session_id: id
+            session_id: id,
+            controls: {
+                auditory_times: auditory_times,
+                discipline_times: discipline_times,
+                discipline_auditories: discipline_auditories
+            }
         };
 
         $.when(
@@ -37,11 +46,6 @@ var app = null;
             utils.entity.initFromExisting("week_day", week_days);
 
         }).then(function () {
-
-                var auditory_times = $('#auditory_times');
-                var discipline_times = $('#discipline_times');
-                var discipline_auditories = $('#discipline_auditories');
-
                 app = new App(options);
 
                 $('#prev-step').on('click', function () {
@@ -78,6 +82,7 @@ var app = null;
     function App(options) {
         var self = this;
 
+        self.controls = options.controls;
         self.session_id = options.session_id;
 
         self.collect = function () {
@@ -87,42 +92,73 @@ var app = null;
                 'discipline_auditories': {}
             };
 
-            //$('.group-info').each(function () {
-            //    var $this = $(this);
-            //    var group_alias = $this.find('.group').val();
-            //    var group = utils.entity.bind('group', 'alias', group_alias);
-            //
-            //    // todo: add validation
-            //
-            //    var base_unit = {
-            //        'group_id': group.id,
-            //        'discipline_id': 0,
-            //        'professor_id': 0,
-            //        'lesson_type_id': 0
-            //    };
-            //
-            //    $this.find('.group-model').each(function () {
-            //        var $this = $(this);
-            //
-            //        // todo: add binding by fio
-            //        var professor_last_name = $this.find('.professor').val();
-            //        var professor = utils.entity.bind('professor', 'last_name', professor_last_name);
-            //
-            //        var discipline_alias = $this.find('.discipline').val();
-            //        var discipline = utils.entity.bind('discipline', 'alias', discipline_alias);
-            //
-            //        var lesson_type_id = $this.find('.lesson-type').val();
-            //        var lesson_type = utils.entity.bind('lesson_type', 'id', lesson_type_id);
-            //
-            //        var unit = $.extend({}, base_unit, {
-            //            professor_id: professor.id,
-            //            discipline_id: discipline.id,
-            //            lesson_type_id: lesson_type.id
-            //        });
-            //
-            //        res.push(unit);
-            //    });
-            //});
+            // collect auditory times boundaries
+            self.controls.auditory_times.find('.bound-model').each(function () {
+                var $this = $(this);
+
+                var auditory_alias = $this.find('.auditory').val();
+                var auditory = utils.entity.bind('auditory', 'alias', auditory_alias);
+
+                var week_days = _.map($this.find('.day'), function (item) {
+                    var week_day_id = $(item).val();
+                    var week_day = utils.entity.bind('week_day', 'id', week_day_id);
+                    return week_day.id;
+                });
+
+                var times = _.map($this.find('.time'), function (item) {
+                    var time_id = $(item).val();
+                    var time = utils.entity.bind('time', 'id', time_id);
+                    return time.id;
+                });
+
+                res['auditory_times'][auditory.id] = {
+                    'days': week_days,
+                    'times': times
+                };
+            });
+
+            // collect discipline times boundaries
+            self.controls.discipline_times.find('.bound-model').each(function () {
+                var $this = $(this);
+
+                var discipline_alias = $this.find('.discipline').val();
+                var discipline = utils.entity.bind('discipline', 'alias', discipline_alias);
+
+                var week_days = _.map($this.find('.day'), function (item) {
+                    var week_day_id = $(item).val();
+                    var week_day = utils.entity.bind('week_day', 'id', week_day_id);
+                    return week_day.id;
+                });
+
+                var times = _.map($this.find('.time'), function (item) {
+                    var time_id = $(item).val();
+                    var time = utils.entity.bind('time', 'id', time_id);
+                    return time.id;
+                });
+
+                res['discipline_times'][discipline.id] = {
+                    'days': week_days,
+                    'times': times
+                };
+            });
+
+            // collect discipline auditories boundaries
+            self.controls.discipline_auditories.find('.bound-model').each(function () {
+                var $this = $(this);
+
+                var discipline_alias = $this.find('.discipline').val();
+                var discipline = utils.entity.bind('discipline', 'alias', discipline_alias);
+
+                var auditories =_.map($this.find('.auditory'), function (item) {
+                    var auditory_alias = $(item).val();
+                    var auditory = utils.entity.bind('auditory', 'alias', auditory_alias);
+                    return auditory.id;
+                });
+
+                res['discipline_times'][discipline.id] = {
+                    'values': auditories
+                };
+            });
 
             return res;
         };
@@ -146,7 +182,7 @@ var app = null;
         };
 
         self.prevStep = function () {
-            window.location = '/input/' + self.session_id + '/steps/models';
+            window.location = '/input/' + self.session_id + '/models';
         };
 
         self.nextStep = function () {

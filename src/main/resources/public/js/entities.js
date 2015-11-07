@@ -14,7 +14,7 @@ GroupInfo.fromSchedulerConfig = function (config) {
 
     return _.map(group, function (units, group_id) {
 
-        var group = Group.fromId(parseInt(group_id));
+        var group = Group.fromId(group_id);
 
         var curriculum = _.map(units, function (unit) {
             return new GroupCurriculum(
@@ -40,10 +40,14 @@ function Group(id, alias) {
 }
 
 Group.fromId = function (id) {
-    if (typeof (id) !== 'number')
+    var type = typeof (id);
+
+    if (type !== 'number' && type !== 'string')
         return new Group();
 
+    id = parseInt(id);
     var tmp = utils.entity.bind("group", 'id', id);
+
     if (typeof (tmp) !== 'object')
         return new Group();
 
@@ -58,10 +62,14 @@ function Professor(id, first_name, last_name, middle_name) {
 }
 
 Professor.fromId = function (id) {
-    if (typeof (id) !== 'number')
-        return new Professor();
+    var type = typeof (id);
 
+    if (type !== 'number' && type !== 'string')
+        return new Group();
+
+    id = parseInt(id);
     var tmp = utils.entity.bind("professor", "id", id);
+
     if (typeof (tmp) !== 'object')
         return new Professor();
 
@@ -79,10 +87,15 @@ function Discipline(id, alias) {
 }
 
 Discipline.fromId = function (id) {
-    if (typeof (id) !== 'number')
-        return new Discipline();
+    var type = typeof (id);
+
+    if (type !== 'number' && type !== 'string')
+        return new Group();
+
+    id = parseInt(id);
 
     var tmp = utils.entity.bind("discipline", "id", id);
+
     if (typeof (tmp) !== 'object')
         return new Discipline();
 
@@ -95,10 +108,14 @@ function LessonType(id, alias) {
 }
 
 LessonType.fromId = function (id) {
-    if (typeof (id) !== 'number')
-        return new LessonType();
+    var type = typeof (id);
 
+    if (type !== 'number' && type !== 'string')
+        return new Group();
+
+    id = parseInt(id);
     var tmp = utils.entity.bind("lesson_type", "id", id);
+
     if (typeof (tmp) !== 'object')
         return new LessonType();
 
@@ -115,10 +132,15 @@ function Auditory(id, alias, lat, lon, level, building_id) {
 }
 
 Auditory.fromId = function (id) {
-    if (typeof (id) !== 'number')
-        return new Auditory();
+    var type = typeof (id);
+
+    if (type !== 'number' && type !== 'string')
+        return new Group();
+
+    id = parseInt(id);
 
     var tmp = utils.entity.bind("auditory", "id", id);
+
     if (typeof (tmp) !== 'object')
         return new Auditory();
 

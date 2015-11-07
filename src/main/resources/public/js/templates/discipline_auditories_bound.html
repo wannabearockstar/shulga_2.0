@@ -3,7 +3,7 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-md-6">
-                    <input type="text" class="form-control group" placeholder="Предмет"
+                    <input type="text" class="form-control discipline" placeholder="Предмет"
                            value="<%= discipline.alias %>"/>
                 </div>
                 <div class="col-md-6">
@@ -15,7 +15,7 @@
         <div class="panel-body">
             <% _.each(auditories, function(auditory) { %>
                 <div class="form-group">
-                    <input type="text" class="form-control" placeholder="Аудитория" value="<%- auditory.alias %>" />
+                    <input type="text" class="form-control auditory" placeholder="Аудитория" value="<%- auditory.alias %>" />
                 </div>
             <% }); %>
         </div>

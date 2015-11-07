@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import web.model.Result;
 import web.service.data.DataService;
 
+import java.io.IOException;
+
 @Controller
 @RequestMapping(value = "/output")
 public class OutController {
@@ -18,8 +20,9 @@ public class OutController {
     DataService dataService;
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String outPage(@PathVariable("id") int id, Model model) {
-        model.addAttribute("id", id);
+    public String outPage(@PathVariable("id") int id, Model model) throws IOException {
+        model.addAttribute("scheduleId", id);
+        model.addAttribute("schedule_csv", dataService.paintSchedule(id));
         return "output/result";
     }
 

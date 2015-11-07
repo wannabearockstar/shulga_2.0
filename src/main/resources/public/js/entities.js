@@ -154,11 +154,12 @@ Auditory.fromId = function (id) {
     );
 };
 
-function Status(finished, progress, fitness, maxFitness) {
+function Status(finished, progress, fitness, maxFitness, remaningTime) {
     this.finished = finished || false;
     this.progress = progress || 0.0;
     this.fitness = fitness || 0.0;
     this.maxFitness = maxFitness || false;
+    this.remaningTime = remaningTime || 0;
 }
 
 function WeekDay(id, alias) {

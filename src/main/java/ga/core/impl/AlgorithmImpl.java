@@ -53,8 +53,15 @@ public class AlgorithmImpl implements Algorithm {
         int cataclysmCounter = 0;
         double lastFitness = population.getFittest().getFitness();
         Double maxFitness = null;
+        double roundTime = 0;
+        long startTime = 0;
+        Status status;
+        double remaningTime = 0;
+        long currentTime;
 
         for (int i = 0; i < algConfig.getRoundNumber(); i++) {
+
+            startTime = System.currentTimeMillis();
             population = evolve(population);
 
             if (population.getFittest().getFitness() == lastFitness) {
@@ -69,14 +76,19 @@ public class AlgorithmImpl implements Algorithm {
                 population.cataclysm(CATACLYSM_PART, scheduleConfig, fitnessHandler);
                 System.out.println("Cataclysm...");
             }
+            currentTime = System.currentTimeMillis();
+            roundTime = ((currentTime - startTime) * 1.0 / (algConfig.getRoundNumber() * 1000));
             System.out.println(population.getFittest().getFitness());
+            if (i == 0 || (i >= 1000 && i % 1000 == 0)) {
+                remaningTime = (algConfig.getRoundNumber() - i) * roundTime * 10000;
+            }
             if (lastFitness / population.getFittest().getFitness() > 3.5) {
-                algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber()));
+                algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), null, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
             } else {
                 if (maxFitness == null) {
                     maxFitness = lastFitness;
                 }
-                algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber(), maxFitness));
+                algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), maxFitness, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
             }
 
             if (population.getFittest().getFitness() == 0) {

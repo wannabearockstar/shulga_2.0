@@ -33,7 +33,7 @@ var app = null;
                 if (i == 0) {
                     classz = "bold";
                 }
-                if (i >= 8 && (i == 8 || i % 8 == 0)) {
+                if (i >= 6 && (i == 6 || i % 6 == 0)) {
                     classz = "info boundary";
                 }
                 output.push("<tr class='" + classz + "'><td>"

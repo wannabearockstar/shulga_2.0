@@ -1,3 +1,7 @@
+.hidden {
+    display: none;
+}
+
 .page {
     padding-bottom: 15px;
 }

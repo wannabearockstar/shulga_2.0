@@ -3,6 +3,31 @@ function GroupInfo(group, curriculum) {
     this.curriculum = curriculum || [ new GroupCurriculum() ];
 }
 
+GroupInfo.fromSchedulerConfig = function (config) {
+    if (typeof (config) !== 'object')
+        return [ new GroupInfo() ];
+
+    if (typeof (config['curriculum']) === 'undefined')
+        return [ new GroupInfo() ];
+
+    var group = _.groupBy(config['curriculum'], 'group_id');
+
+    return _.map(group, function (units, group_id) {
+
+        var group = Group.fromId(parseInt(group_id));
+
+        var curriculum = _.map(units, function (unit) {
+            return new GroupCurriculum(
+                Professor.fromId(unit.professor_id),
+                Discipline.fromId(unit.discipline_id),
+                LessonType.fromId(unit.lesson_type_id)
+            )
+        });
+
+        return new GroupInfo(group, curriculum);
+    });
+};
+
 function GroupCurriculum(professor, discipline, lesson_type) {
     this.professor = professor || new Professor();
     this.discipline = discipline || new Discipline();

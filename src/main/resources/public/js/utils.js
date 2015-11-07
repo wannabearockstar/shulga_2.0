@@ -85,7 +85,7 @@ var utils = {};
         self.bind = function (entity_name, param_name, val) {
             var entities = utils.entity.list(entity_name);
             return _.find(entities, function (item) {
-                return item[param_name] = val;
+                return item[param_name] === val;
             });
         };
     })();

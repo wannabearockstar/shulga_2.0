@@ -6,8 +6,10 @@ var app = null;
 
     $(function () {
         var content = $('#content');
+        var config = $('#config');
 
         var options = {
+            config: JSON.parse(config.text() || '{}'),
             controls: {
                 content: content
             }
@@ -83,7 +85,7 @@ var app = null;
                     var discipline = utils.entity.bind('discipline', 'alias', discipline_alias);
 
                     var lesson_type_id = $this.find('.lesson-type').val();
-                    var lesson_type = utils.entity.bind('lesson_type', 'id', lesson_type_id);
+                    var lesson_type = utils.entity.bind('lesson_type', 'id', parseInt(lesson_type_id));
 
                     var unit = $.extend({}, base_unit, {
                         professor_id: professor.id,
@@ -131,7 +133,16 @@ var app = null;
             container.remove();
         };
 
-        self.newGroupInfo();
+        self.render = function (config) {
+            var data = GroupInfo.fromSchedulerConfig(config);
+
+            _.each(data, function (info) {
+                var view = utils.template.render("group_info", info);
+                controls.content.append(view);
+            });
+        };
+
+        self.render(options.config);
     }
 
 })(jQuery);

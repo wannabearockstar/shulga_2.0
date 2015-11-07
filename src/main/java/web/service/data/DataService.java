@@ -1,5 +1,6 @@
 package web.service.data;
 
+import ga.model.bound.BoundCollection;
 import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
@@ -63,6 +64,17 @@ public class DataService {
     public ScheduleConfig getScheduleConfig(int id) {
         try {
             return ScheduleConfigLoader.fromLocal(String.format("schedule_config_%d.json", id));
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    public ScheduleConfig setBoundaries(int id, BoundCollection boundCollection) {
+        try {
+            ScheduleConfig config = ScheduleConfigLoader.fromLocal(String.format("schedule_config_%d.json", id));
+            config.setBounds(boundCollection);
+            ScheduleConfigLoader.saveToLocal(config, String.format("schedule_config_%d.json", id));
+            return config;
         } catch (IOException e) {
             return null;
         }

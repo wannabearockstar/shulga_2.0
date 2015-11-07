@@ -1,5 +1,6 @@
 package web.controller;
 
+import ga.model.bound.BoundCollection;
 import ga.model.config.CurriculumUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,10 @@ public class InputController {
     @RequestMapping(value = "/steps/models/{id}", method = RequestMethod.GET)
     public ResponseEntity<Result> getConfiguration(@PathVariable("id") int id) throws IOException {
         return new ResponseEntity<>(Result.success(dataService.getScheduleConfig(id)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/steps/models/{id}/boundaries", method = RequestMethod.PUT)
+    public ResponseEntity<Result> setBoundaries(@PathVariable("id") int id, @RequestBody BoundCollection boundCollection) throws IOException {
+        return new ResponseEntity<>(Result.success(dataService.setBoundaries(id, boundCollection)), HttpStatus.OK);
     }
 }

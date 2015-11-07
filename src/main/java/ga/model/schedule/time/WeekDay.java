@@ -6,9 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum  WeekDay {
+public enum WeekDay {
 
-    UNKNOWN(0),
 
     MONDAY(1),
 
@@ -20,9 +19,7 @@ public enum  WeekDay {
 
     FRIDAY(5),
 
-    SATURDAY(6),
-
-    SUNDAY(7);
+    SATURDAY(6);
 
     public static final Map<WeekDay, String> locale;
     private static final Map<Integer, WeekDay> LOOKUP = new HashMap<>(values().length);
@@ -33,14 +30,12 @@ public enum  WeekDay {
         }
 
         locale = new HashMap<>();
-        locale.put(UNKNOWN, "Неизвестно");
         locale.put(MONDAY, "Понедельник");
         locale.put(TUESDAY, "Вторник");
         locale.put(WEDNESDAY, "Среда");
         locale.put(THURSDAY, "Четверг");
         locale.put(FRIDAY, "Пятница");
         locale.put(SATURDAY, "Суббота");
-        locale.put(SUNDAY, "Воскресенье");
     }
 
     private int day;
@@ -52,7 +47,7 @@ public enum  WeekDay {
     @JsonCreator
     public static WeekDay get(int day) {
         if (!LOOKUP.containsKey(day)) {
-            return UNKNOWN;
+            return MONDAY;
         }
 
         return LOOKUP.get(day);
@@ -64,6 +59,6 @@ public enum  WeekDay {
     }
 
     public boolean isWeekend() {
-        return this == SATURDAY || this == SUNDAY;
+        return this == SATURDAY;
     }
 }

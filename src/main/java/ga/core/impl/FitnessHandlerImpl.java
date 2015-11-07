@@ -266,7 +266,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
             // check bound "auditoria_times"
             TimeBound auditoriaTimes = config
                     .getBounds()
-                    .getAuditoriaTimes()
+                    .getAuditoryTimes()
                     .get(auditory.getId());
 
             res += auditoriaTimes == null || auditoriaTimes.validate(mark)

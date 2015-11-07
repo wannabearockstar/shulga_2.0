@@ -59,7 +59,7 @@ var utils = {};
             return deferred.promise();
         };
 
-        self.initFromController = function (entity_name, controller_url, entity_ext) {
+        self.initFromController = function (entity_name, controller_url) {
             var deferred = $.Deferred();
 
             if (cache[entity_name]) {
@@ -72,6 +72,10 @@ var utils = {};
             });
 
             return deferred.promise();
+        };
+
+        self.initFromExisting = function (entity_name, src) {
+            cache[entity_name] = src
         };
 
         self.list = function (entity_name) {

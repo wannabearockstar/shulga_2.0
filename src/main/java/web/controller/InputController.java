@@ -30,19 +30,24 @@ public class InputController {
         return "input/models";
     }
 
-    @RequestMapping(value = "/{id}/boundaries", method = RequestMethod.GET)
-    public String inputStepBoundariesPage(@PathVariable("id") int id) {
-        return "input/boundaries";
+    @RequestMapping(value = "/{id}/models", method = RequestMethod.GET)
+    public String inputStepModelsPage(@PathVariable("id") int id) throws IOException {
+        return "input/models";
     }
 
-    @RequestMapping(value = "/models", method = RequestMethod.POST)
+    @RequestMapping(value = "/config", method = RequestMethod.POST)
     public ResponseEntity<Result> saveConfiguration(@RequestBody CurriculumUnit[] curriculum) throws IOException {
         return new ResponseEntity<>(Result.success(dataService.createScheduleConfig(curriculum)), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}/models", method = RequestMethod.GET)
+    @RequestMapping(value = "/{id}/config", method = RequestMethod.GET)
     public ResponseEntity<Result> getConfiguration(@PathVariable("id") int id) throws IOException {
         return new ResponseEntity<>(Result.success(dataService.getScheduleConfig(id)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/boundaries", method = RequestMethod.GET)
+    public String inputStepBoundariesPage(@PathVariable("id") int id) {
+        return "input/boundaries";
     }
 
     @RequestMapping(value = "/{id}/boundaries", method = RequestMethod.PUT)

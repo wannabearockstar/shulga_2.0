@@ -1,0 +1,32 @@
+<div class="col-md-2 bound-model">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" class="form-control group" placeholder="<%= placeholder %>"
+                           value="<%= alias %>"/>
+                </div>
+                <div class="col-md-10">
+                    <a class="pull-right group-info-remove" href="#"><span
+                            class="glyphicon glyphicon-remove"></span></a>
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                        </button>
+                    </span>
+                    <select class="form-control time">
+                        <% _.each(utils.entity.list('time'), function(item) { %>
+                            <option value="<%= item.id %>"><% item.alias %></option>
+                        <% }); %>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

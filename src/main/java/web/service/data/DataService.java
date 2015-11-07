@@ -9,6 +9,7 @@ import ga.model.schedule.Schedule;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.WeekDay;
 import mapper.ScheduleConfigLoader;
+import mapper.serializer.ScheduleCsvSerializer;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -87,5 +88,10 @@ public class DataService {
         } catch (IOException e) {
             return null;
         }
+    }
+
+    public String paintSchedule(int id) throws IOException {
+        Schedule schedule = getResult(id);
+        return new ScheduleCsvSerializer().serialize(schedule);
     }
 }

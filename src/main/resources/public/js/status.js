@@ -13,8 +13,6 @@ var app = null;
         };
 
         $.when(
-            utils.template.init("groups"),
-            utils.template.init("model"),
             utils.entity.init("group"),
             utils.entity.init("auditory"),
             utils.entity.init("professor"),

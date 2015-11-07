@@ -1,0 +1,1 @@
+web: java -Dserver.port=$PORT -jar target/shulga_2.0-1.0.jar

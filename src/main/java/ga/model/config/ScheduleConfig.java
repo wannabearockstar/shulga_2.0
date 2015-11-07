@@ -6,9 +6,17 @@ import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.WeekDay;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScheduleConfig {
+    public static Map<Integer, Auditory> allAuditories = new HashMap<>();
+    public static Map<Integer, Group> allGroups = new HashMap<>();
+    public static Map<Integer, Professor> allProfessors = new HashMap<>();
+    public static Map<Integer, LessonType> allLessonTypes = new HashMap<>();
+    public static Map<Integer, DayTime> allDayTimes = new HashMap<>();
+    public static Map<Integer, Discipline> allDisciplines = new HashMap<>();
 
     @JsonProperty("auditories")
     private List<Auditory> auditories;

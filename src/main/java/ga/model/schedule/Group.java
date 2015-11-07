@@ -1,5 +1,6 @@
 package ga.model.schedule;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Group {
@@ -9,6 +10,10 @@ public class Group {
 
     @JsonProperty("alias")
     private String name;
+
+    @JsonIgnore
+    @JsonProperty("department")
+    private String department;
 
     public Group() {
     }

@@ -1,7 +1,9 @@
 package web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ga.model.bound.BoundCollection;
 import ga.model.config.CurriculumUnit;
+import mapper.ScheduleConfigLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,7 +63,8 @@ public class InputController {
     }
 
     @RequestMapping(value = "/demo", method = RequestMethod.GET)
-    public String inputDemoPage() {
+    public String inputDemoPage(Model model) throws IOException {
+        model.addAttribute("config", new ObjectMapper().writeValueAsString(ScheduleConfigLoader.fromLocal("config.json")));
         return "input/demo";
     }
 

@@ -5,9 +5,11 @@ var app = null;
     'use strict';
 
     $(function () {
+        var content = $('#content');
+
         var options = {
             controls: {
-                content: $('#content')
+                content: content
             }
         };
 
@@ -31,9 +33,19 @@ var app = null;
                 app.nextStep();
             });
 
-            $('#content').on('click', '.new-model', function () {
-                var container = $(this).parent();
+            content.on('click', '.new-model', function () {
+                var container = $(this).parents('.new-model-container');
                 app.newModel(container);
+            });
+
+            content.on('click', '.group-model-remove', function () {
+                var container = $(this).parents('.group-model');
+                app.removeModel(container);
+            });
+
+            content.on('click', '.group-info-remove', function () {
+                var container = $(this).parents('.group-info');
+                app.removeGroupInfo(container);
             });
         });
     });
@@ -109,6 +121,14 @@ var app = null;
                 window.location = '/input/' + resp.data + '/boundaries';
 
             });
+        };
+
+        self.removeModel = function (container) {
+            container.remove();
+        };
+
+        self.removeGroupInfo = function (container) {
+            container.remove();
         };
 
         self.newGroupInfo();

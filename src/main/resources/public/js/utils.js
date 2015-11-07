@@ -4,13 +4,15 @@ var utils = {};
 
     'use strict';
 
-    utils.template = (function () {
-
+    utils.template = new (function () {
         var cache = {};
-        var tmpl_dir = '/js/templates/';
+        var self = this;
 
-        function init(tmpl_name) {
+        self.init = function (tmpl_name, tmpl_dir, tmpl_ext) {
             var deferred = $.Deferred();
+
+            tmpl_ext = tmpl_ext || '.html';
+            tmpl_dir = tmpl_dir || '/js/templates/';
 
             if (cache[tmpl_name]) {
                 return deferred.resolve().promise();
@@ -18,7 +20,7 @@ var utils = {};
 
             $.ajax({
 
-                url: getUrl(tmpl_name),
+                url: tmpl_dir + tmpl_name + tmpl_ext,
                 method: 'GET',
                 async: true
 
@@ -28,26 +30,18 @@ var utils = {};
             });
 
             return deferred.promise();
-        }
+        };
 
-        function render(tmpl_name, tmpl_data) {
+        self.render = function (tmpl_name, tmpl_data) {
             return cache[tmpl_name](tmpl_data);
-        }
-
-        function getUrl(tmpl_name) {
-            return tmpl_dir + tmpl_name + '.html';
-        }
-
-        return {
-            init: init,
-            render: render
         };
     })();
 
-    utils.entity = (function () {
+    utils.entity = new (function () {
         var cache = {};
+        var self = this;
 
-        function init(entity_name, entities_dir, entity_ext) {
+        self.init = function (entity_name, entities_dir, entity_ext) {
             var deferred = $.Deferred();
 
             entity_ext = entity_ext || '.json';
@@ -63,23 +57,32 @@ var utils = {};
             });
 
             return deferred.promise();
-        }
+        };
 
-        function list(entity_name) {
+        self.initFromController = function (entity_name, controller_url, entity_ext) {
+            var deferred = $.Deferred();
+
+            if (cache[entity_name]) {
+                return deferred.resolve().promise();
+            }
+
+            $.getJSON(controller_url, function(entities){
+                cache[entity_name] = entities;
+                deferred.resolve();
+            });
+
+            return deferred.promise();
+        };
+
+        self.list = function (entity_name) {
             return cache[entity_name];
-        }
+        };
 
-        function bind(entity_name, param_name, val) {
+        self.bind = function (entity_name, param_name, val) {
             var entities = utils.entity.list(entity_name);
             return _.find(entities, function (item) {
                 return item[param_name] = val;
             });
-        }
-
-        return {
-            init: init,
-            list: list,
-            bind: bind
         };
     })();
 

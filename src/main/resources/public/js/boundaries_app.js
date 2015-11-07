@@ -12,13 +12,8 @@ var app = null;
         };
 
         $.when(
-            utils.template.init("groups"),
-            utils.template.init("model"),
-            utils.entity.init("group"),
-            utils.entity.init("auditory"),
-            utils.entity.init("professor"),
-            utils.entity.init("lesson_type"),
-            utils.entity.init("discipline")
+            utils.template.init("bound_info"),
+            utils.entity.initFromController('config', window.location.pathname)
         ).then(function () {
 
                 app = new App(options);

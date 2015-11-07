@@ -110,7 +110,7 @@ var app = null;
 
         self.nextStep = function () {
             $.ajax({
-                url: '/input/models',
+                url: '/input/config',
                 method: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",

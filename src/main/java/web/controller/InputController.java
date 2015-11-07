@@ -60,4 +60,9 @@ public class InputController {
         return new ResponseEntity<>(Result.success(algorithmService.runAlgorithm(id)), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/demo", method = RequestMethod.GET)
+    public String inputDemoPage() {
+        return "input/demo";
+    }
+
 }

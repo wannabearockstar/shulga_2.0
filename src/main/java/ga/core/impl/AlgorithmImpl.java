@@ -12,10 +12,14 @@ import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
 import ga.model.schedule.Schedule;
 import ga.model.schedule.time.TimeMark;
+import web.model.Status;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AlgorithmImpl implements Algorithm {
+    public static Map<Integer, Status> algorithmStatuses = new ConcurrentHashMap<>();
 
     public static int CATACLYSM_LIMIT = 20;
     public static double CATACLYSM_PART = 0.5;

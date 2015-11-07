@@ -1,0 +1,27 @@
+<% _.each(data, function (info, index) { %>
+
+    <div class="panel panel-default group-info" data-index="<%= index %>">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-2">
+                    <input type="text" class="form-control professor" placeholder="Группа" value="<%= info.group.alias %>" />
+                </div>
+            </div>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+
+                <% _.each(info.models, function (model) { %>
+
+                <%= utils.template.render("model", model) %>
+
+                <% }); %>
+
+                <div class="col-md-2 new-model-col">
+                    <button type="button" class="btn btn-primary new-model">Добавить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% }); %>

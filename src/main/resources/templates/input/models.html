@@ -15,7 +15,7 @@
           integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ=="
           crossorigin="anonymous" />
 
-    <link rel="stylesheet" type="text/css" href="../../public/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="/css/index.css" />
 </head>
 <body>
     <!-- Static navbar -->
@@ -40,44 +40,10 @@
         </div>
     </nav>
 
-    <!-- Template for group curriculum -->
-    <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="row">
-                    <div class="col-md-2">
-                        <input type="text" class="form-control professor" placeholder="Группа" />
-                    </div>
-                </div>
-            </div>
-            <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <div class="form-group">
-                                    <input type="text" class="form-control professor" placeholder="Преподаватель" />
-                                </div>
-                                <div class="form-group">
-                                    <input type="text" class="form-control discipline" placeholder="Предмет" />
-                                </div>
-                                <select class="form-control lesson-type">
-                                    <option value="1">Лекция</option>
-                                    <option value="1">Практика</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <button type="button" class="btn btn-primary">Новая пара</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div id="content" class="container"></div>
 
     <div class="container">
-        <button type="button" class="btn btn-primary">Новая группа</button>
+        <button id="new-group-info" type="button" class="btn btn-primary">Добавить</button>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
@@ -87,5 +53,12 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"
             integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ=="
             crossorigin="anonymous"></script>
+
+    <!-- Underscore -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/models.js"></script>
+
 </body>
 </html>

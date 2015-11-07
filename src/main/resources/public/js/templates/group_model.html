@@ -11,17 +11,19 @@
             <div class="form-group">
                 <input type="text" class="form-control discipline" placeholder="Предмет" value="<%- discipline.alias %>" />
             </div>
-            <select class="form-control lesson-type">
-                <% _.each(utils.entity.list('lesson_type'), function(item) { %>
+            <div class="form-group">
+                <select class="form-control lesson-type">
+                    <% _.each(utils.entity.list('lesson_type'), function(item) { %>
 
-                    <% if (item.id === lesson_type.id) { %>
-                        <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
-                    <% } else { %>
-                        <option value="<%= item.id %>"  ><%= item.alias %></option>
-                    <% } %>
+                        <% if (item.id === lesson_type.id) { %>
+                            <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+                        <% } else { %>
+                            <option value="<%= item.id %>"  ><%= item.alias %></option>
+                        <% } %>
 
-                <% }); %>
-            </select>
+                    <% }); %>
+                </select>
+            </div>
         </div>
     </div>
 </div>

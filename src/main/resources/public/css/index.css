@@ -2,6 +2,11 @@
     padding-bottom: 15px;
 }
 
-.group-model .panel-heading {
+.group-model .panel-heading,
+.bound-model .panel-heading {
     padding: 6px 15px;
+}
+
+.panel-body .form-group:last-child {
+    margin-bottom: 0;
 }

@@ -1,13 +1,14 @@
 package ga.model.schedule;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ga.core.FitnessHandler;
 import ga.core.impl.FitnessHandlerImpl;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.time.TimeMark;
 
 public class Schedule {
-
     private final ScheduleConfig config;
+    @JsonIgnore
     private final FitnessHandler fitnessHandler;
     private TimeMark[] timeMarks;
     private Auditory[] auditories;
@@ -25,6 +26,27 @@ public class Schedule {
         this.fitnessHandler = fitnessHandler;
         this.timeMarks = new TimeMark[config.getCurriculum().size()];
         this.auditories = new Auditory[config.getCurriculum().size()];
+    }
+
+    public Schedule(TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {
+        this.timeMarks = timeMarks;
+        this.auditories = auditories;
+        this.fitness = fitness;
+        config = null;
+        fitnessHandler = null;
+    }
+
+    public Schedule(ScheduleConfig config, TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {
+        this.config = config;
+        this.timeMarks = timeMarks;
+        this.auditories = auditories;
+        this.fitness = fitness;
+        fitnessHandler = null;
+    }
+
+    public Schedule() {
+        config = null;
+        fitnessHandler = null;
     }
 
     public static Schedule random(final ScheduleConfig config) {

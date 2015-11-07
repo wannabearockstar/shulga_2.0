@@ -53,12 +53,21 @@ public class ScheduleConfigLoader {
     /**
      * Save ScheduleConfig to file system
      */
-    public static void saveToLocal(Object config, String filename) throws IOException {
+    public static void saveToLocal(ScheduleConfig config, String filename) throws IOException {
         Path path = Paths.get(filename);
         ObjectMapper mapper = new ObjectMapper();
 
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             mapper.writeValue(writer, config);
+        }
+    }
+
+    public static void saveToLocal(Schedule schedule, String filename) throws IOException {
+        Path path = Paths.get(filename);
+        ObjectMapper mapper = new ObjectMapper();
+
+        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
+            mapper.writeValue(writer, schedule);
         }
     }
 

@@ -9,6 +9,9 @@ public class TimeMark {
     private DayTime dayTime;
     private WeekDay weekDay;
 
+    public TimeMark() {
+    }
+
     public TimeMark(WeekDay weekDay, DayTime dayTime) {
         this.weekDay = weekDay;
         this.dayTime = dayTime;

@@ -68,7 +68,7 @@ public class AlgorithmImpl implements Algorithm {
                 population.cataclysm(CATACLYSM_PART, scheduleConfig, fitnessHandler);
             }
             System.out.println(population.getFittest().getFitness());
-            algorithmStatuses.put(algorithmId, new Status(i * 1.0 / algConfig.getRoundNumber(), population.getFittest().getFitness()));
+            algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), i * 1.0 / algConfig.getRoundNumber()));
         }
         try {
             ScheduleConfigLoader.saveToLocal(population.getWithoutCollisions(), String.format("schedule_result_%d.json", algorithmId));

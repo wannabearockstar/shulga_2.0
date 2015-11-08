@@ -6,10 +6,11 @@ var app = null;
 
     $(function () {
         var content = $('#content');
-        var config = $('#config');
+        var config = JSON.parse($('#config').text() || '{}');
 
         var options = {
-            config: JSON.parse(config.text() || '{}'),
+            config: config,
+            session_id: window.location.pathname.split('/')[2],
             controls: {
                 content: content
             }
@@ -55,46 +56,57 @@ var app = null;
     function App(options) {
 
         var controls = options.controls;
+        var session_id = options.session_id;
         var self = this;
 
         self.collect = function () {
             var res = [];
 
             $('.group-info').each(function () {
-                var $this = $(this);
-                var group_alias = $this.find('.group').val();
-                var group = utils.entity.bind('group', 'alias', group_alias);
-
-                // todo: add validation
-
-                var base_unit = {
-                    'group_id': group.id,
-                    'discipline_id': 0,
-                    'professor_id': 0,
-                    'lesson_type_id': 0
-                };
-
-                $this.find('.group-model').each(function () {
+                try {
                     var $this = $(this);
+                    var group_alias = $this.find('.group').val();
+                    var group = utils.entity.bind('group', 'alias', group_alias);
 
-                    // todo: add binding by fio
-                    var professor_last_name = $this.find('.professor').val();
-                    var professor = utils.entity.bind('professor', 'last_name', professor_last_name);
+                    // todo: add validation
 
-                    var discipline_alias = $this.find('.discipline').val();
-                    var discipline = utils.entity.bind('discipline', 'alias', discipline_alias);
+                    var base_unit = {
+                        'group_id': group.id,
+                        'discipline_id': 0,
+                        'professor_id': 0,
+                        'lesson_type_id': 0
+                    };
 
-                    var lesson_type_id = $this.find('.lesson-type').val();
-                    var lesson_type = utils.entity.bind('lesson_type', 'id', lesson_type_id);
+                    $this.find('.group-model').each(function () {
+                        try {
+                            var $this = $(this);
 
-                    var unit = $.extend({}, base_unit, {
-                        professor_id: professor.id,
-                        discipline_id: discipline.id,
-                        lesson_type_id: lesson_type.id
+                            // todo: add binding by fio
+                            var professor_last_name = $this.find('.professor').val();
+                            var professor = utils.entity.bind('professor', 'last_name', professor_last_name);
+
+                            var discipline_alias = $this.find('.discipline').val();
+                            var discipline = utils.entity.bind('discipline', 'alias', discipline_alias);
+
+                            var lesson_type_id = $this.find('.lesson-type').val();
+                            var lesson_type = utils.entity.bind('lesson_type', 'id', lesson_type_id);
+
+                            var unit = $.extend({}, base_unit, {
+                                professor_id: professor.id,
+                                discipline_id: discipline.id,
+                                lesson_type_id: lesson_type.id
+                            });
+
+                            res.push(unit);
+                        }
+                        catch (err) {
+                            // nothing
+                        }
                     });
-
-                    res.push(unit);
-                });
+                }
+                catch (err) {
+                    // nothing
+                }
             });
 
             return res;
@@ -110,9 +122,22 @@ var app = null;
             controls.content.append(view);
         };
 
+        self.getSaveConfigUrl = function () {
+            if (self.isDemoPage())
+                return '/input/demo/config';
+
+            try {
+                var id = parseInt(session_id);
+                return '/input/' + id + '/config';
+            }
+            catch (err) {
+                return '/input/config';
+            }
+        };
+
         self.nextStep = function () {
             $.ajax({
-                url: '/input/config',
+                url: self.getSaveConfigUrl(),
                 method: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -123,6 +148,10 @@ var app = null;
                 window.location = '/input/' + resp.data + '/boundaries';
 
             });
+        };
+
+        self.isDemoPage = function () {
+            return window.location.pathname.indexOf('/input/demo') != -1;
         };
 
         self.removeModel = function (container) {

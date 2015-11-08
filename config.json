@@ -8989,5 +8989,37 @@
       "lesson_type_id": 123
     }
   ],
-  "bounds": null
+  "bounds": {
+    "auditory_times": {
+      "11": {
+        "times": [
+          1,
+          2,
+          3
+        ],
+        "days": [
+          3,
+          4
+        ]
+      }
+    },
+    "discipline_times": {
+      "384": {
+        "times": [
+          1
+        ],
+        "days": [
+          3,
+          4
+        ]
+      }
+    },
+    "discipline_auditories": {
+      "384": {
+        "values": [
+          11
+        ]
+      }
+    }
+  }
 }

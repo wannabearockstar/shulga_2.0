@@ -41,16 +41,21 @@ public class InputController {
         return "input/models";
     }
 
-    @RequestMapping(value = "/demo", method = RequestMethod.GET)
-    public String inputDemoPage(Model model) throws IOException {
-        ScheduleConfig config = ScheduleConfigLoader.fromLocal("config.json");
-        model.addAttribute("config", new ObjectMapper().writeValueAsString(config));
-        return "input/models";
-    }
-
     @RequestMapping(value = "/config", method = RequestMethod.POST)
     public ResponseEntity<Result> saveConfiguration(@RequestBody CurriculumUnit[] curriculum) throws IOException {
         return new ResponseEntity<>(Result.success(dataService.createScheduleConfig(curriculum)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}/config", method = RequestMethod.POST)
+    public ResponseEntity<Result> saveConfiguration(@PathVariable("id") int id, @RequestBody CurriculumUnit[] curriculum) throws IOException {
+
+        ScheduleConfig loaded = dataService.getScheduleConfig(id);
+        ScheduleConfig generated = ScheduleConfigLoader.fromCurriculum(curriculum);
+        generated.setBounds(loaded.getBounds());
+
+        dataService.saveSchedule(id, generated);
+
+        return new ResponseEntity<>(Result.success(id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}/config", method = RequestMethod.GET)
@@ -73,5 +78,22 @@ public class InputController {
     @RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
     public ResponseEntity<Result> runAlgorithm(@PathVariable("id") int id) {
         return new ResponseEntity<>(Result.success(algorithmService.runAlgorithm(id)), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/demo", method = RequestMethod.GET)
+    public String inputDemoModelsPage(Model model) throws IOException {
+        ScheduleConfig config = ScheduleConfigLoader.fromLocal("config.json");
+        model.addAttribute("config", new ObjectMapper().writeValueAsString(config));
+        return "input/models";
+    }
+
+    @RequestMapping(value = "/demo/config", method = RequestMethod.POST)
+    public ResponseEntity<Result> saveDemoConfiguration(@RequestBody CurriculumUnit[] curriculum) throws IOException {
+        ScheduleConfig loaded = ScheduleConfigLoader.fromLocal("config.json");
+
+        Integer session_id = dataService.createScheduleConfig(curriculum);
+        dataService.setBoundaries(session_id, loaded.getBounds());
+
+        return new ResponseEntity<>(Result.success(session_id), HttpStatus.OK);
     }
 }

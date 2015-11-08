@@ -77,10 +77,10 @@ public class AlgorithmImpl implements Algorithm {
                 System.out.println("Cataclysm...");
             }
             currentTime = System.currentTimeMillis();
-            roundTime = ((currentTime - startTime) * 1.0 / (algConfig.getRoundNumber() * 1000));
+            roundTime += currentTime - startTime;
             System.out.println(population.getFittest().getFitness());
             if (i == 0 || (i >= 1000 && i % 1000 == 0)) {
-                remaningTime = (algConfig.getRoundNumber() - i) * roundTime * 10000;
+                remaningTime = (algConfig.getRoundNumber() - i) * (roundTime * 1.0 / (i * 1000));
             }
             if (lastFitness / population.getFittest().getFitness() > 3.5) {
                 algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), null, i * 1.0 / algConfig.getRoundNumber(), remaningTime));

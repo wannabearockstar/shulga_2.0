@@ -39,19 +39,28 @@ var app = null;
                 if (diff > 0.5) {
                     $progressBar.css({"background-color": "rgba(255, " + (parseInt(diff * 510 - 255)) + ", 0, 1)"});
                 } else {
-                    $progressBar.css({"background-color": "rgba("+(parseInt(diff * 510))+", 255, 0, 1)"});
+                    $progressBar.css({"background-color": "rgba(" + (parseInt(diff * 510)) + ", 255, 0, 1)"});
                 }
             }
 
-
-            $progressBar.css({width: status.progress * 100 + "%"});
-            $progressBar.text((status.progress * 100 + "").substring(0, 2) + "%");
+            if (status.finished) {
+                $progressBar.css({width: "100%"});
+                $progressBar.text("100%");
+            } else {
+                $progressBar.css({width: status.progress * 100 + "%"});
+                $progressBar.text((status.progress * 100 + "").substring(0, 2) + "%");
+            }
         };
 
         this.time = function (status, $time) {
-            var minutes = parseInt(status.remaningTime / 60, 10);
-            var seconds = status.remaningTime - minutes*60;
-            $time.text(minutes + " минут, " + seconds + " секунд.")
+            if (isFinite(status.remaningTime)) {
+                var minutes = parseInt(status.remaningTime / 60, 10);
+                var seconds = parseInt(status.remaningTime - minutes * 60, 10);
+                if (seconds < 10) {
+                    seconds = "0" + seconds;
+                }
+                $time.text(minutes + ":" + seconds);
+            }
         };
 
         this.status = function ($progressBar, $time) {

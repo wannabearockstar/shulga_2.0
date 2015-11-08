@@ -4,7 +4,9 @@ import ga.model.bound.BoundCollection;
 import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;
+import mapper.GroupInfoLoader;
 import mapper.ScheduleConfigLoader;
+import mapper.model.GroupInfo;
 import mapper.serializer.ScheduleCsvSerializer;
 import org.springframework.stereotype.Service;
 
@@ -60,5 +62,11 @@ public class DataService {
     public String paintSchedule(int id) throws IOException {
         Schedule schedule = getResult(id);
         return new ScheduleCsvSerializer().serialize(schedule);
+    }
+
+    public String paintRealSchedule(int id) throws IOException{
+        Schedule schedule = getResult(id);
+        Schedule realSchedule = GroupInfo.toSchedule(GroupInfoLoader.fromRemote("http://dvfu.vl.ru/api2/method/full.schedule.get.json", schedule.getConfig().getGroups()));
+        return new ScheduleCsvSerializer().serialize(realSchedule);
     }
 }

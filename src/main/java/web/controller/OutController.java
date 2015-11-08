@@ -49,4 +49,11 @@ public class OutController {
         writer.close();
         return null;
     }
+
+    @RequestMapping(value = "{id}/real", method = RequestMethod.GET)
+    public String outRealPage(@PathVariable("id") int id, Model model) throws IOException {
+        model.addAttribute("scheduleId", id);
+        model.addAttribute("schedule_csv", dataService.paintRealSchedule(id));
+        return "output/result";
+    }
 }

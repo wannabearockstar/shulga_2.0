@@ -4,11 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ga.model.config.ScheduleConfig;
 
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Pattern;
 
 public class Auditory {
 
     public static final double LEVEL_MULTIPLIER = 3;
     public static final double DEFAULT_DISTANCE = 10;
+    public static final Pattern namePattern = Pattern.compile("^\\w\\d{3}$");
 
     @JsonProperty("id")
     private int id;
@@ -34,6 +36,10 @@ public class Auditory {
     public static Auditory random(final ScheduleConfig config) {
         int idx = ThreadLocalRandom.current().nextInt(0, config.getAuditories().size());
         return config.getAuditories().get(idx);
+    }
+
+    public boolean isNameValidForCampus() {
+        return namePattern.matcher(name).matches();
     }
 
     public int getId() {
@@ -82,14 +88,30 @@ public class Auditory {
 
     public double getDistance(Auditory other) {
         if (!hasValidCoordinates() || !other.hasValidCoordinates()) {
-            // todo: implement calculation distance for non valid auditory
+            if (isNameValidForCampus() && other.isNameValidForCampus()) {
+                return getDistanceByName(other);
+            }
             return DEFAULT_DISTANCE;
         }
 
-        double x = lat - other.getLat();
-        double y = lon - other.getLon();
-        double z = level - other.getLevel();
+        double x = (lat - other.getLat()) * 10000;
+        double y = (lon - other.getLon()) * 10000;
+        double z = level - other.getLevel() * 10;
         return Math.sqrt(x * x + y * y) + LEVEL_MULTIPLIER * Math.abs(z);
+    }
+
+    private double getDistanceByName(Auditory other) {
+
+        return Math.abs(getLetterAlphabetOrder(name.charAt(0)) - other.getLetterAlphabetOrder(other.getName().charAt(0))) + Math.abs(Integer.parseInt(name.substring(1)) - Integer.parseInt(other.getName().substring(1)));
+    }
+
+    private int getLetterAlphabetOrder(char c) {
+        int temp = (int) c;
+        int temp_integer = 64; //for upper case
+        if (temp <= 90 & temp >= 65) {
+            return temp - temp_integer;
+        }
+        return 0;
     }
 
     @Override

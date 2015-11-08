@@ -79,6 +79,7 @@ public class AlgorithmImpl implements Algorithm {
             currentTime = System.currentTimeMillis();
             roundTime += currentTime - startTime;
             System.out.println(population.getFittest().getFitness());
+            System.out.println("ROund number " + i);
             if (i == 0 || (i >= 1000 && i % 1000 == 0)) {
                 remaningTime = (algConfig.getRoundNumber() - i) * (roundTime * 1.0 / (i * 1000));
             }

@@ -2,6 +2,9 @@ package ga.model.schedule.time;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class DayTime {
 
     @JsonProperty("id")
@@ -46,6 +49,6 @@ public class DayTime {
 
     @Override
     public String toString() {
-        return name;
+        return Stream.of(name.split(" ")).collect(Collectors.joining("&nbsp;"));
     }
 }

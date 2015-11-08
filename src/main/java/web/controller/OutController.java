@@ -54,6 +54,6 @@ public class OutController {
     public String outRealPage(@PathVariable("id") int id, Model model) throws IOException {
         model.addAttribute("scheduleId", id);
         model.addAttribute("schedule_csv", dataService.paintRealSchedule(id));
-        return "output/result";
+        return "output/real";
     }
 }

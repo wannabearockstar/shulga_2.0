@@ -18,7 +18,7 @@ var app = null;
             utils.entity.init("discipline")
         ).then(function () {
                 app = new App(options);
-                $("#content").html(app.getTable($("#csv_data").html()));
+                $("#content").html(app.getTable($("#csv_data").text()));
             });
     });
 

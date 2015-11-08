@@ -21,3 +21,17 @@
 .panel-body .form-group:last-child {
     margin-bottom: 0;
 }
+
+.result-header .btn {
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 20px;
+}
+
+.result-header .btn:first-child {
+    margin-left: 0;
+}
+
+.result-header .btn:last-child {
+    margin-right: 0;
+}

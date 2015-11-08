@@ -25,10 +25,10 @@ public class FitnessHandlerImpl implements FitnessHandler {
     private final static int FIRST_DAY_TIME = 1;
 
     // common penalties
-    public static int COLLISION_PENALTY = 150;
-    public static int AUDITORIA_TIMES_PENALTY = 80;
-    public static int DISCIPLINE_TIMES_PENALTY = 80;
-    public  static int DISCIPLINE_AUDITORIES_PENALTY = 80;
+    public static int COLLISION_PENALTY = 350;
+    public static int AUDITORIA_TIMES_PENALTY = 130;
+    public static int DISCIPLINE_TIMES_PENALTY = 130;
+    public  static int DISCIPLINE_AUDITORIES_PENALTY = 130;
 
     // penalties for groups
     public static int ONE_WINDOW_GROUPS_PENALTY = 10;

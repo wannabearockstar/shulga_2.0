@@ -1,0 +1,13 @@
+<div class="form-group">
+    <select class="form-control time">
+        <% _.each(utils.entity.list('time'), function(item) { %>
+
+            <% if (item.id === id) { %>
+                <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+            <% } else { %>
+                <option value="<%= item.id %>"><%= item.alias %></option>
+            <% } %>
+
+        <% }); %>
+    </select>
+</div>

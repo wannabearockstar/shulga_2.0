@@ -1,0 +1,13 @@
+<div class="form-group">
+    <select class="form-control day">
+        <% _.each(utils.entity.list('week_day'), function(item) { %>
+
+            <% if (item.id === id) { %>
+                <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
+            <% } else { %>
+                <option value="<%= item.id %>"><%= item.alias %></option>
+            <% } %>
+
+        <% }); %>
+    </select>
+</div>

@@ -21,6 +21,9 @@ var app = null;
         };
 
         $.when(
+            utils.template.init("day_bound"),
+            utils.template.init("time_bound"),
+            utils.template.init("auditory_bound"),
             utils.template.init("auditory_times_bound"),
             utils.template.init("discipline_times_bound"),
             utils.template.init("discipline_auditories_bound")
@@ -46,33 +49,39 @@ var app = null;
             utils.entity.initFromExisting("week_day", week_days);
 
         }).then(function () {
-                app = new App(options);
+            app = new App(options);
 
-                $('#prev-step').on('click', function () {
-                    app.prevStep();
-                });
-
-                $('#next-step').on('click', function () {
-                    app.nextStep();
-                });
-
-                $('.bound-info').on('click', '.bound-remove', function () {
-                    var container = $(this).parents('.bound-model');
-                    app.removeModel(container);
-                });
-
-                auditory_times.on('click', '.new-model', function () {
-                    app.newAuditoryTimesBound();
-                });
-
-                discipline_times.on('click', '.new-model', function () {
-                    app.newDisciplineTimesBound();
-                });
-
-                discipline_auditories.on('click', '.new-model', function () {
-                    app.newDisciplineAuditoriesBound();
-                });
+            $('#prev-step').on('click', function () {
+                app.prevStep();
             });
+
+            $('#next-step').on('click', function () {
+                app.nextStep();
+            });
+
+            $('.bound-info').on('click', '.bound-remove', function () {
+                var container = $(this).parents('.bound-model');
+                app.removeModel(container);
+            }).on('click', '.new-day-bound', function () {
+                app.newWeekDayBound($(this));
+            }).on('click', '.new-time-bound', function () {
+                app.newTimeBound($(this));
+            }).on('click', '.new-auditory-bound', function () {
+                app.newAuditoryBound($(this));
+            });
+
+            auditory_times.on('click', '.new-model', function () {
+                app.newAuditoryTimesBound();
+            });
+
+            discipline_times.on('click', '.new-model', function () {
+                app.newDisciplineTimesBound();
+            });
+
+            discipline_auditories.on('click', '.new-model', function () {
+                app.newDisciplineAuditoriesBound();
+            });
+        });
     });
 
     function App(options) {
@@ -190,6 +199,21 @@ var app = null;
             var last_elem = self.controls.discipline_auditories.find('.new-model-container');
             var view = utils.template.render("discipline_auditories_bound", new DisciplineAuditoriesBound());
             last_elem.before(view);
+        };
+
+        self.newTimeBound = function (container) {
+            var view = utils.template.render("time_bound", new DayTime());
+            container.before(view);
+        };
+
+        self.newWeekDayBound = function (container) {
+            var view = utils.template.render("day_bound", new WeekDay());
+            container.before(view);
+        };
+
+        self.newAuditoryBound = function (container) {
+            var view = utils.template.render("auditory_bound", new WeekDay());
+            container.before(view);
         };
 
         self.prevStep = function () {

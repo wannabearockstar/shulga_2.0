@@ -65,7 +65,7 @@ Professor.fromId = function (id) {
     var type = typeof (id);
 
     if (type !== 'number' && type !== 'string')
-        return new Group();
+        return new Professor();
 
     id = parseInt(id);
     var tmp = utils.entity.bind("professor", "id", id);
@@ -90,7 +90,7 @@ Discipline.fromId = function (id) {
     var type = typeof (id);
 
     if (type !== 'number' && type !== 'string')
-        return new Group();
+        return new Discipline();
 
     id = parseInt(id);
 
@@ -111,7 +111,7 @@ LessonType.fromId = function (id) {
     var type = typeof (id);
 
     if (type !== 'number' && type !== 'string')
-        return new Group();
+        return new LessonType();
 
     id = parseInt(id);
     var tmp = utils.entity.bind("lesson_type", "id", id);
@@ -135,7 +135,7 @@ Auditory.fromId = function (id) {
     var type = typeof (id);
 
     if (type !== 'number' && type !== 'string')
-        return new Group();
+        return new Auditory();
 
     id = parseInt(id);
 
@@ -186,11 +186,51 @@ function DayTime(id, alias) {
     this.alias = alias || "";
 }
 
+DayTime.fromId = function (id) {
+    var type = typeof (id);
+
+    if (type !== 'number' && type !== 'string')
+        return new DayTime();
+
+    id = parseInt(id);
+    var tmp = utils.entity.bind("time", "id", id);
+
+    if (typeof (tmp) !== 'object')
+        return new DayTime();
+
+    return new DayTime(tmp.id, tmp.alias);
+};
+
 function AuditoryTimesBound(auditory, days, times) {
     this.auditory = auditory || new Auditory();
     this.days = days || [ new WeekDay() ];
     this.times = times || [ new DayTime() ];
 }
+
+AuditoryTimesBound.fromSchedulerConfig = function (config) {
+    if (typeof (config) !== 'object')
+        return [ new AuditoryTimesBound() ];
+
+    if (typeof (config['bounds']) === 'undefined' ||
+        typeof (config['bounds']['auditory_times']) === 'undefined') {
+        return [ new AuditoryTimesBound() ];
+    }
+
+    return _.map(config['bounds']['auditory_times'], function (bound, auditory_id) {
+
+        var auditory = Auditory.fromId(auditory_id);
+
+        var week_days = _.map(bound['days'], function (day_id) {
+            return WeekDay.fromId(day_id);
+        });
+
+        var times = _.map(bound['times'], function (time_id) {
+            return DayTime.fromId(time_id);
+        });
+
+        return new AuditoryTimesBound(auditory, week_days, times);
+    });
+};
 
 function DisciplineTimesBound(discipline, days, times) {
     this.discipline = discipline || new Discipline();
@@ -198,7 +238,53 @@ function DisciplineTimesBound(discipline, days, times) {
     this.times = times || [ new DayTime() ];
 }
 
+DisciplineTimesBound.fromSchedulerConfig = function (config) {
+    if (typeof (config) !== 'object')
+        return [ new DisciplineTimesBound() ];
+
+    if (typeof (config['bounds']) === 'undefined' ||
+        typeof (config['bounds']['discipline_times']) === 'undefined') {
+        return [ new DisciplineTimesBound() ];
+    }
+
+    return _.map(config['bounds']['discipline_times'], function (bound, discipline_id) {
+
+        var discipline = Discipline.fromId(discipline_id);
+
+        var week_days = _.map(bound['days'], function (day_id) {
+            return WeekDay.fromId(day_id);
+        });
+
+        var times = _.map(bound['times'], function (time_id) {
+            return DayTime.fromId(time_id);
+        });
+
+        return new DisciplineTimesBound(discipline, week_days, times);
+    });
+};
+
 function DisciplineAuditoriesBound(discipline, auditories) {
     this.discipline = discipline || new Discipline();
     this.auditories = auditories || [ new Auditory() ];
 }
+
+DisciplineAuditoriesBound.fromSchedulerConfig = function (config) {
+    if (typeof (config) !== 'object')
+        return [ new DisciplineAuditoriesBound() ];
+
+    if (typeof (config['bounds']) === 'undefined' ||
+        typeof (config['bounds']['discipline_auditories']) === 'undefined') {
+        return [ new DisciplineAuditoriesBound() ];
+    }
+
+    return _.map(config['bounds']['discipline_auditories'], function (bound, discipline_id) {
+
+        var discipline = Discipline.fromId(discipline_id);
+
+        var auditories = _.map(bound['values'], function (auditory_id) {
+            return Auditory.fromId(auditory_id);
+        });
+
+        return new DisciplineAuditoriesBound(discipline, auditories);
+    });
+};

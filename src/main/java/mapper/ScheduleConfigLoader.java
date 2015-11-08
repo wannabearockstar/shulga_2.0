@@ -2,9 +2,11 @@ package mapper;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
+import ga.model.schedule.time.WeekDay;
 import mapper.model.GroupInfo;
 
 import java.io.BufferedReader;
@@ -13,7 +15,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ScheduleConfigLoader {
 
@@ -37,6 +43,44 @@ public class ScheduleConfigLoader {
         try (BufferedReader writer = Files.newBufferedReader(path)) {
             return mapper.readValue(writer, ScheduleConfig.class);
         }
+    }
+
+    public static ScheduleConfig fromCurriculum(CurriculumUnit[] curriculum) throws IOException {
+        ScheduleConfig config = new ScheduleConfig();
+
+        List<Auditory> auditories = new ArrayList<>();
+        auditories.addAll(ScheduleConfig.allAuditories.values());
+        config.setAuditories(auditories);
+
+        config.setDisciplines(Arrays.asList(curriculum).stream()
+                .map(curriculumUnit -> ScheduleConfig.allDisciplines.get(curriculumUnit.getDisciplineId()))
+                .distinct()
+                .collect(Collectors.toList()));
+
+        List<LessonType> lessonTypes = new ArrayList<>();
+        lessonTypes.addAll(ScheduleConfig.allLessonTypes.values());
+        config.setLessonTypes(lessonTypes);
+
+        config.setProfessors(Arrays.asList(curriculum).stream()
+                .map(curriculumUnit -> ScheduleConfig.allProfessors.get(curriculumUnit.getProfessorId()))
+                .distinct()
+                .collect(Collectors.toList()));
+
+        config.setGroups(Arrays.asList(curriculum).stream()
+                .map(curriculumUnit -> ScheduleConfig.allGroups.get(curriculumUnit.getGroupId()))
+                .distinct()
+                .sorted(Comparator.comparingInt(Group::getId))
+                .collect(Collectors.toList()));
+
+        List<DayTime> dayTimes = new ArrayList<>();
+        dayTimes.addAll(ScheduleConfig.allDayTimes.values());
+        config.setTimes(dayTimes);
+
+        config.setWeekDays(Arrays.asList(WeekDay.values()));
+
+        config.setCurriculum(Arrays.asList(curriculum));
+
+        return config;
     }
 
     public static Schedule fromLocalSchedule(String filename) throws IOException {

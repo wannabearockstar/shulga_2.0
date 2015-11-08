@@ -38,7 +38,6 @@ public class GroupInfoLoader {
 
                 Date begin = getBeginOfThisWeek();
                 Date end = getBeginOfNextWeek();
-
                 // get group info for this week
                 return mapper.readValue(br, GroupInfo.class)
                         .filter(begin, end)

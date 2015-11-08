@@ -3,7 +3,6 @@ package ga.model.schedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ga.model.config.ScheduleConfig;
 
-import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
@@ -88,7 +87,7 @@ public class Auditory {
     }
 
     public double getDistance(Auditory other) {
-        if (Objects.equals(name, other.getName())) {
+        if (id == other.getId()) {
             return 0;
         }
         if (!hasValidCoordinates() || !other.hasValidCoordinates()) {

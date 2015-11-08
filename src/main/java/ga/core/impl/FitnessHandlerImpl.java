@@ -51,11 +51,11 @@ public class FitnessHandlerImpl implements FitnessHandler {
         res += checkGroupsWindows(schedule);
         res += checkProfessorsWindows(schedule);
         res += checkGroupsDistance(schedule);
+        res += checkProfessorsDistance(schedule);
         res += checkBounds(schedule);
 
         return res;
     }
-
     @Override
     public boolean hasCollisions(Schedule schedule) {
         return checkCollisions(schedule) != 0;
@@ -106,9 +106,9 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
     private <T> int checkCollision(List<T> collisions, T entity) {
         if (collisions.contains(entity)) {
-            return COLLISION_PENALTY;
+            collisions.add(entity);
+            return (collisions.size() - 1) * COLLISION_PENALTY;
         }
-
         collisions.add(entity);
         return 0;
     }
@@ -203,6 +203,51 @@ public class FitnessHandlerImpl implements FitnessHandler {
                 .mapToInt(x -> checkGroupDistance(schedule, x))
                 .sum();
     }
+
+    private int checkProfessorsDistance(Schedule schedule) {
+        return schedule.getConfig().getProfessors()
+                .stream()
+                .mapToInt(x -> checkProfessorsDistance(schedule, x))
+                .sum();
+    }
+
+    private int checkProfessorsDistance(Schedule schedule, Professor proffestor) {
+        int res = 0;
+
+        // positions sorted by time marks for exact group
+        Integer[] positions = IntStream.range(0, schedule.getTimeMarks().length)
+                .filter(x -> schedule.getConfig().getCurriculum().get(x).getProfessorId() == proffestor.getId())
+                .boxed()
+                .sorted((fst, snd) -> compare(fst, snd, schedule))
+                .toArray(Integer[]::new);
+
+        TimeMark lastMark = null;
+        Auditory lastAuditory = null;
+
+        for (Integer position : positions) {
+            TimeMark mark = schedule.getTimeMarks()[position];
+            Auditory auditory = schedule.getAuditories()[position];
+
+            if (lastMark == null || lastMark.getWeekDay() != mark.getWeekDay()) {
+                // first lesson of the day
+                lastMark = mark;
+                lastAuditory = auditory;
+                continue;
+            }
+
+            int diff = mark.getDayTime().getId() - lastMark.getDayTime().getId();
+            if (diff == 1) {
+                res += checkDistance(auditory, lastAuditory, ONE_TIME_DISTANCE_MULTIPLIER);
+            }
+            else if (diff >= 2) {
+                res += checkDistance(auditory, lastAuditory, diff * TWO_TIMES_DISTANCE_MULTIPLIER);
+            }
+
+            lastMark = mark;
+            lastAuditory = auditory;
+        }
+        return res;    }
+
 
     private int checkGroupDistance(Schedule schedule, Group group) {
         int res = 0;

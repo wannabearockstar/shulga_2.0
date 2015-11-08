@@ -80,7 +80,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
                 List<Integer> groups = new ArrayList<>();
                 List<Integer> professors = new ArrayList<>();
-                List<Integer> auditories = new ArrayList<>();
+                List<Auditory> auditories = new ArrayList<>();
 
                 for (int position : positions) {
                     CurriculumUnit unit = config.getCurriculum().get(position);
@@ -93,7 +93,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
                     res += checkCollision(professors, unit.getProfessorId());
 
                     // check auditory collisions
-                    res += checkCollision(auditories, auditory.getId());
+                    res += checkCollision(auditories, auditory);
 
                     // todo: implement checking combined lessons
                 }

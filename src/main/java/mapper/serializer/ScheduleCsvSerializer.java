@@ -1,6 +1,5 @@
 package mapper.serializer;
 
-import ga.core.impl.FitnessHandlerImpl;
 import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.*;
@@ -82,9 +81,6 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
     private void makeBody(Appendable writer, Schedule schedule, List<Group> groups) throws IOException {
         ScheduleConfig config = schedule.getConfig();
-
-        double fit = new FitnessHandlerImpl().computeFitness(schedule);
-
         for (WeekDay day : config.getWeekDays()) {
             for (DayTime time : config.getTimes()) {
 

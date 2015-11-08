@@ -50,6 +50,44 @@ var app = null;
                 var container = $(this).parents('.group-info');
                 app.removeGroupInfo(container);
             });
+
+            var group_src = _.map(utils.entity.list('group'), function (item) {
+                return item.alias;
+            });
+
+            group_src = _.map(_.groupBy(group_src,function(item){
+                return item;
+            }),function(grouped){
+                return grouped[0];
+            });
+
+            var professor_src = _.map(utils.entity.list('professor'), function (item) {
+                return item.last_name;
+            });
+
+            professor_src = _.map(_.groupBy(professor_src,function(item){
+                return item;
+            }),function(grouped){
+                return grouped[0];
+            });
+
+            var discipline_src = _.map(utils.entity.list('discipline'), function (item) {
+                return item.alias;
+            });
+
+            discipline_src = _.map(_.groupBy(discipline_src,function(item){
+                return item;
+            }),function(grouped){
+                return grouped[0];
+            });
+
+            content.on('keydown.autocomplete', '.group', function () {
+                $(this).autocomplete({ source: group_src });
+            }).on('keydown.autocomplete', '.professor', function () {
+                $(this).autocomplete({ source: professor_src });
+            }).on('keydown.autocomplete', '.discipline', function () {
+                $(this).autocomplete({ source: discipline_src });
+            });
         });
     });
 
@@ -128,7 +166,7 @@ var app = null;
 
             try {
                 var id = parseInt(session_id);
-                return '/input/' + id + '/config';
+                return isNaN(id) ? '/input/config' : '/input/' + id + '/config';
             }
             catch (err) {
                 return '/input/config';

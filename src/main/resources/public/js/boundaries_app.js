@@ -81,6 +81,32 @@ var app = null;
             discipline_auditories.on('click', '.new-model', function () {
                 app.newDisciplineAuditoriesBound();
             });
+
+            var auditory_src = _.map(utils.entity.list('auditory'), function (item) {
+                return item.alias;
+            });
+
+            auditory_src = _.map(_.groupBy(auditory_src,function(item){
+                return item;
+            }),function(grouped){
+                return grouped[0];
+            });
+
+            var discipline_src = _.map(utils.entity.list('discipline'), function (item) {
+                return item.alias;
+            });
+
+            discipline_src = _.map(_.groupBy(discipline_src,function(item){
+                return item;
+            }),function(grouped){
+                return grouped[0];
+            });
+
+            $(document).on('keydown.autocomplete', '.auditory', function () {
+                $(this).autocomplete({ source: auditory_src });
+            }).on('keydown.autocomplete', '.discipline', function () {
+                $(this).autocomplete({ source: discipline_src });
+            });
         });
     });
 

@@ -12,12 +12,13 @@
                 </div>
             </div>
         </div>
-        <div class="panel-body">
+        <div class="panel-body bound-list">
             <% _.each(auditories, function(auditory) { %>
-                <div class="form-group">
-                    <input type="text" class="form-control auditory" placeholder="Аудитория" value="<%- auditory.alias %>" />
-                </div>
+
+                <%= utils.template.render("auditory_bound", auditory) %>
+
             <% }); %>
+            <button type="button" class="btn btn-primary new-auditory-bound">Добавить</button>
         </div>
     </div>
 </div>

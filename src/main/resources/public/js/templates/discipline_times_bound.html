@@ -14,39 +14,21 @@
         </div>
         <div class="panel-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6 bound-list">
                     <% _.each(days, function(day) { %>
-                    <div class="form-group">
-                        <select class="form-control day">
-                            <% _.each(utils.entity.list('week_day'), function(item) { %>
 
-                                <% if (item.id === day.id) { %>
-                                    <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
-                                <% } else { %>
-                                    <option value="<%= item.id %>"><%= item.alias %></option>
-                                <% } %>
+                        <%= utils.template.render("day_bound", day) %>
 
-                            <% }); %>
-                        </select>
-                    </div>
                     <% }); %>
+                    <button type="button" class="btn btn-primary new-day-bound">Добавить</button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 bound-list">
                     <% _.each(times, function(time) { %>
-                    <div class="form-group">
-                        <select class="form-control time">
-                            <% _.each(utils.entity.list('time'), function(item) { %>
 
-                                <% if (item.id === time.id) { %>
-                                    <option value="<%= item.id %>" selected="selected" ><%= item.alias %></option>
-                                <% } else { %>
-                                    <option value="<%= item.id %>"><%= item.alias %></option>
-                                <% } %>
+                        <%= utils.template.render("time_bound", time) %>
 
-                            <% }); %>
-                        </select>
-                    </div>
                     <% }); %>
+                    <button type="button" class="btn btn-primary new-time-bound">Добавить</button>
                 </div>
             </div>
         </div>

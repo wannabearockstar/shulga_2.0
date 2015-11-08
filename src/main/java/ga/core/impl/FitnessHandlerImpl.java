@@ -106,9 +106,9 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
     private <T> int checkCollision(List<T> collisions, T entity) {
         if (collisions.contains(entity)) {
-            return COLLISION_PENALTY;
+            collisions.add(entity);
+            return (collisions.size() - 1) * COLLISION_PENALTY;
         }
-
         collisions.add(entity);
         return 0;
     }

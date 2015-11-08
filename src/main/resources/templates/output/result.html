@@ -34,12 +34,13 @@
     </nav>
 
 <div class="container">
-    <div>
-        <h2 style="float: left">Расписание #<span th:text="${scheduleId}"></span></h2>
-        <div style="float: right;"><a th:href="${scheduleId + '/download'}" type="button" class="btn btn-success">Скачать расписание</a></div>
-        <div style="float: right;  margin-right: 10px;"><a th:href="${scheduleId + '/real'}" target="_blank" type="button" class="btn btn-info">Настоящее расписание</a></div>
+    <div class="result-header">
+        <h2 class="pull-left">Расписание #<span th:text="${scheduleId}"></span></h2>
+        <a th:href="${scheduleId + '/download'}" class="btn btn-success pull-right">Скачать расписание</a>
+        <a th:href="${scheduleId + '/real'}" target="_blank" class="btn btn-info pull-right">Настоящее расписание</a>
+        <a th:href="${'/input/' + scheduleId + '/boundaries'}" class="btn btn-info pull-right">&lt; Назад</a>
     </div>
-    <div id="content">
+    <div id="content" class="result-content">
     </div>
 </div>
 <div id="csv_data" style="display: none" th:text="${schedule_csv}"></div>
@@ -58,7 +59,6 @@
 
     <script src="/js/utils.js"></script>
     <script src="/js/entities.js"></script>
-    <script src="/js/models_app.js"></script>
     <script src="/js/output.js"></script>
 
 </body>

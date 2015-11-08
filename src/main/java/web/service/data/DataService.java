@@ -67,6 +67,7 @@ public class DataService {
     public String paintRealSchedule(int id) throws IOException{
         Schedule schedule = getResult(id);
         Schedule realSchedule = GroupInfo.toSchedule(GroupInfoLoader.fromRemote("http://dvfu.vl.ru/api2/method/full.schedule.get.json", schedule.getConfig().getGroups()));
+        realSchedule.getConfig().setTimes(schedule.getConfig().getTimes());
         return new ScheduleCsvSerializer().serialize(realSchedule);
     }
 }

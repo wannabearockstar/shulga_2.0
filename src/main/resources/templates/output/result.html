@@ -45,6 +45,7 @@
     <div>
         <h2 style="float: left">Расписание #<span th:text="${scheduleId}"></span></h2>
         <div style="float: right"><a th:href="${scheduleId + '/download'}" type="button" class="btn btn-success">Скачать расписание</a></div>
+        <div style="float: right"><a th:href="${scheduleId + '/real'}" target="_blank" type="button" class="btn btn-info">Настоящее расписание</a></div>
     </div>
     <div id="content">
     </div>

@@ -211,8 +211,8 @@ AuditoryTimesBound.fromSchedulerConfig = function (config) {
     if (typeof (config) !== 'object')
         return [ new AuditoryTimesBound() ];
 
-    if (typeof (config['bounds']) === 'undefined' ||
-        typeof (config['bounds']['auditory_times']) === 'undefined') {
+    if (!config['bounds'] ||
+        !config['bounds']['auditory_times']) {
         return [ new AuditoryTimesBound() ];
     }
 
@@ -242,8 +242,8 @@ DisciplineTimesBound.fromSchedulerConfig = function (config) {
     if (typeof (config) !== 'object')
         return [ new DisciplineTimesBound() ];
 
-    if (typeof (config['bounds']) === 'undefined' ||
-        typeof (config['bounds']['discipline_times']) === 'undefined') {
+    if (!config['bounds'] ||
+        !config['bounds']['discipline_times']) {
         return [ new DisciplineTimesBound() ];
     }
 
@@ -272,8 +272,8 @@ DisciplineAuditoriesBound.fromSchedulerConfig = function (config) {
     if (typeof (config) !== 'object')
         return [ new DisciplineAuditoriesBound() ];
 
-    if (typeof (config['bounds']) === 'undefined' ||
-        typeof (config['bounds']['discipline_auditories']) === 'undefined') {
+    if (!config['bounds'] ||
+        !config['bounds']['discipline_auditories']) {
         return [ new DisciplineAuditoriesBound() ];
     }
 

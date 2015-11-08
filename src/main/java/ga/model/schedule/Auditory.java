@@ -125,12 +125,15 @@ public class Auditory {
 
         Auditory auditory = (Auditory) o;
 
-        return id == auditory.id;
+        if (id != auditory.id) return false;
+        return name.equals(auditory.name);
     }
 
     @Override
     public int hashCode() {
-        return id;
+        int result = id;
+        result = 31 * result + name.hashCode();
+        return result;
     }
 
     @Override

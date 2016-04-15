@@ -53,4 +53,8 @@ public class ScheduleService {
 	public Schedule findOne(int id) {
 		return scheduleRepository.findOne(id);
 	}
+
+	public void save(Schedule schedule) {
+		scheduleRepository.save(schedule);
+	}
 }

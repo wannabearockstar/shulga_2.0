@@ -11,7 +11,6 @@ import ga.model.schedule.Schedule;
 import ga.model.schedule.time.TimeMark;
 import ga.model.service.PopulationService;
 import ga.model.service.ScheduleService;
-import mapper.ScheduleConfigLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import web.model.Status;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -96,12 +94,8 @@ public class Algorithm implements Runnable {
 				break;
 			}
 		}
-		try {
-			ScheduleConfigLoader.saveToLocal(populationService.getFirstScheduleWithoutCollisions(population), String.format("schedule_result_%d.json", algorithmId));
-			algorithmStatuses.remove(algorithmId);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		scheduleService.save(populationService.getFirstScheduleWithoutCollisions(population));
+		algorithmStatuses.remove(algorithmId);
 	}
 
 	protected Population evolve(Population population) {

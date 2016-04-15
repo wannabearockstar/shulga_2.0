@@ -1,7 +1,7 @@
 package web.service.algorithm;
 
 import ga.GA;
-import ga.core.impl.AlgorithmImpl;
+import ga.core.impl.Algorithm;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;
 import ga.model.service.ScheduleConfigService;
@@ -21,7 +21,7 @@ public class AlgorithmService {
 	private ScheduleConfigService scheduleConfigService;
 
 	public int runAlgorithm(int id) {
-		if (AlgorithmImpl.algorithmStatuses.containsKey(id)) {
+		if (Algorithm.algorithmStatuses.containsKey(id)) {
 			return 0;
 		}
 		ScheduleConfig config = scheduleConfigService.findOne(id);
@@ -31,7 +31,7 @@ public class AlgorithmService {
 	public Status getStatus(int id) {
 		Schedule schedule = scheduleService.findOne(id);
 		if (schedule == null) {
-			return AlgorithmImpl.algorithmStatuses.get(id);
+			return Algorithm.algorithmStatuses.get(id);
 		}
 		return new Status(1, scheduleService.getFitness(schedule), true);
 	}

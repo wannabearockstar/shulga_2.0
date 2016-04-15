@@ -1,6 +1,5 @@
 package ga.core.impl;
 
-import ga.core.Algorithm;
 import ga.core.FitnessHandler;
 import ga.core.config.AlgorithmConfig;
 import ga.core.model.Population;
@@ -16,7 +15,6 @@ import ga.model.service.PopulationService;
 import ga.model.service.ScheduleService;
 import mapper.ScheduleConfigLoader;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import web.model.Status;
 
 import java.io.IOException;
@@ -24,8 +22,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-@Service
-public class AlgorithmImpl implements Algorithm {
+public class Algorithm implements Runnable {
 	public static Map<Integer, Status> algorithmStatuses = new ConcurrentHashMap<>();
 	public static int CATACLYSM_LIMIT = 20;
 	public static double CATACLYSM_PART = 0.3;
@@ -43,7 +40,7 @@ public class AlgorithmImpl implements Algorithm {
 	private Selection selection;
 	private Mutation mutation;
 
-	public AlgorithmImpl(AlgorithmConfig algConfig, ScheduleConfig scheduleConfig, FitnessHandler handler, int algorithmId) {
+	public Algorithm(AlgorithmConfig algConfig, ScheduleConfig scheduleConfig, FitnessHandler handler, int algorithmId) {
 		this.algConfig = algConfig;
 		this.scheduleConfig = scheduleConfig;
 		this.fitnessHandler = handler;

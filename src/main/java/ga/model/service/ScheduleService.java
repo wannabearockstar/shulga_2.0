@@ -14,22 +14,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ScheduleService {
+
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 
-  public static Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
-			Schedule schedule = new Schedule(config, fitnessHandler);
-			TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
-			Auditory[] auditories = new Auditory[config.getCurriculum().size()];
+	public static Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
+		Schedule schedule = new Schedule(config, fitnessHandler);
+		TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
+		Auditory[] auditories = new Auditory[config.getCurriculum().size()];
 
-			for (int i = 0; i < config.getCurriculum().size(); i++) {
-					timeMarks[i] = TimeMark.random(config);
-					auditories[i] = AuditoryService.random(config);
-			}
+		for (int i = 0; i < config.getCurriculum().size(); i++) {
+			timeMarks[i] = TimeMark.random(config);
+			auditories[i] = AuditoryService.random(config);
+		}
 
-			schedule.setAuditories(auditories);
-			schedule.setTimeMarks(timeMarks);
+		schedule.setAuditories(auditories);
+		schedule.setTimeMarks(timeMarks);
 
-			return schedule;
+		return schedule;
 	}
 }

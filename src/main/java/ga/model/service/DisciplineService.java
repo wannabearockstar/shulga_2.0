@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class DisciplineService {
+
 	@Autowired
 	private DisciplineRepository disciplineRepository;
 }

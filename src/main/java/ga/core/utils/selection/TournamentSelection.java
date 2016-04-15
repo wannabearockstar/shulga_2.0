@@ -8,26 +8,27 @@ import java.util.Collections;
 import java.util.List;
 
 public class TournamentSelection implements Selection {
-    private final int tournamentSize;
 
-    public TournamentSelection(int tournamentSize) {
-        this.tournamentSize = tournamentSize;
-    }
+	private final int tournamentSize;
 
-    @Override
-    public Population get(Population population, int selectionSize) {
-        Population newPopulation = new Population(selectionSize);
-        List<Schedule> scheduleList = Arrays.asList(population.getSchedules());
+	public TournamentSelection(int tournamentSize) {
+		this.tournamentSize = tournamentSize;
+	}
 
-        for (int i = 0; i < selectionSize; i++) {
-            Collections.shuffle(scheduleList);
+	@Override
+	public Population get(Population population, int selectionSize) {
+		Population newPopulation = new Population(selectionSize);
+		List<Schedule> scheduleList = Arrays.asList(population.getSchedules());
 
-            List<Schedule> subList = scheduleList.subList(0, tournamentSize);
-            Schedule fittest = new Population(subList).getFittest();
+		for (int i = 0; i < selectionSize; i++) {
+			Collections.shuffle(scheduleList);
 
-            newPopulation.setSchedule(i, fittest);
-        }
+			List<Schedule> subList = scheduleList.subList(0, tournamentSize);
+			Schedule fittest = new Population(subList).getFittest();
 
-        return newPopulation;
-    }
+			newPopulation.setSchedule(i, fittest);
+		}
+
+		return newPopulation;
+	}
 }

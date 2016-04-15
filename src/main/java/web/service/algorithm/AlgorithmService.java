@@ -18,41 +18,42 @@ import java.nio.file.Paths;
  */
 @Service
 public class AlgorithmService {
-    public int runAlgorithm(int id) {
-        if (AlgorithmImpl.algorithmStatuses.containsKey(id)) {
-            return 0;
-        }
-        try {
-            deleteFile(String.format("schedule_result_%d.json", id));
-            ScheduleConfig config = ScheduleConfigLoader.fromLocal(String.format("schedule_config_%d.json", id));
-            return GA.solve(config, id);
-        } catch (IOException e) {
-            return 0;
-        }
-    }
 
-    public Status getStatus(int id) {
-        try {
+	public int runAlgorithm(int id) {
+		if (AlgorithmImpl.algorithmStatuses.containsKey(id)) {
+			return 0;
+		}
+		try {
+			deleteFile(String.format("schedule_result_%d.json", id));
+			ScheduleConfig config = ScheduleConfigLoader.fromLocal(String.format("schedule_config_%d.json", id));
+			return GA.solve(config, id);
+		} catch (IOException e) {
+			return 0;
+		}
+	}
 
-            String filepath = String.format("schedule_result_%d.json", id);
-            Path path = Paths.get(filepath);
+	public Status getStatus(int id) {
+		try {
 
-            if (!Files.exists(path)) {
-                return AlgorithmImpl.algorithmStatuses.get(id);
-            }
+			String filepath = String.format("schedule_result_%d.json", id);
+			Path path = Paths.get(filepath);
 
-            Schedule schedule = ScheduleConfigLoader.fromLocalSchedule(filepath);
-            return new Status(1, schedule.getFitness(), true);
+			if (!Files.exists(path)) {
+				return AlgorithmImpl.algorithmStatuses.get(id);
+			}
 
-        } catch (IOException e) {
-            return AlgorithmImpl.algorithmStatuses.get(id);
-        }
-    }
+			Schedule schedule = ScheduleConfigLoader.fromLocalSchedule(filepath);
+			return new Status(1, schedule.getFitness(), true);
 
-    private void deleteFile(String filepath) throws IOException {
-        Path path = Paths.get(filepath);
-        if (Files.exists(path)) {
-            Files.delete(path);
-        }
-    }
+		} catch (IOException e) {
+			return AlgorithmImpl.algorithmStatuses.get(id);
+		}
+	}
+
+	private void deleteFile(String filepath) throws IOException {
+		Path path = Paths.get(filepath);
+		if (Files.exists(path)) {
+			Files.delete(path);
+		}
+	}
 }

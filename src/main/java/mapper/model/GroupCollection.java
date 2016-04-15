@@ -7,21 +7,21 @@ import java.util.List;
 
 public class GroupCollection {
 
-    @JsonProperty("groups")
-    private List<Group> groups;
+	@JsonProperty("groups")
+	private List<Group> groups;
 
-    public GroupCollection(List<Group> groups) {
-        this.groups = groups;
-    }
+	public GroupCollection(List<Group> groups) {
+		this.groups = groups;
+	}
 
-    public GroupCollection() {
-    }
+	public GroupCollection() {
+	}
 
-    public List<Group> getGroups() {
-        return groups;
-    }
+	public List<Group> getGroups() {
+		return groups;
+	}
 
-    public void setGroups(List<Group> groups) {
-        this.groups = groups;
-    }
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
 }

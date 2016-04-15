@@ -6,8 +6,8 @@ import java.util.Comparator;
 
 public class DisciplineComparator implements Comparator<Discipline> {
 
-    @Override
-    public int compare(Discipline fst, Discipline snd) {
-        return Integer.compare(fst.getId(), snd.getId());
-    }
+	@Override
+	public int compare(Discipline fst, Discipline snd) {
+		return Integer.compare(fst.getId(), snd.getId());
+	}
 }

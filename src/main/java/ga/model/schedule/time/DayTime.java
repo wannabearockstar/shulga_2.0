@@ -7,48 +7,48 @@ import java.util.stream.Stream;
 
 public class DayTime {
 
-    @JsonProperty("id")
-    private int id;
+	@JsonProperty("id")
+	private int id;
 
-    @JsonProperty("alias")
-    private String name;
+	@JsonProperty("alias")
+	private String name;
 
-    public DayTime() {
-    }
+	public DayTime() {
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof DayTime)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof DayTime)) return false;
 
-        DayTime dayTime = (DayTime) o;
+		DayTime dayTime = (DayTime) o;
 
-        return id == dayTime.id;
-    }
+		return id == dayTime.id;
+	}
 
-    @Override
-    public int hashCode() {
-        return id;
-    }
+	@Override
+	public int hashCode() {
+		return id;
+	}
 
-    @Override
-    public String toString() {
-        return Stream.of(name.split(" ")).collect(Collectors.joining("&nbsp;"));
-    }
+	@Override
+	public String toString() {
+		return Stream.of(name.split(" ")).collect(Collectors.joining("&nbsp;"));
+	}
 }

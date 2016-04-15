@@ -9,22 +9,23 @@ import java.util.List;
  * Created by wannabe on 06.11.15.
  */
 public class ProffestorCollection {
-    @JsonProperty("professors")
-    private List<Professor> professors;
 
-    public ProffestorCollection() {
-    }
+	@JsonProperty("professors")
+	private List<Professor> professors;
 
-    public ProffestorCollection(List<Professor> professors) {
-        this.professors = professors;
-    }
+	public ProffestorCollection() {
+	}
 
-    public List<Professor> getProfessors() {
-        return professors;
-    }
+	public ProffestorCollection(List<Professor> professors) {
+		this.professors = professors;
+	}
 
-    public ProffestorCollection setProfessors(List<Professor> professors) {
-        this.professors = professors;
-        return this;
-    }
+	public List<Professor> getProfessors() {
+		return professors;
+	}
+
+	public ProffestorCollection setProfessors(List<Professor> professors) {
+		this.professors = professors;
+		return this;
+	}
 }

@@ -6,33 +6,34 @@ import ga.model.schedule.time.TimeMark;
 import ga.model.service.AuditoryService;
 
 public class ReplaceMutation extends Mutation {
-    public final double mutationRate;
-    public final double mutationStep;
-    public final ScheduleConfig config;
 
-    public ReplaceMutation(double mutationRate, double mutationStep, ScheduleConfig config) {
-        this.mutationRate = mutationRate;
-        this.mutationStep = mutationStep;
-        this.config = config;
-    }
+	public final double mutationRate;
+	public final double mutationStep;
+	public final ScheduleConfig config;
 
-    @Override
-    public void mutate(Schedule schedule) {
-        boolean mutation;
-        for (int i = 0; i < schedule.size(); i++) {
-            mutation = false;
+	public ReplaceMutation(double mutationRate, double mutationStep, ScheduleConfig config) {
+		this.mutationRate = mutationRate;
+		this.mutationStep = mutationStep;
+		this.config = config;
+	}
 
-            if (Math.random() < mutationRate) {
-                mutation = true;
-                schedule.getTimeMarks()[i] = TimeMark.random(config);
-                schedule.refreshFitness();
-            }
+	@Override
+	public void mutate(Schedule schedule) {
+		boolean mutation;
+		for (int i = 0; i < schedule.size(); i++) {
+			mutation = false;
 
-            if (Math.random() < (mutation ? mutationRate : mutationRate + mutationStep)) {
-                mutation = true;
-                schedule.getAuditories()[i] = AuditoryService.random(config);
-                schedule.refreshFitness();
-            }
-        }
-    }
+			if (Math.random() < mutationRate) {
+				mutation = true;
+				schedule.getTimeMarks()[i] = TimeMark.random(config);
+				schedule.refreshFitness();
+			}
+
+			if (Math.random() < (mutation ? mutationRate : mutationRate + mutationStep)) {
+				mutation = true;
+				schedule.getAuditories()[i] = AuditoryService.random(config);
+				schedule.refreshFitness();
+			}
+		}
+	}
 }

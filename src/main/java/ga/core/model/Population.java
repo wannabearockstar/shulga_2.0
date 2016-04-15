@@ -11,73 +11,74 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Population {
-    private Schedule[] schedules;
 
-    public Population(Schedule[] schedules) {
-        this.schedules = schedules;
-    }
+	private Schedule[] schedules;
 
-    public Population(int capacity) {
-        this.schedules = new Schedule[capacity];
-    }
+	public Population(Schedule[] schedules) {
+		this.schedules = schedules;
+	}
 
-    public Population(List<Schedule> schedules) {
-        this.schedules = new Schedule[schedules.size()];
-        this.schedules = schedules.toArray(this.schedules);
-    }
+	public Population(int capacity) {
+		this.schedules = new Schedule[capacity];
+	}
 
-    public Population(int populationSize, boolean init, ScheduleConfig config, FitnessHandler fitnessHandler) {
-        schedules = new Schedule[populationSize];
-        if (init) {
-            for (int i = 0; i < schedules.length; i++) {
-                schedules[i] = ScheduleService.random(config, fitnessHandler);
-            }
-        }
-    }
+	public Population(List<Schedule> schedules) {
+		this.schedules = new Schedule[schedules.size()];
+		this.schedules = schedules.toArray(this.schedules);
+	}
 
-    public Schedule getFittest() {
-        return Stream.of(schedules)
-                .min(Comparator.comparingDouble(Schedule::getFitness))
-                .get();
-    }
+	public Population(int populationSize, boolean init, ScheduleConfig config, FitnessHandler fitnessHandler) {
+		schedules = new Schedule[populationSize];
+		if (init) {
+			for (int i = 0; i < schedules.length; i++) {
+				schedules[i] = ScheduleService.random(config, fitnessHandler);
+			}
+		}
+	}
 
-    public Schedule getWithoutCollisions() {
-        List<Schedule> sorted = Stream.of(schedules)
-                .sorted(Comparator.comparingDouble(Schedule::getFitness))
-                .collect(Collectors.toList());
+	public Schedule getFittest() {
+		return Stream.of(schedules)
+			.min(Comparator.comparingDouble(Schedule::getFitness))
+			.get();
+	}
 
-        for (Schedule schedule : sorted) {
-            if (!schedule.hasCollisions())
-                return schedule;
-        }
+	public Schedule getWithoutCollisions() {
+		List<Schedule> sorted = Stream.of(schedules)
+			.sorted(Comparator.comparingDouble(Schedule::getFitness))
+			.collect(Collectors.toList());
 
-        return sorted.get(0);
-    }
+		for (Schedule schedule : sorted) {
+			if (!schedule.hasCollisions())
+				return schedule;
+		}
 
-    public Population setSchedule(int index, Schedule schedule) {
-        this.schedules[index] = schedule;
-        return this;
-    }
+		return sorted.get(0);
+	}
 
-    public int size() {
-        return schedules.length;
-    }
+	public Population setSchedule(int index, Schedule schedule) {
+		this.schedules[index] = schedule;
+		return this;
+	}
 
-    public Schedule[] getSchedules() {
-        return schedules;
-    }
+	public int size() {
+		return schedules.length;
+	}
 
-    public Population setSchedules(Schedule[] schedules) {
-        this.schedules = schedules;
-        return this;
-    }
+	public Schedule[] getSchedules() {
+		return schedules;
+	}
 
-    public Population cataclysm(double part, ScheduleConfig config, FitnessHandler handler) {
-        for (int i = 0; i < schedules.length; i++) {
-            if (i >= schedules.length * part) {
-                schedules[i] = ScheduleService.random(config, handler);
-            }
-        }
-        return this;
-    }
+	public Population setSchedules(Schedule[] schedules) {
+		this.schedules = schedules;
+		return this;
+	}
+
+	public Population cataclysm(double part, ScheduleConfig config, FitnessHandler handler) {
+		for (int i = 0; i < schedules.length; i++) {
+			if (i >= schedules.length * part) {
+				schedules[i] = ScheduleService.random(config, handler);
+			}
+		}
+		return this;
+	}
 }

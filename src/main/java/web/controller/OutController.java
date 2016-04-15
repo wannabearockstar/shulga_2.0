@@ -21,39 +21,40 @@ import java.io.IOException;
 @Controller
 @RequestMapping(value = "/output")
 public class OutController {
-    @Autowired
-    DataService dataService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String outPage(@PathVariable("id") int id, Model model) throws IOException {
-        model.addAttribute("scheduleId", id);
-        model.addAttribute("schedule_csv", dataService.paintSchedule(id));
-        return "output/result";
-    }
+	@Autowired
+	DataService dataService;
 
-    @RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
-    public ResponseEntity<Result> getResult(@PathVariable("id") int id) {
-        return new ResponseEntity<>(Result.success(dataService.getResult(id)), HttpStatus.OK);
-    }
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String outPage(@PathVariable("id") int id, Model model) throws IOException {
+		model.addAttribute("scheduleId", id);
+		model.addAttribute("schedule_csv", dataService.paintSchedule(id));
+		return "output/result";
+	}
 
-    @RequestMapping(value = "/{id}/download", method = RequestMethod.GET)
-    public ModelAndView downloadResult(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
-        response.setContentType("applications/csv");
-        response.setContentType("applications/unknown");
+	@RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
+	public ResponseEntity<Result> getResult(@PathVariable("id") int id) {
+		return new ResponseEntity<>(Result.success(dataService.getResult(id)), HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/{id}/download", method = RequestMethod.GET)
+	public ModelAndView downloadResult(@PathVariable("id") int id, HttpServletResponse response) throws IOException {
+		response.setContentType("applications/csv");
+		response.setContentType("applications/unknown");
 //        response.setCharacterEncoding("UTF-16LE");
-        response.setHeader("content-disposition", "attachment;filename =data_" + id + ".csv");
+		response.setHeader("content-disposition", "attachment;filename =data_" + id + ".csv");
 
-        ServletOutputStream writer = response.getOutputStream();
-        writer.write(new ScheduleCsvSerializer().serialize(ScheduleConfigLoader.fromLocalSchedule(String.format("schedule_result_%d.json", id))).getBytes("UTF-8"));
-        writer.flush();
-        writer.close();
-        return null;
-    }
+		ServletOutputStream writer = response.getOutputStream();
+		writer.write(new ScheduleCsvSerializer().serialize(ScheduleConfigLoader.fromLocalSchedule(String.format("schedule_result_%d.json", id))).getBytes("UTF-8"));
+		writer.flush();
+		writer.close();
+		return null;
+	}
 
-    @RequestMapping(value = "{id}/real", method = RequestMethod.GET)
-    public String outRealPage(@PathVariable("id") int id, Model model) throws IOException {
-        model.addAttribute("scheduleId", id);
-        model.addAttribute("schedule_csv", dataService.paintRealSchedule(id));
-        return "output/real";
-    }
+	@RequestMapping(value = "{id}/real", method = RequestMethod.GET)
+	public String outRealPage(@PathVariable("id") int id, Model model) throws IOException {
+		model.addAttribute("scheduleId", id);
+		model.addAttribute("schedule_csv", dataService.paintRealSchedule(id));
+		return "output/real";
+	}
 }

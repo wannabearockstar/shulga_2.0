@@ -13,11 +13,12 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 @Service
 public class AuditoryService {
+
 	@Autowired
 	private AuditoryRepository auditoryRepository;
 
 	public static Auditory random(final ScheduleConfig config) {
-			int idx = ThreadLocalRandom.current().nextInt(0, config.getAuditories().size());
-			return config.getAuditories().get(idx);
+		int idx = ThreadLocalRandom.current().nextInt(0, config.getAuditories().size());
+		return config.getAuditories().get(idx);
 	}
 }

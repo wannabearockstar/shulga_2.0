@@ -9,22 +9,23 @@ import java.util.List;
  * Created by wannabe on 06.11.15.
  */
 public class AuditoryCollection {
-    @JsonProperty("auditories")
-    private List<Auditory> auditories;
 
-    public AuditoryCollection(List<Auditory> auditories) {
-        this.auditories = auditories;
-    }
+	@JsonProperty("auditories")
+	private List<Auditory> auditories;
 
-    public AuditoryCollection() {
-    }
+	public AuditoryCollection(List<Auditory> auditories) {
+		this.auditories = auditories;
+	}
 
-    public List<Auditory> getAuditories() {
-        return auditories;
-    }
+	public AuditoryCollection() {
+	}
 
-    public AuditoryCollection setAuditories(List<Auditory> auditories) {
-        this.auditories = auditories;
-        return this;
-    }
+	public List<Auditory> getAuditories() {
+		return auditories;
+	}
+
+	public AuditoryCollection setAuditories(List<Auditory> auditories) {
+		this.auditories = auditories;
+		return this;
+	}
 }

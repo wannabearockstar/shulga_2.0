@@ -97,15 +97,6 @@ public class ScheduleConfigLoader {
 		}
 	}
 
-	public static void saveToLocal(Schedule schedule, String filename) throws IOException {
-		Path path = Paths.get(filename);
-		ObjectMapper mapper = new ObjectMapper();
-
-		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-			mapper.writeValue(writer, schedule);
-		}
-	}
-
 
 	public static void initAllEntitiesInMemory() throws IOException {
 		ObjectMapper mapper = new ObjectMapper();

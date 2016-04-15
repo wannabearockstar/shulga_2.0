@@ -4,6 +4,7 @@ import ga.model.bound.BoundCollection;
 import ga.model.config.CurriculumUnit;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;
+import ga.model.service.ScheduleConfigService;
 import mapper.GroupInfoLoader;
 import mapper.ScheduleConfigLoader;
 import mapper.model.GroupInfo;
@@ -20,7 +21,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class DataService {
 	@Autowired
-	private ScheduleConfig scheduleConfig;
+	private ScheduleConfigService scheduleConfigService;
 
 	public Integer createScheduleConfig(CurriculumUnit[] curriculum) throws IOException {
 		ScheduleConfig config = ScheduleConfigLoader.fromCurriculum(curriculum);
@@ -32,11 +33,7 @@ public class DataService {
 	}
 
 	public ScheduleConfig getScheduleConfig(int id) {
-		try {
-			return ScheduleConfigLoader.fromLocal(String.format("schedule_config_%d.json", id));
-		} catch (IOException e) {
-			return null;
-		}
+		return scheduleConfigService.findOne(id);
 	}
 
 	public ScheduleConfig setBoundaries(int id, BoundCollection boundCollection) {
@@ -69,6 +66,7 @@ public class DataService {
 
 	//// TODO: 15.04.16 в сигнатуру скорее всего надо передавать данные для fetch
 	public String paintRealSchedule(int id) throws IOException {
+		ScheduleConfig scheduleConfig = scheduleConfigService.findOne(id);
 		Schedule realSchedule = GroupInfo.toSchedule(GroupInfoLoader.fromRemote("http://dvfu.vl.ru/api2/method/full.schedule.get.json", scheduleConfig.getGroups()));
 //		realSchedule.getConfig().setTimes(scheduleConfig.getTimes());
 		return new ScheduleCsvSerializer().serialize(realSchedule);

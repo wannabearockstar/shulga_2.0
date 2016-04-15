@@ -42,6 +42,8 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	public static double ONE_TIME_DISTANCE_MULTIPLIER = 2;
 	public static double TWO_TIMES_DISTANCE_MULTIPLIER = 1;
 	@Autowired
+	private ScheduleConfig scheduleConfig;
+	@Autowired
 	private AuditoryService auditoryService;
 
 	@Override
@@ -64,11 +66,10 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	}
 
 	private int checkCollisions(Schedule schedule) {
-		ScheduleConfig config = schedule.getConfig();
 		int res = 0;
 
-		for (WeekDay day : config.getWeekDays()) {
-			for (DayTime time : config.getTimes()) {
+		for (WeekDay day : scheduleConfig.getWeekDays()) {
+			for (DayTime time : scheduleConfig.getTimes()) {
 
 				TimeMark mark = new TimeMark(day, time);
 
@@ -85,7 +86,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 				List<Auditory> auditories = new ArrayList<>();
 
 				for (int position : positions) {
-					CurriculumUnit unit = config.getCurriculum().get(position);
+					CurriculumUnit unit = scheduleConfig.getCurriculum().get(position);
 					Auditory auditory = schedule.getAuditories()[position];
 
 					// check group collisions
@@ -116,7 +117,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	}
 
 	private int checkGroupsWindows(Schedule schedule) {
-		return schedule.getConfig().getGroups()
+		return scheduleConfig.getGroups()
 			.stream()
 			.mapToInt(x -> checkGroupWindows(schedule, x))
 			.sum();
@@ -127,7 +128,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
 		// time marks for exact group
 		TimeMark[] groupTimes = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> schedule.getConfig().getCurriculum().get(x).getGroupId() == group.getId())
+			.filter(x -> scheduleConfig.getCurriculum().get(x).getGroupId() == group.getId())
 			.boxed()
 			.map(x -> schedule.getTimeMarks()[x])
 			.sorted(new TimeMarkComparator())
@@ -158,7 +159,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	}
 
 	private int checkProfessorsWindows(Schedule schedule) {
-		return schedule.getConfig().getProfessors()
+		return scheduleConfig.getProfessors()
 			.stream()
 			.mapToInt(x -> checkProfessorWindows(schedule, x))
 			.sum();
@@ -169,7 +170,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
 		// time marks for exact professor
 		TimeMark[] professorTimes = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> schedule.getConfig().getCurriculum().get(x).getProfessorId() == professor.getId())
+			.filter(x -> scheduleConfig.getCurriculum().get(x).getProfessorId() == professor.getId())
 			.boxed()
 			.map(x -> schedule.getTimeMarks()[x])
 			.sorted(new TimeMarkComparator())
@@ -199,14 +200,14 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	}
 
 	private int checkGroupsDistance(Schedule schedule) {
-		return schedule.getConfig().getGroups()
+		return scheduleConfig.getGroups()
 			.stream()
 			.mapToInt(x -> checkGroupDistance(schedule, x))
 			.sum();
 	}
 
 	private int checkProfessorsDistance(Schedule schedule) {
-		return schedule.getConfig().getProfessors()
+		return scheduleConfig.getProfessors()
 			.stream()
 			.mapToInt(x -> checkProfessorsDistance(schedule, x))
 			.sum();
@@ -217,7 +218,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
 		// positions sorted by time marks for exact group
 		Integer[] positions = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> schedule.getConfig().getCurriculum().get(x).getProfessorId() == proffestor.getId())
+			.filter(x -> scheduleConfig.getCurriculum().get(x).getProfessorId() == proffestor.getId())
 			.boxed()
 			.sorted((fst, snd) -> compare(fst, snd, schedule))
 			.toArray(Integer[]::new);
@@ -255,7 +256,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 
 		// positions sorted by time marks for exact group
 		Integer[] positions = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> schedule.getConfig().getCurriculum().get(x).getGroupId() == group.getId())
+			.filter(x -> scheduleConfig.getCurriculum().get(x).getGroupId() == group.getId())
 			.boxed()
 			.sorted((fst, snd) -> compare(fst, snd, schedule))
 			.toArray(Integer[]::new);
@@ -299,7 +300,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	}
 
 	private int checkBounds(Schedule schedule) {
-		ScheduleConfig config = schedule.getConfig();
+		ScheduleConfig config = scheduleConfig;
 		int res = 0;
 
 		for (int i = 0; i < schedule.size(); ++i) {

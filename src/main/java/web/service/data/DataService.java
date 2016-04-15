@@ -8,6 +8,7 @@ import mapper.GroupInfoLoader;
 import mapper.ScheduleConfigLoader;
 import mapper.model.GroupInfo;
 import mapper.serializer.ScheduleCsvSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,6 +19,8 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 @Service
 public class DataService {
+	@Autowired
+	private ScheduleConfig scheduleConfig;
 
 	public Integer createScheduleConfig(CurriculumUnit[] curriculum) throws IOException {
 		ScheduleConfig config = ScheduleConfigLoader.fromCurriculum(curriculum);
@@ -64,10 +67,10 @@ public class DataService {
 		return new ScheduleCsvSerializer().serialize(schedule);
 	}
 
+	//// TODO: 15.04.16 в сигнатуру скорее всего надо передавать данные для fetch
 	public String paintRealSchedule(int id) throws IOException {
-		Schedule schedule = getResult(id);
-		Schedule realSchedule = GroupInfo.toSchedule(GroupInfoLoader.fromRemote("http://dvfu.vl.ru/api2/method/full.schedule.get.json", schedule.getConfig().getGroups()));
-		realSchedule.getConfig().setTimes(schedule.getConfig().getTimes());
+		Schedule realSchedule = GroupInfo.toSchedule(GroupInfoLoader.fromRemote("http://dvfu.vl.ru/api2/method/full.schedule.get.json", scheduleConfig.getGroups()));
+//		realSchedule.getConfig().setTimes(scheduleConfig.getTimes());
 		return new ScheduleCsvSerializer().serialize(realSchedule);
 	}
 }

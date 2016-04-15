@@ -28,6 +28,8 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	@Autowired
 	private ScheduleService scheduleService;
+	@Autowired
+	private ScheduleConfig scheduleConfig;
 
 	private static String escape(Object obj) {
 		if (obj == null)
@@ -37,7 +39,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	public String serialize(Schedule schedule) throws IOException {
-		List<Group> groups = schedule.getConfig().getGroups();
+		List<Group> groups = scheduleConfig.getGroups();
 		StringBuilder sb = new StringBuilder();
 
 		makeHeader(sb, schedule, groups);
@@ -47,7 +49,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	public void serialize(Schedule schedule, String to) throws IOException {
-		List<Group> groups = schedule.getConfig().getGroups();
+		List<Group> groups = scheduleConfig.getGroups();
 		Path path = Paths.get(to);
 
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
@@ -58,7 +60,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	public void serialize(Schedule schedule, Writer writer) throws IOException {
-		List<Group> groups = schedule.getConfig().getGroups();
+		List<Group> groups = scheduleConfig.getGroups();
 
 		makeHeader(writer, schedule, groups);
 		makeBody(writer, schedule, groups);
@@ -85,9 +87,8 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	private void makeBody(Appendable writer, Schedule schedule, List<Group> groups) throws IOException {
-		ScheduleConfig config = schedule.getConfig();
-		for (WeekDay day : config.getWeekDays()) {
-			for (DayTime time : config.getTimes()) {
+		for (WeekDay day : scheduleConfig.getWeekDays()) {
+			for (DayTime time : scheduleConfig.getTimes()) {
 
 				if (time.getId() == 1) {
 					writer.append(escape(WeekDay.locale.get(day)));
@@ -122,13 +123,12 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
 	private void makeTimeLine(Appendable writer, Schedule schedule, List<Group> groups, List<Integer> positions)
 		throws IOException {
-		ScheduleConfig config = schedule.getConfig();
 
 		for (Group group : groups) {
 
 			// todo: think about how to display collisions
 			int position = positions.stream()
-				.filter(pos -> config.getCurriculum()
+				.filter(pos -> scheduleConfig.getCurriculum()
 					.get(pos)
 					.getGroupId() == group.getId())
 				.findFirst()
@@ -140,16 +140,16 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 				continue;
 			}
 
-			CurriculumUnit unit = config.getCurriculum().get(position);
+			CurriculumUnit unit = scheduleConfig.getCurriculum().get(position);
 			Auditory auditory = schedule.getAuditories()[position];
 
-			Discipline discipline = config
+			Discipline discipline = scheduleConfig
 				.getDisciplines()
 				.stream()
 				.filter(x -> x.getId() == unit.getDisciplineId())
 				.findFirst().get();
 
-			Professor professor = config
+			Professor professor = scheduleConfig
 				.getProfessors()
 				.stream()
 				.filter(x -> x.getId() == unit.getProfessorId())

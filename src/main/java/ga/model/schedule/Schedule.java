@@ -5,13 +5,11 @@ import ga.model.schedule.time.TimeMark;
 
 public class Schedule {
 
-	private final ScheduleConfig config;
 	private TimeMark[] timeMarks;
 	private Auditory[] auditories;
 	private Double fitness;
 
 	public Schedule(ScheduleConfig config) {
-		this.config = config;
 		this.timeMarks = new TimeMark[config.getCurriculum().size()];
 		this.auditories = new Auditory[config.getCurriculum().size()];
 	}
@@ -20,18 +18,9 @@ public class Schedule {
 		this.timeMarks = timeMarks;
 		this.auditories = auditories;
 		this.fitness = fitness;
-		config = null;
-	}
-
-	public Schedule(ScheduleConfig config, TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {
-		this.config = config;
-		this.timeMarks = timeMarks;
-		this.auditories = auditories;
-		this.fitness = fitness;
 	}
 
 	public Schedule() {
-		config = null;
 	}
 
 	public TimeMark[] getTimeMarks() {
@@ -61,10 +50,6 @@ public class Schedule {
 
 	public void setFitness(Double fitness) {
 		this.fitness = fitness;
-	}
-
-	public ScheduleConfig getConfig() {
-		return config;
 	}
 
 	public int size() {

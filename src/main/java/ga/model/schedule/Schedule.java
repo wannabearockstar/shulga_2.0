@@ -1,22 +1,27 @@
 package ga.model.schedule;
 
+import ga.model.config.ScheduleConfig;
 import ga.model.schedule.time.TimeMark;
 
 public class Schedule {
+	private String id;
 
 	private TimeMark[] timeMarks;
 	private Auditory[] auditories;
 	private Double fitness;
+	private ScheduleConfig scheduleConfig;
 
-	public Schedule(int curriculumSize) {
+	public Schedule(int curriculumSize, ScheduleConfig scheduleConfig) {
+		this.scheduleConfig = scheduleConfig;
 		this.timeMarks = new TimeMark[curriculumSize];
 		this.auditories = new Auditory[curriculumSize];
 	}
 
-	public Schedule(TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {
+	public Schedule(TimeMark[] timeMarks, Auditory[] auditories, Double fitness, ScheduleConfig scheduleConfig) {
 		this.timeMarks = timeMarks;
 		this.auditories = auditories;
 		this.fitness = fitness;
+		this.scheduleConfig = scheduleConfig;
 	}
 
 	public Schedule() {
@@ -57,5 +62,13 @@ public class Schedule {
 
 	public void refreshFitness() {
 		fitness = null;
+	}
+
+	public ScheduleConfig getConfig() {
+		return scheduleConfig;
+	}
+
+	public String getId() {
+		return id;
 	}
 }

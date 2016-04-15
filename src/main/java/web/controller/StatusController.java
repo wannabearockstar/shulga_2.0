@@ -19,13 +19,13 @@ public class StatusController {
 	private AlgorithmService algorithmService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String statusPage(@PathVariable(value = "id") long id, Model model) {
+	public String statusPage(@PathVariable(value = "id") String id, Model model) {
 		model.addAttribute("scheduleId", id);
 		return "status/index";
 	}
 
 	@RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
-	public ResponseEntity<Result> statusData(@PathVariable(value = "id") int id) {
+	public ResponseEntity<Result> statusData(@PathVariable(value = "id") String id) {
 		return new ResponseEntity<>(Result.success(algorithmService.getStatus(id)), HttpStatus.OK);
 	}
 }

@@ -14,12 +14,15 @@ import java.util.regex.Pattern;
  */
 @Service
 public class AuditoryService {
+
 	public static final double DEFAULT_DISTANCE = 10;
 	public static final double LEVEL_MULTIPLIER = 3;
 	public static final Pattern namePattern = Pattern.compile("^\\w\\d{3}$");
-
 	@Autowired
 	private AuditoryRepository auditoryRepository;
+
+	public AuditoryService() {
+	}
 
 	public Auditory random(final ScheduleConfig config) {
 		int idx = ThreadLocalRandom.current().nextInt(0, config.getAuditories().size());

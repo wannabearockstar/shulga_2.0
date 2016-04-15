@@ -35,7 +35,7 @@ public class InputController {
 	}
 
 	@RequestMapping(value = "/{id}/models", method = RequestMethod.GET)
-	public String inputStepModelsPage(@PathVariable("id") int id, Model model) throws IOException {
+	public String inputStepModelsPage(@PathVariable("id") String id, Model model) throws IOException {
 		ScheduleConfig config = dataService.getScheduleConfig(id);
 		model.addAttribute("config", new ObjectMapper().writeValueAsString(config));
 		return "input/models";
@@ -47,7 +47,7 @@ public class InputController {
 	}
 
 	@RequestMapping(value = "/{id}/config", method = RequestMethod.POST)
-	public ResponseEntity<Result> saveConfiguration(@PathVariable("id") int id, @RequestBody CurriculumUnit[] curriculum)
+	public ResponseEntity<Result> saveConfiguration(@PathVariable("id") String id, @RequestBody CurriculumUnit[] curriculum)
 		throws IOException {
 
 		ScheduleConfig loaded = dataService.getScheduleConfig(id);
@@ -60,25 +60,25 @@ public class InputController {
 	}
 
 	@RequestMapping(value = "/{id}/config", method = RequestMethod.GET)
-	public ResponseEntity<Result> getConfiguration(@PathVariable("id") int id) throws IOException {
+	public ResponseEntity<Result> getConfiguration(@PathVariable("id") String id) throws IOException {
 		return new ResponseEntity<>(Result.success(dataService.getScheduleConfig(id)), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}/boundaries", method = RequestMethod.GET)
-	public String inputStepBoundariesPage(@PathVariable("id") int id, Model model) throws IOException {
+	public String inputStepBoundariesPage(@PathVariable("id") String id, Model model) throws IOException {
 		ScheduleConfig config = dataService.getScheduleConfig(id);
 		model.addAttribute("config", new ObjectMapper().writeValueAsString(config));
 		return "input/boundaries";
 	}
 
 	@RequestMapping(value = "/{id}/boundaries", method = RequestMethod.PUT)
-	public ResponseEntity<Result> setBoundaries(@PathVariable("id") int id, @RequestBody BoundCollection boundCollection)
+	public ResponseEntity<Result> setBoundaries(@PathVariable("id") String id, @RequestBody BoundCollection boundCollection)
 		throws IOException {
 		return new ResponseEntity<>(Result.success(dataService.setBoundaries(id, boundCollection)), HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/{id}/run", method = RequestMethod.POST)
-	public ResponseEntity<Result> runAlgorithm(@PathVariable("id") int id) {
+	public ResponseEntity<Result> runAlgorithm(@PathVariable("id") String id) {
 		return new ResponseEntity<>(Result.success(algorithmService.runAlgorithm(id)), HttpStatus.OK);
 	}
 
@@ -93,7 +93,7 @@ public class InputController {
 	public ResponseEntity<Result> saveDemoConfiguration(@RequestBody CurriculumUnit[] curriculum) throws IOException {
 		ScheduleConfig loaded = ScheduleConfigLoader.fromLocal("config.json");
 
-		Integer session_id = dataService.createScheduleConfig(curriculum);
+		String session_id = dataService.createScheduleConfig(loaded, curriculum);
 		dataService.setBoundaries(session_id, loaded.getBounds());
 
 		return new ResponseEntity<>(Result.success(session_id), HttpStatus.OK);

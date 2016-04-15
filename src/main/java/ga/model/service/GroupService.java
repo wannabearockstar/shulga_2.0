@@ -12,4 +12,7 @@ public class GroupService {
 
 	@Autowired
 	private GroupRepository groupRepository;
+
+	public GroupService() {
+	}
 }

@@ -18,8 +18,13 @@ import java.util.stream.Stream;
  */
 @Service
 public class PopulationService {
+
 	@Autowired
 	private ScheduleService scheduleService;
+
+	public PopulationService() {
+	}
+
 	public Population create(int populationSize, ScheduleConfig config, FitnessHandler fitnessHandler) {
 		List<Schedule> schedules = IntStream.range(0, populationSize)
 			.boxed()

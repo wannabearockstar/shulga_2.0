@@ -25,8 +25,8 @@ import java.util.concurrent.ThreadLocalRandom;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Algorithm implements Runnable {
 	@Resource
-	private Map<Integer, Status> algorithmStatuses;
-	private int algorithmId;
+	private Map<String, Status> algorithmStatuses;
+	private String algorithmId;
 	@Autowired
 	private PopulationService populationService;
 	@Autowired
@@ -118,7 +118,7 @@ public class Algorithm implements Runnable {
 	}
 
 	private Schedule crossover(Population population) {
-		Schedule newSchedule = new Schedule(scheduleConfig.getCurriculum().size());
+		Schedule newSchedule = new Schedule(scheduleConfig.getCurriculum().size(), scheduleConfig);
 
 		TimeMark[] marks = new TimeMark[newSchedule.size()];
 		for (int i = 0; i < marks.length; i++) {
@@ -137,7 +137,7 @@ public class Algorithm implements Runnable {
 		return newSchedule;
 	}
 
-	public void setAlgorithmId(int algorithmId) {
+	public void setAlgorithmId(String algorithmId) {
 		this.algorithmId = algorithmId;
 	}
 

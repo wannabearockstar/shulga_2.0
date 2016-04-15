@@ -12,7 +12,7 @@ public class GA {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	public int solve(ScheduleConfig scheduleConfig, int id) {
+	public String solve(ScheduleConfig scheduleConfig, String id) {
 		Algorithm algorithm = (Algorithm) applicationContext.getBean("algorithm");
 		algorithm.setAlgorithmId(id);
 		algorithm.setScheduleConfig(scheduleConfig);

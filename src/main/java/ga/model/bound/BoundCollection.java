@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BoundCollection {
+	private String id;
 
 	@JsonProperty("auditory_times")
 	private Map<Integer, TimeBound> auditoryTimes;
@@ -36,4 +37,7 @@ public class BoundCollection {
 		return disciplineAuditories;
 	}
 
+	public String getId() {
+		return id;
+	}
 }

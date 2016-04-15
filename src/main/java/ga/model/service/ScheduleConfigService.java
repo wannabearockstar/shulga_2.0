@@ -13,7 +13,11 @@ public class ScheduleConfigService {
 	@Autowired
 	private ScheduleConfigRepository scheduleConfigRepository;
 
-	public ScheduleConfig findOne(int id) {
+	public ScheduleConfig findOne(String id) {
 		return scheduleConfigRepository.findOne(id);
+	}
+
+	public ScheduleConfig save(ScheduleConfig config) {
+		return scheduleConfigRepository.save(config);
 	}
 }

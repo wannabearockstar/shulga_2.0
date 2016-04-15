@@ -6,14 +6,20 @@ import ga.model.schedule.Schedule;
 import ga.model.schedule.time.TimeMark;
 import ga.model.service.AuditoryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Mutation {
-	public final double mutationRate;
-	public final double mutationStep;
+	@Value("${ga.mutation.step}")
+	public double mutationStep;
+	@Value("${ga.mutation.rate}")
+	public double mutationRate;
 	@Autowired
 	private AuditoryService auditoryService;
+
+	public Mutation() {
+	}
 
 	public Mutation(double mutationRate, double mutationStep) {
 		this.mutationRate = mutationRate;

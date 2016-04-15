@@ -26,14 +26,14 @@ public class OutController {
 	DataService dataService;
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public String outPage(@PathVariable("id") int id, Model model) throws IOException {
+	public String outPage(@PathVariable("id") String id, Model model) throws IOException {
 		model.addAttribute("scheduleId", id);
 		model.addAttribute("schedule_csv", dataService.paintSchedule(id));
 		return "output/result";
 	}
 
 	@RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
-	public ResponseEntity<Result> getResult(@PathVariable("id") int id) {
+	public ResponseEntity<Result> getResult(@PathVariable("id") String id) {
 		return new ResponseEntity<>(Result.success(dataService.getResult(id)), HttpStatus.OK);
 	}
 
@@ -52,7 +52,7 @@ public class OutController {
 	}
 
 	@RequestMapping(value = "{id}/real", method = RequestMethod.GET)
-	public String outRealPage(@PathVariable("id") int id, Model model) throws IOException {
+	public String outRealPage(@PathVariable("id") String id, Model model) throws IOException {
 		model.addAttribute("scheduleId", id);
 		model.addAttribute("schedule_csv", dataService.paintRealSchedule(id));
 		return "output/real";

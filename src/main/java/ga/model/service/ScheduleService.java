@@ -14,16 +14,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ScheduleService {
+
 	@Autowired
 	private AuditoryService auditoryService;
 	@Autowired
 	private FitnessHandler fitnessHandler;
-
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 
+	public ScheduleService() {
+	}
+
 	public Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
-		Schedule schedule = new Schedule(config.getCurriculum().size());
+		Schedule schedule = new Schedule(config.getCurriculum().size(), config);
 		TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
 		Auditory[] auditories = new Auditory[config.getCurriculum().size()];
 
@@ -39,8 +42,12 @@ public class ScheduleService {
 	}
 
 	public Double getFitness(Schedule schedule) {
-		Double fitness = schedule.getFitness();
-		if (fitness == null) {
+		try {
+			Double fitness = schedule.getFitness();
+			if (fitness == null) {
+				schedule.setFitness(fitnessHandler.computeFitness(schedule));
+			}
+		} catch (IllegalStateException e) {
 			schedule.setFitness(fitnessHandler.computeFitness(schedule));
 		}
 		return schedule.getFitness();
@@ -50,7 +57,7 @@ public class ScheduleService {
 		return fitnessHandler.hasCollisions(schedule);
 	}
 
-	public Schedule findOne(int id) {
+	public Schedule findOne(String id) {
 		return scheduleRepository.findOne(id);
 	}
 

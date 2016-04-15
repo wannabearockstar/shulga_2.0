@@ -12,4 +12,7 @@ public class LessonTypeService {
 
 	@Autowired
 	private LessonTypeRepository lessonTypeRepository;
+
+	public LessonTypeService() {
+	}
 }

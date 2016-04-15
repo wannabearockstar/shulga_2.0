@@ -1,7 +1,6 @@
 package mapper.serializer;
 
 import ga.model.config.CurriculumUnit;
-import ga.model.config.ScheduleConfig;
 import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.TimeMark;
@@ -28,8 +27,6 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	@Autowired
 	private ScheduleService scheduleService;
-	@Autowired
-	private ScheduleConfig scheduleConfig;
 
 	private static String escape(Object obj) {
 		if (obj == null)
@@ -39,7 +36,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	public String serialize(Schedule schedule) throws IOException {
-		List<Group> groups = scheduleConfig.getGroups();
+		List<Group> groups = schedule.getConfig().getGroups();
 		StringBuilder sb = new StringBuilder();
 
 		makeHeader(sb, schedule, groups);
@@ -49,7 +46,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	public void serialize(Schedule schedule, String to) throws IOException {
-		List<Group> groups = scheduleConfig.getGroups();
+		List<Group> groups = schedule.getConfig().getGroups();
 		Path path = Paths.get(to);
 
 		try (BufferedWriter writer = Files.newBufferedWriter(path)) {
@@ -60,7 +57,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	public void serialize(Schedule schedule, Writer writer) throws IOException {
-		List<Group> groups = scheduleConfig.getGroups();
+		List<Group> groups = schedule.getConfig().getGroups();
 
 		makeHeader(writer, schedule, groups);
 		makeBody(writer, schedule, groups);
@@ -87,8 +84,8 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 	}
 
 	private void makeBody(Appendable writer, Schedule schedule, List<Group> groups) throws IOException {
-		for (WeekDay day : scheduleConfig.getWeekDays()) {
-			for (DayTime time : scheduleConfig.getTimes()) {
+		for (WeekDay day : schedule.getConfig().getWeekDays()) {
+			for (DayTime time : schedule.getConfig().getTimes()) {
 
 				if (time.getId() == 1) {
 					writer.append(escape(WeekDay.locale.get(day)));
@@ -128,7 +125,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
 			// todo: think about how to display collisions
 			int position = positions.stream()
-				.filter(pos -> scheduleConfig.getCurriculum()
+				.filter(pos -> schedule.getConfig().getCurriculum()
 					.get(pos)
 					.getGroupId() == group.getId())
 				.findFirst()
@@ -140,16 +137,16 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 				continue;
 			}
 
-			CurriculumUnit unit = scheduleConfig.getCurriculum().get(position);
+			CurriculumUnit unit = schedule.getConfig().getCurriculum().get(position);
 			Auditory auditory = schedule.getAuditories()[position];
 
-			Discipline discipline = scheduleConfig
+			Discipline discipline = schedule.getConfig()
 				.getDisciplines()
 				.stream()
 				.filter(x -> x.getId() == unit.getDisciplineId())
 				.findFirst().get();
 
-			Professor professor = scheduleConfig
+			Professor professor = schedule.getConfig()
 				.getProfessors()
 				.stream()
 				.filter(x -> x.getId() == unit.getProfessorId())

@@ -41,8 +41,6 @@ public class FitnessHandler {
 	public static double ONE_TIME_DISTANCE_MULTIPLIER = 2;
 	public static double TWO_TIMES_DISTANCE_MULTIPLIER = 1;
 	@Autowired
-	private ScheduleConfig scheduleConfig;
-	@Autowired
 	private AuditoryService auditoryService;
 
 	public double computeFitness(Schedule schedule) {
@@ -65,8 +63,8 @@ public class FitnessHandler {
 	private int checkCollisions(Schedule schedule) {
 		int res = 0;
 
-		for (WeekDay day : scheduleConfig.getWeekDays()) {
-			for (DayTime time : scheduleConfig.getTimes()) {
+		for (WeekDay day : schedule.getConfig().getWeekDays()) {
+			for (DayTime time : schedule.getConfig().getTimes()) {
 
 				TimeMark mark = new TimeMark(day, time);
 
@@ -83,7 +81,7 @@ public class FitnessHandler {
 				List<Auditory> auditories = new ArrayList<>();
 
 				for (int position : positions) {
-					CurriculumUnit unit = scheduleConfig.getCurriculum().get(position);
+					CurriculumUnit unit = schedule.getConfig().getCurriculum().get(position);
 					Auditory auditory = schedule.getAuditories()[position];
 
 					// check group collisions
@@ -114,7 +112,7 @@ public class FitnessHandler {
 	}
 
 	private int checkGroupsWindows(Schedule schedule) {
-		return scheduleConfig.getGroups()
+		return schedule.getConfig().getGroups()
 			.stream()
 			.mapToInt(x -> checkGroupWindows(schedule, x))
 			.sum();
@@ -125,7 +123,7 @@ public class FitnessHandler {
 
 		// time marks for exact group
 		TimeMark[] groupTimes = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> scheduleConfig.getCurriculum().get(x).getGroupId() == group.getId())
+			.filter(x -> schedule.getConfig().getCurriculum().get(x).getGroupId() == group.getId())
 			.boxed()
 			.map(x -> schedule.getTimeMarks()[x])
 			.sorted(new TimeMarkComparator())
@@ -156,7 +154,7 @@ public class FitnessHandler {
 	}
 
 	private int checkProfessorsWindows(Schedule schedule) {
-		return scheduleConfig.getProfessors()
+		return schedule.getConfig().getProfessors()
 			.stream()
 			.mapToInt(x -> checkProfessorWindows(schedule, x))
 			.sum();
@@ -167,7 +165,7 @@ public class FitnessHandler {
 
 		// time marks for exact professor
 		TimeMark[] professorTimes = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> scheduleConfig.getCurriculum().get(x).getProfessorId() == professor.getId())
+			.filter(x -> schedule.getConfig().getCurriculum().get(x).getProfessorId() == professor.getId())
 			.boxed()
 			.map(x -> schedule.getTimeMarks()[x])
 			.sorted(new TimeMarkComparator())
@@ -197,14 +195,14 @@ public class FitnessHandler {
 	}
 
 	private int checkGroupsDistance(Schedule schedule) {
-		return scheduleConfig.getGroups()
+		return schedule.getConfig().getGroups()
 			.stream()
 			.mapToInt(x -> checkGroupDistance(schedule, x))
 			.sum();
 	}
 
 	private int checkProfessorsDistance(Schedule schedule) {
-		return scheduleConfig.getProfessors()
+		return schedule.getConfig().getProfessors()
 			.stream()
 			.mapToInt(x -> checkProfessorsDistance(schedule, x))
 			.sum();
@@ -215,7 +213,7 @@ public class FitnessHandler {
 
 		// positions sorted by time marks for exact group
 		Integer[] positions = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> scheduleConfig.getCurriculum().get(x).getProfessorId() == proffestor.getId())
+			.filter(x -> schedule.getConfig().getCurriculum().get(x).getProfessorId() == proffestor.getId())
 			.boxed()
 			.sorted((fst, snd) -> compare(fst, snd, schedule))
 			.toArray(Integer[]::new);
@@ -253,7 +251,7 @@ public class FitnessHandler {
 
 		// positions sorted by time marks for exact group
 		Integer[] positions = IntStream.range(0, schedule.getTimeMarks().length)
-			.filter(x -> scheduleConfig.getCurriculum().get(x).getGroupId() == group.getId())
+			.filter(x -> schedule.getConfig().getCurriculum().get(x).getGroupId() == group.getId())
 			.boxed()
 			.sorted((fst, snd) -> compare(fst, snd, schedule))
 			.toArray(Integer[]::new);
@@ -297,7 +295,7 @@ public class FitnessHandler {
 	}
 
 	private int checkBounds(Schedule schedule) {
-		ScheduleConfig config = scheduleConfig;
+		ScheduleConfig config = schedule.getConfig();
 		int res = 0;
 
 		for (int i = 0; i < schedule.size(); ++i) {

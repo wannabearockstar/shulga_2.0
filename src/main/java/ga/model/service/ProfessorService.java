@@ -12,4 +12,7 @@ public class ProfessorService {
 
 	@Autowired
 	private ProfessorRepository professorRepository;
+
+	public ProfessorService() {
+	}
 }

@@ -17,24 +17,27 @@ import java.util.Map;
  */
 @Service
 public class AlgorithmService {
+
 	@Autowired
 	private ScheduleService scheduleService;
 	@Autowired
 	private ScheduleConfigService scheduleConfigService;
 	@Resource
-	private Map<Integer, Status> algorithmStatuses;
+	private Map<String, Status> algorithmStatuses;
 	@Autowired
 	private GA ga;
+	public AlgorithmService() {
+	}
 
-	public int runAlgorithm(int id) {
+	public String runAlgorithm(String id) {
 		if (algorithmStatuses.containsKey(id)) {
-			return 0;
+			return "0";
 		}
 		ScheduleConfig config = scheduleConfigService.findOne(id);
 		return ga.solve(config, id);
 	}
 
-	public Status getStatus(int id) {
+	public Status getStatus(String id) {
 		Schedule schedule = scheduleService.findOne(id);
 		if (schedule == null) {
 			return algorithmStatuses.get(id);

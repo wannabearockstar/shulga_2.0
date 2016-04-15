@@ -12,4 +12,7 @@ public class DisciplineService {
 
 	@Autowired
 	private DisciplineRepository disciplineRepository;
+
+	public DisciplineService() {
+	}
 }

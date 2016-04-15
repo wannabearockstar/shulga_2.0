@@ -4,6 +4,7 @@ import ga.core.model.Population;
 import ga.model.schedule.Schedule;
 import ga.model.service.PopulationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -12,9 +13,13 @@ import java.util.List;
 
 @Component
 public class Selection {
-	private final int tournamentSize;
+	@Value("${ga.selection.tournament.size}")
+	private int tournamentSize;
 	@Autowired
 	private PopulationService populationService;
+
+	public Selection() {
+	}
 
 	public Selection(int tournamentSize) {
 		this.tournamentSize = tournamentSize;

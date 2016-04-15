@@ -1,10 +1,12 @@
 package ga.model.config;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import ga.model.bound.BoundCollection;
 import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.WeekDay;
+import org.springframework.data.annotation.Id;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +47,10 @@ public class ScheduleConfig {
 
 	@JsonProperty("bounds")
 	private BoundCollection bounds;
+
+	@Id
+	@JsonIgnore
+	private String id;
 
 	public List<Auditory> getAuditories() {
 		return auditories;
@@ -125,5 +131,9 @@ public class ScheduleConfig {
 	public ScheduleConfig setBounds(BoundCollection bounds) {
 		this.bounds = bounds;
 		return this;
+	}
+
+	public String getId() {
+		return id;
 	}
 }

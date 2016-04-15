@@ -1,6 +1,5 @@
 package ga.core.impl;
 
-import ga.core.FitnessHandler;
 import ga.model.bound.TimeBound;
 import ga.model.bound.ValueBound;
 import ga.model.comparator.TimeMarkComparator;
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Component
-public class FitnessHandlerImpl implements FitnessHandler {
+public class FitnessHandler {
 	private final static int FIRST_DAY_TIME = 1;
 	// common penalties
 	public static int COLLISION_PENALTY = 350;
@@ -46,7 +45,6 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	@Autowired
 	private AuditoryService auditoryService;
 
-	@Override
 	public double computeFitness(Schedule schedule) {
 		int res = 0;
 
@@ -60,7 +58,6 @@ public class FitnessHandlerImpl implements FitnessHandler {
 		return res;
 	}
 
-	@Override
 	public boolean hasCollisions(Schedule schedule) {
 		return checkCollisions(schedule) != 0;
 	}

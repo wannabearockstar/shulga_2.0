@@ -1,6 +1,6 @@
 package ga.model.service;
 
-import ga.core.FitnessHandler;
+import ga.core.impl.FitnessHandler;
 import ga.core.model.Population;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;

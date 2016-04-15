@@ -1,18 +1,22 @@
 package ga;
 
-import ga.core.FitnessHandler;
-import ga.core.impl.FitnessHandlerImpl;
-import ga.core.model.AlgorithmConfig;
+import ga.core.impl.Algorithm;
 import ga.model.config.ScheduleConfig;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
+@Component
 public class GA {
 
-	public static int solve(ScheduleConfig scheduleConfig, int id) {
-		AlgorithmConfig algConfig = new AlgorithmConfig(5000, 50);
-		FitnessHandler handler = new FitnessHandlerImpl();
-		Algorithm algorithm = new Algorithm(algConfig, scheduleConfig, handler, id);
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	public int solve(ScheduleConfig scheduleConfig, int id) {
+		Algorithm algorithm = (Algorithm) applicationContext.getBean("algorithm");
+		algorithm.setAlgorithmId(id);
+		algorithm.setScheduleConfig(scheduleConfig);
 		new Thread(algorithm).start();
 		return id;
 	}
-
 }

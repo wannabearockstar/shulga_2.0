@@ -1,12 +1,10 @@
 package ga.core.impl;
 
-import ga.core.FitnessHandler;
+import ga.core.config.AlgorithmSpringConfiguration;
 import ga.core.model.AlgorithmConfig;
 import ga.core.model.Population;
 import ga.core.utils.mutation.Mutation;
-import ga.core.utils.mutation.ReplaceMutation;
 import ga.core.utils.selection.Selection;
-import ga.core.utils.selection.TournamentSelection;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
 import ga.model.schedule.Schedule;
@@ -15,38 +13,39 @@ import ga.model.service.PopulationService;
 import ga.model.service.ScheduleService;
 import mapper.ScheduleConfigLoader;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import web.model.Status;
 
+import javax.annotation.Resource;
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class Algorithm implements Runnable {
-	public static Map<Integer, Status> algorithmStatuses = new ConcurrentHashMap<>();
-	public static int CATACLYSM_LIMIT = 20;
-	public static double CATACLYSM_PART = 0.3;
-	public static double MUTATION_RATE = 0.02;
-	public static double MUTATION_STEP = 0.01;
-	public static int TOURNAMENT_SIZE = 10;
-	private final int algorithmId;
+	@Resource
+	private Map<Integer, Status> algorithmStatuses;
+	private int algorithmId;
 	@Autowired
 	private PopulationService populationService;
 	@Autowired
 	private ScheduleService scheduleService;
-	private AlgorithmConfig algConfig;
-	private ScheduleConfig scheduleConfig;
+	@Autowired
 	private FitnessHandler fitnessHandler;
+	@Autowired
 	private Selection selection;
+	@Autowired
 	private Mutation mutation;
+	@Autowired
+	private AlgorithmConfig algConfig;
 
-	public Algorithm(AlgorithmConfig algConfig, ScheduleConfig scheduleConfig, FitnessHandler handler, int algorithmId) {
-		this.algConfig = algConfig;
-		this.scheduleConfig = scheduleConfig;
-		this.fitnessHandler = handler;
-		this.algorithmId = algorithmId;
-		this.mutation = new ReplaceMutation(MUTATION_RATE, MUTATION_STEP, scheduleConfig);
-		this.selection = new TournamentSelection(TOURNAMENT_SIZE);
+
+	private ScheduleConfig scheduleConfig;
+
+	public Algorithm() {
 	}
 
 	@Override
@@ -73,9 +72,9 @@ public class Algorithm implements Runnable {
 				lastFitness = scheduleService.getFitness(populationService.getFittestSchedule(population));
 			}
 
-			if (cataclysmCounter >= CATACLYSM_LIMIT) {
+			if (cataclysmCounter >= AlgorithmSpringConfiguration.CATACLYSM_LIMIT) {
 				cataclysmCounter = 0;
-				population = populationService.cataclysm(population, CATACLYSM_PART, scheduleConfig, fitnessHandler);
+				population = populationService.cataclysm(population, AlgorithmSpringConfiguration.CATACLYSM_PART, scheduleConfig, fitnessHandler);
 				System.out.println("Cataclysm...");
 			}
 			currentTime = System.currentTimeMillis();
@@ -107,7 +106,7 @@ public class Algorithm implements Runnable {
 
 	protected Population evolve(Population population) {
 		Population newPopulation = recombination(population);
-		mutation.mutate(newPopulation);
+		mutation.mutate(newPopulation, scheduleConfig);
 
 		// insert elite schedule
 		newPopulation.setSchedule(0, populationService.getFittestSchedule(population));
@@ -142,5 +141,13 @@ public class Algorithm implements Runnable {
 		newSchedule.setAuditories(auditories);
 
 		return newSchedule;
+	}
+
+	public void setAlgorithmId(int algorithmId) {
+		this.algorithmId = algorithmId;
+	}
+
+	public void setScheduleConfig(ScheduleConfig scheduleConfig) {
+		this.scheduleConfig = scheduleConfig;
 	}
 }

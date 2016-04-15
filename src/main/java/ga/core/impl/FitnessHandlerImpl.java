@@ -13,6 +13,9 @@ import ga.model.schedule.Schedule;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.TimeMark;
 import ga.model.schedule.time.WeekDay;
+import ga.model.service.AuditoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,28 +23,26 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 public class FitnessHandlerImpl implements FitnessHandler {
-
 	private final static int FIRST_DAY_TIME = 1;
-
 	// common penalties
 	public static int COLLISION_PENALTY = 350;
 	public static int AUDITORIA_TIMES_PENALTY = 130;
 	public static int DISCIPLINE_TIMES_PENALTY = 130;
 	public static int DISCIPLINE_AUDITORIES_PENALTY = 130;
-
 	// penalties for groups
 	public static int ONE_WINDOW_GROUPS_PENALTY = 10;
 	public static int TWO_WINDOWS_GROUPS_PENALTY = 20;
 	public static int EMPTY_START_TIME_PENALTY = 15;
-
 	// penalties for professors
 	public static int WEEKEND_TIME_PENALTY = 4;
 	public static int TWO_WINDOWS_PROFESSORS_PENALTY = 10;
-
 	// distance multiplier
 	public static double ONE_TIME_DISTANCE_MULTIPLIER = 2;
 	public static double TWO_TIMES_DISTANCE_MULTIPLIER = 1;
+	@Autowired
+	private AuditoryService auditoryService;
 
 	@Override
 	public double computeFitness(Schedule schedule) {
@@ -294,7 +295,7 @@ public class FitnessHandlerImpl implements FitnessHandler {
 	}
 
 	private double checkDistance(Auditory fst, Auditory snd, double multiplier) {
-		return fst.getDistance(snd) * multiplier;
+		return auditoryService.getDistance(fst, snd) * multiplier;
 	}
 
 	private int checkBounds(Schedule schedule) {

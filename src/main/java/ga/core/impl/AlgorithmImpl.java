@@ -12,7 +12,10 @@ import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Auditory;
 import ga.model.schedule.Schedule;
 import ga.model.schedule.time.TimeMark;
+import ga.model.service.PopulationService;
 import mapper.ScheduleConfigLoader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import web.model.Status;
 
 import java.io.IOException;
@@ -20,18 +23,17 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Service
 public class AlgorithmImpl implements Algorithm {
-
 	public static Map<Integer, Status> algorithmStatuses = new ConcurrentHashMap<>();
-
 	public static int CATACLYSM_LIMIT = 20;
 	public static double CATACLYSM_PART = 0.3;
-
 	public static double MUTATION_RATE = 0.02;
 	public static double MUTATION_STEP = 0.01;
-
 	public static int TOURNAMENT_SIZE = 10;
 	private final int algorithmId;
+	@Autowired
+	private PopulationService populationService;
 	private AlgorithmConfig algConfig;
 	private ScheduleConfig scheduleConfig;
 	private FitnessHandler fitnessHandler;
@@ -49,10 +51,9 @@ public class AlgorithmImpl implements Algorithm {
 
 	@Override
 	public void run() {
-		Population population = new Population(algConfig.getPopulationSize(), true, scheduleConfig, fitnessHandler);
-
+		Population population = populationService.create(algConfig.getPopulationSize(), scheduleConfig, fitnessHandler);
 		int cataclysmCounter = 0;
-		double lastFitness = population.getFittest().getFitness();
+		double lastFitness = populationService.getFittestSchedule(population).getFitness();
 		Double maxFitness = null;
 		double roundTime = 0;
 		long startTime = 0;
@@ -65,39 +66,39 @@ public class AlgorithmImpl implements Algorithm {
 			startTime = System.currentTimeMillis();
 			population = evolve(population);
 
-			if (population.getFittest().getFitness() == lastFitness) {
+			if (populationService.getFittestSchedule(population).getFitness() == lastFitness) {
 				cataclysmCounter++;
 			} else {
 				cataclysmCounter = 0;
-				lastFitness = population.getFittest().getFitness();
+				lastFitness = populationService.getFittestSchedule(population).getFitness();
 			}
 
 			if (cataclysmCounter >= CATACLYSM_LIMIT) {
 				cataclysmCounter = 0;
-				population.cataclysm(CATACLYSM_PART, scheduleConfig, fitnessHandler);
+				population = populationService.cataclysm(population, CATACLYSM_PART, scheduleConfig, fitnessHandler);
 				System.out.println("Cataclysm...");
 			}
 			currentTime = System.currentTimeMillis();
 			roundTime += currentTime - startTime;
-			System.out.println(population.getFittest().getFitness() + ". Round " + i);
+			System.out.println(populationService.getFittestSchedule(population).getFitness() + ". Round " + i);
 			if (i == 0 || (i >= 1000 && i % 1000 == 0)) {
 				remaningTime = (algConfig.getRoundNumber() - i) * (roundTime * 1.0 / (i * 1000));
 			}
-			if (lastFitness / population.getFittest().getFitness() > 3.5) {
-				algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), null, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
+			if (lastFitness / populationService.getFittestSchedule(population).getFitness() > 3.5) {
+				algorithmStatuses.put(algorithmId, new Status(populationService.getFittestSchedule(population).getFitness(), null, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
 			} else {
 				if (maxFitness == null) {
 					maxFitness = lastFitness;
 				}
-				algorithmStatuses.put(algorithmId, new Status(population.getFittest().getFitness(), maxFitness, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
+				algorithmStatuses.put(algorithmId, new Status(populationService.getFittestSchedule(population).getFitness(), maxFitness, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
 			}
 
-			if (population.getFittest().getFitness() == 0) {
+			if (populationService.getFittestSchedule(population).getFitness() == 0) {
 				break;
 			}
 		}
 		try {
-			ScheduleConfigLoader.saveToLocal(population.getWithoutCollisions(), String.format("schedule_result_%d.json", algorithmId));
+			ScheduleConfigLoader.saveToLocal(populationService.getFirstScheduleWithoutCollisions(population), String.format("schedule_result_%d.json", algorithmId));
 			algorithmStatuses.remove(algorithmId);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -109,7 +110,7 @@ public class AlgorithmImpl implements Algorithm {
 		mutation.mutate(newPopulation);
 
 		// insert elite schedule
-		newPopulation.setSchedule(0, population.getFittest());
+		newPopulation.setSchedule(0, populationService.getFittestSchedule(population));
 
 		return newPopulation;
 	}

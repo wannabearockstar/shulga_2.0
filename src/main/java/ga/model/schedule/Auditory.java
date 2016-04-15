@@ -2,13 +2,7 @@ package ga.model.schedule;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.regex.Pattern;
-
 public class Auditory {
-
-	public static final double LEVEL_MULTIPLIER = 3;
-	public static final double DEFAULT_DISTANCE = 10;
-	public static final Pattern namePattern = Pattern.compile("^\\w\\d{3}$");
 
 	@JsonProperty("id")
 	private int id;
@@ -29,10 +23,6 @@ public class Auditory {
 	private int buildingId;
 
 	public Auditory() {
-	}
-
-	public boolean isNameValidForCampus() {
-		return namePattern.matcher(name).matches();
 	}
 
 	public int getId() {
@@ -73,41 +63,6 @@ public class Auditory {
 	public Auditory setLevel(int level) {
 		this.level = level;
 		return this;
-	}
-
-	public boolean hasValidCoordinates() {
-		return lat != 0.0 && lon != 0.0;
-	}
-
-	public double getDistance(Auditory other) {
-		if (id == other.getId()) {
-			return 0;
-		}
-		if (!hasValidCoordinates() || !other.hasValidCoordinates()) {
-			if (isNameValidForCampus() && other.isNameValidForCampus()) {
-				return getDistanceByName(other);
-			}
-			return DEFAULT_DISTANCE;
-		}
-
-		double x = (lat - other.getLat()) * 10000;
-		double y = (lon - other.getLon()) * 10000;
-		double z = level - other.getLevel() * 10;
-		return Math.sqrt(x * x + y * y) + LEVEL_MULTIPLIER * Math.abs(z);
-	}
-
-	private double getDistanceByName(Auditory other) {
-
-		return Math.abs(getLetterAlphabetOrder(name.charAt(0)) - other.getLetterAlphabetOrder(other.getName().charAt(0))) + Math.abs(Integer.parseInt(name.substring(1)) - Integer.parseInt(other.getName().substring(1)));
-	}
-
-	private int getLetterAlphabetOrder(char c) {
-		int temp = (int) c;
-		int temp_integer = 64; //for upper case
-		if (temp <= 90 & temp >= 65) {
-			return temp - temp_integer;
-		}
-		return 0;
 	}
 
 	@Override

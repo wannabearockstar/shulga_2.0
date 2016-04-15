@@ -3,6 +3,7 @@ package ga.core.model;
 import ga.core.FitnessHandler;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;
+import ga.model.service.ScheduleService;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,7 +30,7 @@ public class Population {
         schedules = new Schedule[populationSize];
         if (init) {
             for (int i = 0; i < schedules.length; i++) {
-                schedules[i] = Schedule.random(config, fitnessHandler);
+                schedules[i] = ScheduleService.random(config, fitnessHandler);
             }
         }
     }
@@ -74,7 +75,7 @@ public class Population {
     public Population cataclysm(double part, ScheduleConfig config, FitnessHandler handler) {
         for (int i = 0; i < schedules.length; i++) {
             if (i >= schedules.length * part) {
-                schedules[i] = Schedule.random(config, handler);
+                schedules[i] = ScheduleService.random(config, handler);
             }
         }
         return this;

@@ -49,38 +49,6 @@ public class Schedule {
         fitnessHandler = null;
     }
 
-    public static Schedule random(final ScheduleConfig config) {
-        Schedule schedule = new Schedule(config);
-        TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
-        Auditory[] auditories = new Auditory[config.getCurriculum().size()];
-
-        for (int i = 0; i < config.getCurriculum().size(); i++) {
-            timeMarks[i] = TimeMark.random(config);
-            auditories[i] = Auditory.random(config);
-        }
-
-        schedule.setAuditories(auditories);
-        schedule.setTimeMarks(timeMarks);
-
-        return schedule;
-    }
-
-    public static Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
-        Schedule schedule = new Schedule(config, fitnessHandler);
-        TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
-        Auditory[] auditories = new Auditory[config.getCurriculum().size()];
-
-        for (int i = 0; i < config.getCurriculum().size(); i++) {
-            timeMarks[i] = TimeMark.random(config);
-            auditories[i] = Auditory.random(config);
-        }
-
-        schedule.setAuditories(auditories);
-        schedule.setTimeMarks(timeMarks);
-
-        return schedule;
-    }
-
     public TimeMark[] getTimeMarks() {
         return timeMarks;
     }

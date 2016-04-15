@@ -1,9 +1,7 @@
 package ga.model.schedule;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ga.model.config.ScheduleConfig;
 
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.regex.Pattern;
 
 public class Auditory {
@@ -31,11 +29,6 @@ public class Auditory {
     private int buildingId;
 
     public Auditory() {
-    }
-
-    public static Auditory random(final ScheduleConfig config) {
-        int idx = ThreadLocalRandom.current().nextInt(0, config.getAuditories().size());
-        return config.getAuditories().get(idx);
     }
 
     public boolean isNameValidForCampus() {

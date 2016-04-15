@@ -23,7 +23,7 @@ public class ScheduleService {
 	private ScheduleRepository scheduleRepository;
 
 	public Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
-		Schedule schedule = new Schedule(config);
+		Schedule schedule = new Schedule(config.getCurriculum().size());
 		TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
 		Auditory[] auditories = new Auditory[config.getCurriculum().size()];
 

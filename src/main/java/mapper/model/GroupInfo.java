@@ -59,7 +59,7 @@ public class GroupInfo {
 			))
 			.toArray(TimeMark[]::new);
 
-		return new Schedule(config)
+		return new Schedule(config.getCurriculum().size())
 			.setAuditories(auditories)
 			.setTimeMarks(marks);
 	}

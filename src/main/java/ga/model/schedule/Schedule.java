@@ -1,6 +1,5 @@
 package ga.model.schedule;
 
-import ga.model.config.ScheduleConfig;
 import ga.model.schedule.time.TimeMark;
 
 public class Schedule {
@@ -9,9 +8,9 @@ public class Schedule {
 	private Auditory[] auditories;
 	private Double fitness;
 
-	public Schedule(ScheduleConfig config) {
-		this.timeMarks = new TimeMark[config.getCurriculum().size()];
-		this.auditories = new Auditory[config.getCurriculum().size()];
+	public Schedule(int curriculumSize) {
+		this.timeMarks = new TimeMark[curriculumSize];
+		this.auditories = new Auditory[curriculumSize];
 	}
 
 	public Schedule(TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {

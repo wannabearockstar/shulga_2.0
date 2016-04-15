@@ -5,13 +5,11 @@ import ga.model.bound.BoundCollection;
 import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.WeekDay;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
 public class ScheduleConfig {
 
 	public static Map<Integer, Auditory> allAuditories = new HashMap<>();

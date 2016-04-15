@@ -128,7 +128,7 @@ public class AlgorithmImpl implements Algorithm {
 	}
 
 	private Schedule crossover(Population population) {
-		Schedule newSchedule = new Schedule(scheduleConfig);
+		Schedule newSchedule = new Schedule(scheduleConfig.getCurriculum().size());
 
 		TimeMark[] marks = new TimeMark[newSchedule.size()];
 		for (int i = 0; i < marks.length; i++) {

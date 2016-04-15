@@ -49,4 +49,8 @@ public class ScheduleService {
 	public boolean hasCollisions(Schedule schedule) {
 		return fitnessHandler.hasCollisions(schedule);
 	}
+
+	public Schedule findOne(int id) {
+		return scheduleRepository.findOne(id);
+	}
 }

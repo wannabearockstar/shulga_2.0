@@ -1,8 +1,8 @@
 package ga;
 
 import ga.core.FitnessHandler;
-import ga.core.config.AlgorithmConfig;
 import ga.core.impl.FitnessHandlerImpl;
+import ga.core.model.AlgorithmConfig;
 import ga.model.config.ScheduleConfig;
 
 public class GA {

@@ -1,7 +1,7 @@
 package ga.core.impl;
 
 import ga.core.FitnessHandler;
-import ga.core.config.AlgorithmConfig;
+import ga.core.model.AlgorithmConfig;
 import ga.core.model.Population;
 import ga.core.utils.mutation.Mutation;
 import ga.core.utils.mutation.ReplaceMutation;

@@ -1,4 +1,4 @@
-package ga.core.config;
+package ga.core.model;
 
 public class AlgorithmConfig {
 

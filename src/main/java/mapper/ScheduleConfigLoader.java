@@ -7,7 +7,6 @@ import ga.model.config.ScheduleConfig;
 import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.WeekDay;
-import mapper.model.GroupInfo;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -22,14 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScheduleConfigLoader {
-
-    /**
-     * Load ScheduleConfig from remote server
-     */
-    public static ScheduleConfig fromRemote(String url, List<Group> groups) throws IOException {
-        List<GroupInfo> data = GroupInfoLoader.fromRemote(url, groups);
-        return GroupInfo.toScheduleConfig(data);
-    }
 
     /**
      * Load ScheduleConfig from file system

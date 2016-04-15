@@ -4,7 +4,9 @@ import ga.GA;
 import ga.core.impl.AlgorithmImpl;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;
+import ga.model.service.ScheduleService;
 import mapper.ScheduleConfigLoader;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.model.Status;
 
@@ -18,6 +20,8 @@ import java.nio.file.Paths;
  */
 @Service
 public class AlgorithmService {
+	@Autowired
+	private ScheduleService scheduleService;
 
 	public int runAlgorithm(int id) {
 		if (AlgorithmImpl.algorithmStatuses.containsKey(id)) {
@@ -43,7 +47,7 @@ public class AlgorithmService {
 			}
 
 			Schedule schedule = ScheduleConfigLoader.fromLocalSchedule(filepath);
-			return new Status(1, schedule.getFitness(), true);
+			return new Status(1, scheduleService.getFitness(schedule), true);
 
 		} catch (IOException e) {
 			return AlgorithmImpl.algorithmStatuses.get(id);

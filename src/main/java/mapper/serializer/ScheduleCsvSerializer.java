@@ -6,6 +6,9 @@ import ga.model.schedule.*;
 import ga.model.schedule.time.DayTime;
 import ga.model.schedule.time.TimeMark;
 import ga.model.schedule.time.WeekDay;
+import ga.model.service.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -19,10 +22,12 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@Component
 public class ScheduleCsvSerializer implements Serializer<Schedule> {
-
 	private static final String CSV_SEPARATOR = ",";
 	private static final String LINE_SEPARATOR = System.lineSeparator();
+	@Autowired
+	private ScheduleService scheduleService;
 
 	private static String escape(Object obj) {
 		if (obj == null)
@@ -111,7 +116,7 @@ public class ScheduleCsvSerializer implements Serializer<Schedule> {
 
 	private void makeBottom(Appendable writer, Schedule schedule, List<Group> groups) throws IOException {
 		writer.append("Fitness:").append(CSV_SEPARATOR);
-		writer.append(escape(schedule.getFitness())).append(CSV_SEPARATOR);
+		writer.append(escape(scheduleService.getFitness(schedule))).append(CSV_SEPARATOR);
 		makeEmptyLine(writer, groups.size() - 2);
 	}
 

@@ -16,12 +16,14 @@ import org.springframework.stereotype.Service;
 public class ScheduleService {
 	@Autowired
 	private AuditoryService auditoryService;
+	@Autowired
+	private FitnessHandler fitnessHandler;
 
 	@Autowired
 	private ScheduleRepository scheduleRepository;
 
 	public Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
-		Schedule schedule = new Schedule(config, fitnessHandler);
+		Schedule schedule = new Schedule(config);
 		TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
 		Auditory[] auditories = new Auditory[config.getCurriculum().size()];
 
@@ -34,5 +36,17 @@ public class ScheduleService {
 		schedule.setTimeMarks(timeMarks);
 
 		return schedule;
+	}
+
+	public Double getFitness(Schedule schedule) {
+		Double fitness = schedule.getFitness();
+		if (fitness == null) {
+			schedule.setFitness(fitnessHandler.computeFitness(schedule));
+		}
+		return schedule.getFitness();
+	}
+
+	public boolean hasCollisions(Schedule schedule) {
+		return fitnessHandler.hasCollisions(schedule);
 	}
 }

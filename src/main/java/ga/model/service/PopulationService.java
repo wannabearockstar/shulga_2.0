@@ -41,11 +41,11 @@ public class PopulationService {
 	public Schedule getFirstScheduleWithoutCollisions(Population population) {
 		Schedule[] schedules = population.getSchedules();
 		List<Schedule> sorted = Stream.of(schedules)
-			.sorted(Comparator.comparingDouble(Schedule::getFitness))
+			.sorted(Comparator.comparingDouble(scheduleService::getFitness))
 			.collect(Collectors.toList());
 
 		for (Schedule schedule : sorted) {
-			if (!schedule.hasCollisions())
+			if (!scheduleService.hasCollisions(schedule))
 				return schedule;
 		}
 
@@ -55,7 +55,7 @@ public class PopulationService {
 	public Schedule getFittestSchedule(Population population) {
 		Schedule[] schedules = population.getSchedules();
 		return Stream.of(schedules)
-			.min(Comparator.comparingDouble(Schedule::getFitness))
+			.min(Comparator.comparingDouble(scheduleService::getFitness))
 			.get();
 	}
 

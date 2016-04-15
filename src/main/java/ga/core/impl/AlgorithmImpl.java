@@ -13,6 +13,7 @@ import ga.model.schedule.Auditory;
 import ga.model.schedule.Schedule;
 import ga.model.schedule.time.TimeMark;
 import ga.model.service.PopulationService;
+import ga.model.service.ScheduleService;
 import mapper.ScheduleConfigLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,6 +35,8 @@ public class AlgorithmImpl implements Algorithm {
 	private final int algorithmId;
 	@Autowired
 	private PopulationService populationService;
+	@Autowired
+	private ScheduleService scheduleService;
 	private AlgorithmConfig algConfig;
 	private ScheduleConfig scheduleConfig;
 	private FitnessHandler fitnessHandler;
@@ -53,7 +56,7 @@ public class AlgorithmImpl implements Algorithm {
 	public void run() {
 		Population population = populationService.create(algConfig.getPopulationSize(), scheduleConfig, fitnessHandler);
 		int cataclysmCounter = 0;
-		double lastFitness = populationService.getFittestSchedule(population).getFitness();
+		double lastFitness = scheduleService.getFitness(populationService.getFittestSchedule(population));
 		Double maxFitness = null;
 		double roundTime = 0;
 		long startTime = 0;
@@ -66,11 +69,11 @@ public class AlgorithmImpl implements Algorithm {
 			startTime = System.currentTimeMillis();
 			population = evolve(population);
 
-			if (populationService.getFittestSchedule(population).getFitness() == lastFitness) {
+			if (scheduleService.getFitness(populationService.getFittestSchedule(population)) == lastFitness) {
 				cataclysmCounter++;
 			} else {
 				cataclysmCounter = 0;
-				lastFitness = populationService.getFittestSchedule(population).getFitness();
+				lastFitness = scheduleService.getFitness(populationService.getFittestSchedule(population));
 			}
 
 			if (cataclysmCounter >= CATACLYSM_LIMIT) {
@@ -80,20 +83,20 @@ public class AlgorithmImpl implements Algorithm {
 			}
 			currentTime = System.currentTimeMillis();
 			roundTime += currentTime - startTime;
-			System.out.println(populationService.getFittestSchedule(population).getFitness() + ". Round " + i);
+			System.out.println(scheduleService.getFitness(populationService.getFittestSchedule(population)) + ". Round " + i);
 			if (i == 0 || (i >= 1000 && i % 1000 == 0)) {
 				remaningTime = (algConfig.getRoundNumber() - i) * (roundTime * 1.0 / (i * 1000));
 			}
-			if (lastFitness / populationService.getFittestSchedule(population).getFitness() > 3.5) {
-				algorithmStatuses.put(algorithmId, new Status(populationService.getFittestSchedule(population).getFitness(), null, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
+			if (lastFitness / scheduleService.getFitness(populationService.getFittestSchedule(population)) > 3.5) {
+				algorithmStatuses.put(algorithmId, new Status(scheduleService.getFitness(populationService.getFittestSchedule(population)), null, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
 			} else {
 				if (maxFitness == null) {
 					maxFitness = lastFitness;
 				}
-				algorithmStatuses.put(algorithmId, new Status(populationService.getFittestSchedule(population).getFitness(), maxFitness, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
+				algorithmStatuses.put(algorithmId, new Status(scheduleService.getFitness(populationService.getFittestSchedule(population)), maxFitness, i * 1.0 / algConfig.getRoundNumber(), remaningTime));
 			}
 
-			if (populationService.getFittestSchedule(population).getFitness() == 0) {
+			if (scheduleService.getFitness(populationService.getFittestSchedule(population)) == 0) {
 				break;
 			}
 		}
@@ -125,7 +128,7 @@ public class AlgorithmImpl implements Algorithm {
 	}
 
 	private Schedule crossover(Population population) {
-		Schedule newSchedule = new Schedule(scheduleConfig, fitnessHandler);
+		Schedule newSchedule = new Schedule(scheduleConfig);
 
 		TimeMark[] marks = new TimeMark[newSchedule.size()];
 		for (int i = 0; i < marks.length; i++) {

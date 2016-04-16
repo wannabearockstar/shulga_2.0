@@ -1,124 +1,74 @@
 package ga.model.schedule;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import ga.core.FitnessHandler;
-import ga.core.impl.FitnessHandlerImpl;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.time.TimeMark;
 
 public class Schedule {
-    private final ScheduleConfig config;
-    @JsonIgnore
-    private final FitnessHandler fitnessHandler;
-    private TimeMark[] timeMarks;
-    private Auditory[] auditories;
-    private Double fitness;
+	private String id;
 
-    public Schedule(ScheduleConfig config) {
-        this.config = config;
-        this.fitnessHandler = new FitnessHandlerImpl();
-        this.timeMarks = new TimeMark[config.getCurriculum().size()];
-        this.auditories = new Auditory[config.getCurriculum().size()];
-    }
+	private TimeMark[] timeMarks;
+	private Auditory[] auditories;
+	private Double fitness;
+	private ScheduleConfig scheduleConfig;
 
-    public Schedule(ScheduleConfig config, FitnessHandler fitnessHandler) {
-        this.config = config;
-        this.fitnessHandler = fitnessHandler;
-        this.timeMarks = new TimeMark[config.getCurriculum().size()];
-        this.auditories = new Auditory[config.getCurriculum().size()];
-    }
+	public Schedule(int curriculumSize, ScheduleConfig scheduleConfig) {
+		this.scheduleConfig = scheduleConfig;
+		this.timeMarks = new TimeMark[curriculumSize];
+		this.auditories = new Auditory[curriculumSize];
+	}
 
-    public Schedule(TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {
-        this.timeMarks = timeMarks;
-        this.auditories = auditories;
-        this.fitness = fitness;
-        config = null;
-        fitnessHandler = null;
-    }
+	public Schedule(TimeMark[] timeMarks, Auditory[] auditories, Double fitness, ScheduleConfig scheduleConfig) {
+		this.timeMarks = timeMarks;
+		this.auditories = auditories;
+		this.fitness = fitness;
+		this.scheduleConfig = scheduleConfig;
+	}
 
-    public Schedule(ScheduleConfig config, TimeMark[] timeMarks, Auditory[] auditories, Double fitness) {
-        this.config = config;
-        this.timeMarks = timeMarks;
-        this.auditories = auditories;
-        this.fitness = fitness;
-        fitnessHandler = null;
-    }
+	public Schedule() {
+	}
 
-    public Schedule() {
-        config = null;
-        fitnessHandler = null;
-    }
+	public TimeMark[] getTimeMarks() {
+		return timeMarks;
+	}
 
-    public static Schedule random(final ScheduleConfig config) {
-        Schedule schedule = new Schedule(config);
-        TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
-        Auditory[] auditories = new Auditory[config.getCurriculum().size()];
+	public Schedule setTimeMarks(TimeMark[] timeMarks) {
+		this.timeMarks = timeMarks;
+		return this;
+	}
 
-        for (int i = 0; i < config.getCurriculum().size(); i++) {
-            timeMarks[i] = TimeMark.random(config);
-            auditories[i] = Auditory.random(config);
-        }
+	public Auditory[] getAuditories() {
+		return auditories;
+	}
 
-        schedule.setAuditories(auditories);
-        schedule.setTimeMarks(timeMarks);
+	public Schedule setAuditories(Auditory[] auditories) {
+		this.auditories = auditories;
+		return this;
+	}
 
-        return schedule;
-    }
+	public Double getFitness() {
+		if (fitness == null) {
+			throw new IllegalStateException("Compute fitness through ScheduleService::getFitness");
+		}
+		return fitness;
+	}
 
-    public static Schedule random(final ScheduleConfig config, FitnessHandler fitnessHandler) {
-        Schedule schedule = new Schedule(config, fitnessHandler);
-        TimeMark[] timeMarks = new TimeMark[config.getCurriculum().size()];
-        Auditory[] auditories = new Auditory[config.getCurriculum().size()];
+	public void setFitness(Double fitness) {
+		this.fitness = fitness;
+	}
 
-        for (int i = 0; i < config.getCurriculum().size(); i++) {
-            timeMarks[i] = TimeMark.random(config);
-            auditories[i] = Auditory.random(config);
-        }
+	public int size() {
+		return auditories.length;
+	}
 
-        schedule.setAuditories(auditories);
-        schedule.setTimeMarks(timeMarks);
+	public void refreshFitness() {
+		fitness = null;
+	}
 
-        return schedule;
-    }
+	public ScheduleConfig getConfig() {
+		return scheduleConfig;
+	}
 
-    public TimeMark[] getTimeMarks() {
-        return timeMarks;
-    }
-
-    public Schedule setTimeMarks(TimeMark[] timeMarks) {
-        this.timeMarks = timeMarks;
-        return this;
-    }
-
-    public Auditory[] getAuditories() {
-        return auditories;
-    }
-
-    public Schedule setAuditories(Auditory[] auditories) {
-        this.auditories = auditories;
-        return this;
-    }
-
-    public Double getFitness() {
-        if (fitness == null) {
-            fitness = fitnessHandler.computeFitness(this);
-        }
-        return fitness;
-    }
-
-    public ScheduleConfig getConfig() {
-        return config;
-    }
-
-    public int size() {
-        return auditories.length;
-    }
-
-    public void refreshFitness() {
-        fitness = null;
-    }
-
-    public boolean hasCollisions() {
-        return fitnessHandler.hasCollisions(this);
-    }
+	public String getId() {
+		return id;
+	}
 }

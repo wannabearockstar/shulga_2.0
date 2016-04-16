@@ -9,22 +9,23 @@ import java.util.List;
  * Created by wannabe on 07.11.15.
  */
 public class DispiplineCollection {
-    @JsonProperty("disciplines")
-    private List<Discipline> disciplines;
 
-    public DispiplineCollection() {
-    }
+	@JsonProperty("disciplines")
+	private List<Discipline> disciplines;
 
-    public DispiplineCollection(List<Discipline> disciplines) {
-        this.disciplines = disciplines;
-    }
+	public DispiplineCollection() {
+	}
 
-    public List<Discipline> getDisciplines() {
-        return disciplines;
-    }
+	public DispiplineCollection(List<Discipline> disciplines) {
+		this.disciplines = disciplines;
+	}
 
-    public DispiplineCollection setDisciplines(List<Discipline> disciplines) {
-        this.disciplines = disciplines;
-        return this;
-    }
+	public List<Discipline> getDisciplines() {
+		return disciplines;
+	}
+
+	public DispiplineCollection setDisciplines(List<Discipline> disciplines) {
+		this.disciplines = disciplines;
+		return this;
+	}
 }

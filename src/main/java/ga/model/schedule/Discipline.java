@@ -4,48 +4,48 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Discipline {
 
-    @JsonProperty("id")
-    private int id;
+	@JsonProperty("id")
+	private int id;
 
-    @JsonProperty("alias")
-    private String name;
+	@JsonProperty("alias")
+	private String name;
 
-    public Discipline() {
-    }
+	public Discipline() {
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Discipline)) return false;
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (!(o instanceof Discipline)) return false;
 
-        Discipline that = (Discipline) o;
+		Discipline that = (Discipline) o;
 
-        return id == that.id;
-    }
+		return id == that.id;
+	}
 
-    @Override
-    public int hashCode() {
-        return id;
-    }
+	@Override
+	public int hashCode() {
+		return id;
+	}
 
-    @Override
-    public String toString() {
-        return name;
-    }
+	@Override
+	public String toString() {
+		return name;
+	}
 }

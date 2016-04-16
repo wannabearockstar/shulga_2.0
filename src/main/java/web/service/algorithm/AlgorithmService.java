@@ -1,58 +1,48 @@
 package web.service.algorithm;
 
 import ga.GA;
-import ga.core.impl.AlgorithmImpl;
 import ga.model.config.ScheduleConfig;
 import ga.model.schedule.Schedule;
-import mapper.ScheduleConfigLoader;
+import ga.model.service.ScheduleConfigService;
+import ga.model.service.ScheduleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import web.model.Status;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * Created by wannabe on 07.11.15.
  */
 @Service
 public class AlgorithmService {
-    public int runAlgorithm(int id) {
-        if (AlgorithmImpl.algorithmStatuses.containsKey(id)) {
-            return 0;
-        }
-        try {
-            deleteFile(String.format("schedule_result_%d.json", id));
-            ScheduleConfig config = ScheduleConfigLoader.fromLocal(String.format("schedule_config_%d.json", id));
-            return GA.solve(config, id);
-        } catch (IOException e) {
-            return 0;
-        }
-    }
 
-    public Status getStatus(int id) {
-        try {
+	@Autowired
+	private ScheduleService scheduleService;
+	@Autowired
+	private ScheduleConfigService scheduleConfigService;
+	@Resource
+	private Map<String, Status> algorithmStatuses;
+	@Autowired
+	private GA ga;
+	public AlgorithmService() {
+	}
 
-            String filepath = String.format("schedule_result_%d.json", id);
-            Path path = Paths.get(filepath);
+	public String runAlgorithm(String id) {
+		if (algorithmStatuses.containsKey(id)) {
+			return "0";
+		}
+		ScheduleConfig config = scheduleConfigService.findOne(id);
+		return ga.solve(config, id);
+	}
 
-            if (!Files.exists(path)) {
-                return AlgorithmImpl.algorithmStatuses.get(id);
-            }
+	public Status getStatus(String id) {
+		Schedule schedule = scheduleService.findOne(id);
+		if (schedule == null) {
+			return algorithmStatuses.get(id);
+		}
+		return new Status(1, scheduleService.getFitness(schedule), true);
+	}
 
-            Schedule schedule = ScheduleConfigLoader.fromLocalSchedule(filepath);
-            return new Status(1, schedule.getFitness(), true);
-
-        } catch (IOException e) {
-            return AlgorithmImpl.algorithmStatuses.get(id);
-        }
-    }
-
-    private void deleteFile(String filepath) throws IOException {
-        Path path = Paths.get(filepath);
-        if (Files.exists(path)) {
-            Files.delete(path);
-        }
-    }
 }

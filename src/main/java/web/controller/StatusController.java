@@ -14,17 +14,18 @@ import web.service.algorithm.AlgorithmService;
 @Controller
 @RequestMapping(value = "/status")
 public class StatusController {
-    @Autowired
-    private AlgorithmService algorithmService;
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    public String statusPage(@PathVariable(value = "id") long id, Model model) {
-        model.addAttribute("scheduleId", id);
-        return "status/index";
-    }
+	@Autowired
+	private AlgorithmService algorithmService;
 
-    @RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
-    public ResponseEntity<Result> statusData(@PathVariable(value = "id") int id) {
-        return new ResponseEntity<>(Result.success(algorithmService.getStatus(id)), HttpStatus.OK);
-    }
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+	public String statusPage(@PathVariable(value = "id") String id, Model model) {
+		model.addAttribute("scheduleId", id);
+		return "status/index";
+	}
+
+	@RequestMapping(value = "/{id}/data", method = RequestMethod.GET)
+	public ResponseEntity<Result> statusData(@PathVariable(value = "id") String id) {
+		return new ResponseEntity<>(Result.success(algorithmService.getStatus(id)), HttpStatus.OK);
+	}
 }

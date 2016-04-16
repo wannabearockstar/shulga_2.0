@@ -9,8 +9,8 @@ import java.util.Date;
 
 public class UnixTimestampDeserializer extends JsonDeserializer<Date> {
 
-    @Override
-    public Date deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
-        return new Date(jp.getLongValue() * 1000);
-    }
+	@Override
+	public Date deserialize(JsonParser jp, DeserializationContext ctx) throws IOException {
+		return new Date(jp.getLongValue() * 1000);
+	}
 }
